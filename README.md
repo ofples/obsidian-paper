@@ -1,12 +1,22 @@
 # Obsidian Paper
 
-Supernote Paper is a high-contrast Obsidian theme and companion navigation plugin for a separate Supernote profile. The release includes the local MD Reader adaptation used for paginated reading.
+Obsidian Paper contains a high-contrast theme and an independent navigation plugin for a separate Supernote profile. It also carries a pinned MD Reader adaptation for optional paginated reading.
 
-Version 0.5.9 bundles Literata for paginated Book reading only. Editing, continuous scrolling, and Obsidian's interface retain their own font settings. Multi-touch pinch is consumed without changing Reader font size; the Reader's controls remain available. A two-finger double-tap toggles fullscreen by default in paginated and continuous reading. Turn the gesture off in Supernote Sidebar settings to restore the small mobile fullscreen exit button. The reader menu, command, and Escape remain available as fallbacks.
+Candidate 0.5.10 bundles optional Literata for paginated Book reading only. Editing, continuous scrolling, and Obsidian's interface retain their own font settings. Multi-touch pinch is consumed without changing Reader font size; the Reader's controls remain available. A two-finger double-tap from Sidebar toggles fullscreen by default in paginated and continuous reading. Turn the gesture off in Supernote Sidebar settings to restore the small mobile fullscreen exit button. The reader menu, command, and Escape remain available as fallbacks.
 
 The companion provides Files and Backlinks edge gestures in both reading modes, same-tab reading-mode changes, an Open notes panel with save-before-close behavior, and a right-sidebar expansion control. See [architecture](docs/architecture.md) for source and build ownership and [validation](docs/validation.md) for the latest checks and their limits.
 
 ## Install
+
+Choose only the components you want; none requires the whole package:
+
+| Component | Works independently | Optional integration |
+| --- | --- | --- |
+| Supernote Paper theme | Standard Obsidian notes and settings | Styles Reader and Sidebar when present; supplies offline Literata |
+| Supernote Sidebar | Native reading, navigation, Search and fullscreen with any theme | Adds Pages mode when MD Reader is enabled |
+| MD Reader | Paginated Markdown reading | Uses Sidebar controls and Paper styling when available |
+
+Transcripts is maintained separately. It is not required for ordinary notes, and installing Paper does not install or enable it.
 
 The checked-in `dist/` folders are ready to install. To rebuild them, use Node.js 22 or newer:
 
@@ -23,9 +33,9 @@ On the Supernote, choose **Settings → Files and links → Override config fold
 - `dist/plugins/supernote-sidebar` → `<vault>/.obsidian-supernote/plugins/supernote-sidebar`
 - `dist/plugins/md-reader` → `<vault>/.obsidian-supernote/plugins/md-reader`
 
-Select Supernote Paper in Appearance, then enable Supernote Sidebar and MD Reader under Community plugins. MD Reader supplies paginated Book mode. The theme and plugins do not install themselves on a device or alter vault Sync settings. On the Supernote, turn off the **Vault configuration sync** categories while leaving note Sync available.
+Copy only the folders you selected. Select Supernote Paper in Appearance if you want the theme, and enable each desired plugin under Community plugins. MD Reader supplies paginated Book mode. Sidebar uses native continuous reading when Reader is absent; its edit/read button remains usable. Disabling Sidebar restores its native control replacements. The theme and plugins do not install themselves on a device or alter vault Sync settings. On the Supernote, turn off the **Vault configuration sync** categories while leaving note Sync available.
 
-For a fresh MD Reader installation, copy `Supernote defaults.json` to `data.json` in that plugin folder before enabling it for the first time. For an existing installation, keep `data.json` and choose **Reading font → Custom** in the Reader's Appearance/MD Reader settings, then enter `"Supernote Literata", serif` as the custom family. Keep the existing font-size multiplier. These Reader font preferences apply to paginated Book content; normal scrolling and editing keep their existing fonts.
+For a fresh MD Reader installation, you may copy `Supernote defaults.json` to `data.json` in that plugin folder before enabling it for the first time. This optional preference template selects Paper's Literata family, with a generic serif fallback if Paper is absent. You can also keep Reader's own defaults. For an existing installation, keep `data.json` and choose **Reading font → Custom** in the Reader's Appearance/MD Reader settings, then enter `"Supernote Literata", serif` as the custom family if you want Paper's font. Keep the existing font-size multiplier. These Reader font preferences apply to paginated Book content; normal scrolling and editing keep their existing fonts.
 
 Existing MD Reader settings contain font and size choices, saved reading positions, and library state. Do not replace an existing plugin `data.json` with a fresh-install template. Use the plugin settings UI to change preferences. Existing duplicate tabs are left in place; reopening a file reuses its matching root tab, while explicit new-tab and split actions can still create another copy.
 
@@ -39,7 +49,9 @@ Existing MD Reader settings contain font and size choices, saved reading positio
 
 ## Development
 
-Edit `src/theme` and `src/sidebar` for the theme and companion. Keep Reader adaptations in `scripts/build-reader.cjs`, with the pinned upstream input under `vendor/md-reader`. Run build, test and check before committing generated `dist/` changes. `npm run check` also compares the generated runtime files with the accepted release hashes; update that record after reviewing and validating a new release. CI runs on Windows and Linux with Node.js 22 and 24.
+Edit `src/theme` and `src/sidebar` for the theme and companion. Reader development belongs in [the canonical fork](https://github.com/ofples/obsidian-md-reader). This package pins its 2.1.2 artifact by exact commit and SHA-256 in `bundle-lock.json`, validates the vendored snapshot, then copies it without patches. Normal builds are offline. Maintainer updates are explicit: review the new artifact and lock entry, then run `npm run reader:vendor -- --from <artifact-directory>`.
+
+Build components separately with `npm run build:theme`, `npm run build:sidebar`, or `npm run build:reader`. Run build, test and check before committing generated `dist/` changes. `npm run check` validates component versions, the Reader pin, the independent Sidebar stylesheet and the reviewed runtime hashes. CI runs on Windows and Linux with Node.js 22 and 24. Version 0.5.10 / Reader 2.1.2 are source candidates; this preparation does not tag a release or install on the device.
 
 Local session files, vaults, raw device reports, backups and application runtimes are intentionally excluded by `.gitignore`. No device connection is needed to build or run the focused tests.
 

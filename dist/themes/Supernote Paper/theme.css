@@ -1053,7 +1053,8 @@ body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
 }
 
 /* Gesture reading keeps page arrows out of the on-demand controls. */
-body .hr-viewport .hr-nav-btn, body .hr-viewport:hover .hr-nav-btn { display: none !important; }
+body .hr-viewport.sn-gesture-reader .hr-nav-btn,
+body .hr-viewport.sn-gesture-reader:hover .hr-nav-btn { display: none !important; }
 body .hr-viewport.hr-hide-ui .hr-ui { opacity: 0; visibility: hidden; pointer-events: none; }
 /* Flush Files selector with a complete, square outline. */
 body.is-mobile .workspace-drawer-tab-options { padding: 0; margin: 0; }
@@ -1127,7 +1128,7 @@ body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container::befo
   inset: 0 auto 0 0; width: 1px !important; min-width: 1px;
   background: var(--sn-rule); pointer-events: none;
 }
-body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container > .sidebar-toggle-button { display: none !important; }
+body.sn-sidebar-active.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container > .sidebar-toggle-button { display: none !important; }
 body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-container-inner {
   flex: 1 1 auto; min-width: 0; overflow-x: auto !important; overflow-y: hidden !important;
   padding: 0 !important; margin: 0 !important; height: 40px; align-items: stretch;
@@ -1157,10 +1158,10 @@ body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .work
 body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container :is(.workspace-tab-header-new-tab,.workspace-tab-header-tab-list) {
   min-width: 40px; width: 40px; height: 40px; margin: 0; padding: 0; border-radius: 0;
 }
-body.is-mobile .view-header .view-action.sn-native-mode,
-body.is-mobile .view-header .view-action[aria-label^="Current view:"],
-body.is-mobile .view-header .view-action[aria-label="Toggle Backlinks sidebar"],
-body.is-mobile .view-header .view-action[aria-label="Toggle Files sidebar"] { display: none !important; }
+body.sn-sidebar-active.is-mobile .view-header .view-action.sn-native-mode,
+body.sn-sidebar-active.is-mobile .view-header .view-action[aria-label^="Current view:"],
+body.sn-sidebar-active.is-mobile .view-header .view-action[aria-label="Toggle Backlinks sidebar"],
+body.sn-sidebar-active.is-mobile .view-header .view-action[aria-label="Toggle Files sidebar"] { display: none !important; }
 body.is-mobile .view-header-left { display: flex; padding: 0; flex-shrink: 0; }
 body.is-mobile .sn-files-toggle {
   width: 48px; height: 48px; min-width: 48px; padding: 0;
@@ -1182,24 +1183,24 @@ body.is-mobile .view-header :is(.sn-files-toggle,.sn-mode-action,.sidebar-toggle
   .nav-action-button,.view-header-nav-buttons button) svg {
   display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
 }
-body.is-mobile .view-header .view-header-nav-buttons,
-body.is-mobile .view-header .sidebar-toggle-button,
-body.is-mobile .view-header .view-action.mod-bookmark { display: none !important; }
+body.sn-sidebar-active.is-mobile .view-header .view-header-nav-buttons,
+body.sn-sidebar-active.is-mobile .view-header .sidebar-toggle-button,
+body.sn-sidebar-active.is-mobile .view-header .view-action.mod-bookmark { display: none !important; }
 body.is-mobile .view-header { gap: 8px; }
 body.is-mobile .view-header-title-container { margin: 0; flex: 1; }
 body.is-mobile .view-header-title { text-align: left; }
-body.is-mobile .view-header-title-parent { display: none; }
+body.sn-sidebar-active.is-mobile .view-header-title-parent { display: none; }
 body.is-mobile .workspace-drawer,
 body.is-mobile.is-tablet .workspace-drawer {
   top: var(--safe-area-inset-top); bottom: var(--safe-area-inset-bottom);
   margin: 0; height: auto; max-height: none; padding: 0;
   width: min(420px, calc(100vw - 64px));
   border: 1px solid var(--sn-rule); border-radius: 0;
-  transform: none !important; opacity: 1 !important;
 }
+body.sn-sidebar-active.is-mobile .workspace-drawer { transform: none !important; opacity: 1 !important; }
 body.is-mobile .workspace-drawer.mod-left { left: 0; }
 body.is-mobile .workspace-drawer.mod-right { right: 0; }
-body.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right {
+body.sn-sidebar-active.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right {
   top: var(--safe-area-inset-top,0px); right: 0; bottom: var(--safe-area-inset-bottom,0px);
   width: 100vw; max-width: 100vw; box-sizing: border-box;
 }
@@ -1214,7 +1215,7 @@ body.is-mobile .workspace-drawer-tab-options-list { border: 1px solid #171717; }
 body.is-mobile .workspace-drawer.mod-left .workspace-drawer-header-info {
   padding-bottom: calc(var(--safe-area-inset-bottom,0px) + 16px);
 }
-body.is-mobile .workspace-drawer .workspace-drawer-header-icon.mod-pin { display: none; }
+body.sn-sidebar-active.is-mobile .workspace-drawer .workspace-drawer-header-icon.mod-pin { display: none; }
 body.is-mobile .workspace-drawer-ribbon { border-right: 1px solid var(--sn-rule); }
 body.is-mobile .workspace-drawer-ribbon .side-dock-actions { padding-top: 12px; }
 body.is-mobile .workspace-drawer-ribbon .sn-close-files {
@@ -1222,11 +1223,11 @@ body.is-mobile .workspace-drawer-ribbon .sn-close-files {
   padding: 0; border: 0 !important; border-radius: 0;
   background: transparent !important; box-shadow: none !important;
 }
-body.is-mobile .workspace-drawer-ribbon [aria-label="MD Reader library"] { display: none; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-ribbon [aria-label="MD Reader library"] { display: none; }
 body.is-mobile .workspace-drawer-backdrop { background: transparent !important; opacity: 1 !important; }
 /* Phone mode normally slides the entire note with its drawer. Keep the
    reading surface fixed while the independent drawer overlays it. */
-body.is-mobile .mod-root { transform: none !important; }
+body.sn-sidebar-active.is-mobile .mod-root { transform: none !important; }
 body .sn-close-drawer {
   flex-shrink: 0; width: 48px; height: 48px; padding: 0; margin: 0 0 0 8px;
   display: flex; align-items: center; justify-content: center;
@@ -1234,16 +1235,16 @@ body .sn-close-drawer {
 }
 body .sn-close-drawer { padding: 0 !important; }
 body .sn-close-drawer svg { flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important; }
-body.sn-right-open .sn-toggle-right-fullscreen {
+body.sn-sidebar-active.sn-right-open .sn-toggle-right-fullscreen {
   display: inline-flex; flex: 0 0 48px; width: 48px; min-width: 48px;
   height: 48px; min-height: 48px; margin: 0; padding: 0;
   align-items: center; justify-content: center; border: 0 !important;
   border-radius: 0; background: #ffffff; color: #171717; box-shadow: none !important;
 }
-body.sn-right-open .sn-toggle-right-fullscreen svg {
+body.sn-sidebar-active.sn-right-open .sn-toggle-right-fullscreen svg {
   display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
 }
-body.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right { z-index: 6; }
+body.sn-sidebar-active.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right { z-index: 6; }
 body.is-mobile .workspace-drawer.mod-right .workspace-tab-header-inner-title { flex: 1; }
 /* Match the page's top inset and title box to the native editor. */
 body .markdown-source-view.mod-cm6 .cm-scroller { padding-top: var(--font-text-size) !important; }
@@ -1449,16 +1450,16 @@ body .modal.sn-reader-settings .hr-ap-reset { min-height: 48px; max-width: 100%;
 /* Fullscreen leaves the writing surface unobstructed while preserving the
    drawer controls and modal-owned navigation. The exit target overlays the
    page without reserving layout space. */
-body.sn-fullscreen .mod-root .workspace-tabs > .workspace-tab-header-container,
-body.sn-fullscreen .mod-root .view-header,
-body.sn-fullscreen .workspace-ribbon:not(.workspace-drawer-ribbon),
-body.sn-fullscreen .status-bar,
-body.sn-fullscreen .mobile-navbar,
-body.sn-fullscreen .mobile-toolbar,
-body.sn-fullscreen .titlebar {
+body.sn-sidebar-active.sn-fullscreen .mod-root .workspace-tabs > .workspace-tab-header-container,
+body.sn-sidebar-active.sn-fullscreen .mod-root .view-header,
+body.sn-sidebar-active.sn-fullscreen .workspace-ribbon:not(.workspace-drawer-ribbon),
+body.sn-sidebar-active.sn-fullscreen .status-bar,
+body.sn-sidebar-active.sn-fullscreen .mobile-navbar,
+body.sn-sidebar-active.sn-fullscreen .mobile-toolbar,
+body.sn-sidebar-active.sn-fullscreen .titlebar {
   display: none !important;
 }
-body.sn-fullscreen .sn-exit-fullscreen {
+body.sn-sidebar-active.sn-fullscreen .sn-exit-fullscreen {
   position: fixed !important; top: max(8px, var(--safe-area-inset-top, 0px));
   right: max(8px, var(--safe-area-inset-right, 0px)); z-index: 5;
   display: flex; align-items: center; justify-content: center;
@@ -1466,17 +1467,17 @@ body.sn-fullscreen .sn-exit-fullscreen {
   margin: 0; padding: 0; border: 0 !important; border-radius: 0;
   background: #ffffff !important; color: #171717; box-shadow: none !important;
 }
-body.is-mobile.sn-fullscreen .sn-exit-fullscreen {
+body.sn-sidebar-active.is-mobile.sn-fullscreen .sn-exit-fullscreen {
   top: max(0px, var(--safe-area-inset-top, 0px));
   left: max(8px, var(--safe-area-inset-left, 0px));
   right: auto !important;
   align-items: flex-start; justify-content: flex-start;
   background: transparent !important;
 }
-body.sn-fullscreen .sn-exit-fullscreen svg {
+body.sn-sidebar-active.sn-fullscreen .sn-exit-fullscreen svg {
   display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
 }
-body.is-mobile.sn-fullscreen .sn-exit-fullscreen svg {
+body.sn-sidebar-active.is-mobile.sn-fullscreen .sn-exit-fullscreen svg {
   background: #ffffff;
 }
 

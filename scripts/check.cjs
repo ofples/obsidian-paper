@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const crypto = require('node:crypto');
+const { readReaderSnapshot } = require('./reader-artifact.cjs');
 const root = path.resolve(__dirname, '..');
 const walk = directory => fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
   const file = path.join(directory, entry.name);
@@ -17,6 +18,24 @@ for (const folder of ['src', 'scripts', 'tests', 'vendor', 'dist']) {
 const release = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'accepted-artifacts.json')));
 const current = JSON.parse(fs.readFileSync(path.join(root, 'package.json')));
 if (release.version !== current.version) throw Error('Update the accepted artifact record for this release.');
+const lock = JSON.parse(fs.readFileSync(path.join(root, 'bundle-lock.json')));
+if (lock.schemaVersion !== 1 || lock.version !== current.version) throw Error('Bundle lock schema/version mismatch.');
+const directories = { paper: 'themes/Supernote Paper', sidebar: 'plugins/supernote-sidebar', reader: 'plugins/md-reader' };
+for (const [name, directory] of Object.entries(directories)) {
+  const pin = lock.components[name];
+  if (pin.directory !== directory || pin.optional !== true) throw Error('Invalid optional component: ' + name);
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'dist', directory, 'manifest.json')));
+  if (manifest.version !== pin.version || (pin.id && manifest.id !== pin.id) || (pin.name && manifest.name !== pin.name)) {
+    throw Error('Component manifest differs from lock: ' + name);
+  }
+}
+const reader = lock.components.reader;
+if (!/^[a-f0-9]{40}$/.test(reader.source.commit)) throw Error('Reader must pin an exact source commit.');
+readReaderSnapshot(path.join(root, 'vendor', 'md-reader'), reader);
+readReaderSnapshot(path.join(root, 'dist', 'plugins', 'md-reader'), reader);
+if (!fs.existsSync(path.join(root, 'dist', 'plugins', 'supernote-sidebar', 'styles.css'))) {
+  throw Error('Sidebar must ship its independent stylesheet.');
+}
 for (const [relative, accepted] of Object.entries(release.files)) {
   const hash = crypto.createHash('sha256').update(fs.readFileSync(path.join(root, 'dist', relative))).digest('hex');
   if (hash !== accepted) throw Error('Accepted runtime bytes differ: ' + relative);

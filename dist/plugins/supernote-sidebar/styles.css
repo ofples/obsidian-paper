@@ -1,0 +1,133 @@
+/* Functional layout belongs to Sidebar, so any Obsidian theme can use it.
+   Paper may style these surfaces, but is never required to operate them. */
+body.sn-sidebar-active {
+  --sn-sidebar-paper: var(--background-primary, #ffffff);
+  --sn-sidebar-ink: var(--text-normal, #171717);
+  --sn-sidebar-rule: var(--background-modifier-border, #555555);
+}
+
+/* Only hide native actions for which this plugin adds a replacement. */
+body.sn-sidebar-active .view-action.sn-native-mode { display: none !important; }
+body.sn-sidebar-active.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container > .sidebar-toggle-button,
+body.sn-sidebar-active.is-mobile .view-header .sidebar-toggle-button,
+body.sn-sidebar-active.is-mobile .view-header .view-action[aria-label="Toggle Files sidebar"],
+body.sn-sidebar-active.is-mobile .view-header .view-action[aria-label="Toggle Backlinks sidebar"] {
+  display: none !important;
+}
+body.sn-sidebar-active .sn-files-toggle,
+body.sn-sidebar-active .sn-close-drawer,
+body.sn-sidebar-active .sn-toggle-right-fullscreen,
+body.sn-sidebar-active .sn-mode-action {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: 0 0 40px; width: 40px; min-width: 40px; height: 40px; padding: 0; margin: 0;
+  border: 0 !important; box-shadow: none !important;
+  background: transparent; color: var(--sn-sidebar-ink);
+}
+body.sn-sidebar-active.is-mobile :is(.sn-files-toggle,.sn-close-drawer,.sn-toggle-right-fullscreen,.sn-mode-action) {
+  flex-basis: 48px; width: 48px; min-width: 48px; height: 48px;
+}
+body.sn-sidebar-active :is(.sn-files-toggle,.sn-close-drawer,.sn-toggle-right-fullscreen,.sn-mode-action) svg {
+  flex: 0 0 24px; width: 24px; height: 24px; margin: 0;
+}
+
+/* Mobile drawers overlay the page; opening one does not move the note. */
+body.sn-sidebar-active.is-mobile .workspace-drawer {
+  top: var(--safe-area-inset-top, 0px); bottom: var(--safe-area-inset-bottom, 0px);
+  margin: 0; height: auto; max-height: none;
+  width: min(420px, calc(100vw - 64px));
+  transform: none !important; opacity: 1 !important;
+  background: var(--sn-sidebar-paper); color: var(--sn-sidebar-ink);
+  border: 1px solid var(--sn-sidebar-rule);
+}
+body.sn-sidebar-active.is-mobile .workspace-drawer.mod-left { left: 0; }
+body.sn-sidebar-active.is-mobile .workspace-drawer.mod-right { right: 0; }
+body.sn-sidebar-active.is-mobile .mod-root { transform: none !important; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-backdrop {
+  background: transparent !important; opacity: 1 !important;
+}
+body.sn-sidebar-active.is-mobile .workspace-drawer .workspace-drawer-header-icon.mod-pin { display: none; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-ribbon .sn-close-files { order: -100; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-ribbon [aria-label="Search notes"] { order: -90; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-ribbon [aria-label="Open notes"] { order: -80; }
+body.sn-sidebar-active.is-mobile .workspace-drawer-ribbon [aria-label="Bookmarks"] { order: -75; }
+body.sn-sidebar-active.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right {
+  top: var(--safe-area-inset-top, 0px); right: 0; bottom: var(--safe-area-inset-bottom, 0px);
+  width: 100vw; max-width: 100vw; box-sizing: border-box; z-index: 6;
+}
+
+/* Fullscreen search and the right-hand Open notes panel work without Paper. */
+body.sn-sidebar-active .modal-container:has(.sn-search-screen) {
+  padding: 0; align-items: stretch;
+}
+body.sn-sidebar-active .modal.sn-search-screen {
+  position: fixed !important; inset: 0 !important; margin: 0 !important;
+  width: 100vw !important; max-width: none !important;
+  height: 100dvh !important; max-height: none !important;
+}
+body.sn-sidebar-active .sn-search-screen .modal-content {
+  height: 100%; padding: 48px 16px 16px; margin: 0;
+}
+body.sn-sidebar-active .sn-search-screen .workspace-leaf-content { height: 100%; }
+body.sn-sidebar-active .modal-container:has(.sn-open-notes) {
+  padding: 0; justify-content: flex-end; align-items: stretch;
+}
+body.sn-sidebar-active .modal.sn-open-notes {
+  position: fixed !important; top: var(--safe-area-inset-top, 0px); bottom: var(--safe-area-inset-bottom, 0px); right: 0; left: auto;
+  width: min(420px, calc(100vw - 64px)) !important; max-width: none !important;
+  height: auto !important; max-height: none !important; margin: 0 !important;
+  display: flex; flex-direction: column; padding: 0;
+  border: 1px solid var(--sn-sidebar-rule);
+  background: var(--sn-sidebar-paper); color: var(--sn-sidebar-ink);
+}
+body.sn-sidebar-active .sn-open-notes .modal-header {
+  display: flex; align-items: center; min-height: 56px; padding: 0 72px 0 16px; margin: 0;
+  border-bottom: 1px solid var(--sn-sidebar-rule); flex-shrink: 0;
+}
+body.sn-sidebar-active .sn-open-notes .modal-title { position: static; text-align: left; margin: 0; padding: 0; }
+body.sn-sidebar-active .sn-open-notes :is(.modal-header-button,.modal-close-button) {
+  position: absolute; top: 4px; right: 12px; width: 48px; height: 48px; min-width: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0 !important; background: var(--sn-sidebar-paper); color: var(--sn-sidebar-ink); box-shadow: none !important;
+}
+body.sn-sidebar-active .sn-open-notes .modal-content { margin: 0; padding: 0; flex: 1; min-height: 0; overflow: auto; }
+body.sn-sidebar-active .sn-open-notes .sn-open-notes-footer {
+  display: flex; flex: 0 0 auto; align-items: center; padding: 8px 16px;
+  border-top: 1px solid var(--sn-sidebar-rule); background: var(--sn-sidebar-paper);
+}
+body.sn-sidebar-active .sn-close-all-notes {
+  flex: 1 1 auto; min-width: 0; min-height: 48px; height: auto; margin: 0; padding: 8px 12px;
+  border: 0 !important; box-shadow: none !important; white-space: normal; overflow-wrap: anywhere;
+}
+body.sn-sidebar-active .sn-note-row {
+  display: flex; width: 100%; min-height: 56px; height: auto; margin: 0; padding: 12px 16px;
+  justify-content: space-between; align-items: center; gap: 12px; text-align: left;
+  color: var(--sn-sidebar-ink); background: var(--sn-sidebar-paper);
+  border: 0; box-shadow: none; white-space: normal; overflow-wrap: anywhere;
+}
+body.sn-sidebar-active .sn-note-row.is-active { outline: 1px solid var(--sn-sidebar-rule); outline-offset: -1px; }
+body.sn-sidebar-active .sn-note-row:hover { background: var(--background-modifier-hover, #eeeeee); }
+body.sn-sidebar-active .sn-note-label { display: flex; flex-direction: column; min-width: 0; }
+body.sn-sidebar-active .sn-note-folder { font-size: 0.8em; color: var(--text-muted, #555555); }
+body.sn-sidebar-active .sn-note-mark { flex: 0 0 24px; }
+
+/* The class changes only while Sidebar is enabled; unload restores the chrome. */
+body.sn-sidebar-active.sn-fullscreen .mod-root .workspace-tabs > .workspace-tab-header-container,
+body.sn-sidebar-active.sn-fullscreen .mod-root .view-header,
+body.sn-sidebar-active.sn-fullscreen .workspace-ribbon:not(.workspace-drawer-ribbon),
+body.sn-sidebar-active.sn-fullscreen .status-bar,
+body.sn-sidebar-active.sn-fullscreen .mobile-navbar,
+body.sn-sidebar-active.sn-fullscreen .mobile-toolbar,
+body.sn-sidebar-active.sn-fullscreen .titlebar { display: none !important; }
+body.sn-sidebar-active.sn-fullscreen .sn-exit-fullscreen {
+  position: fixed !important; top: max(8px, var(--safe-area-inset-top, 0px));
+  right: max(8px, var(--safe-area-inset-right, 0px)); z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  width: 48px; min-width: 48px; height: 48px; padding: 0; margin: 0;
+  border: 0 !important; box-shadow: none !important;
+  background: var(--sn-sidebar-paper); color: var(--sn-sidebar-ink);
+}
+body.sn-sidebar-active.is-mobile.sn-fullscreen .sn-exit-fullscreen {
+  top: max(0px, var(--safe-area-inset-top, 0px));
+  left: max(8px, var(--safe-area-inset-left, 0px)); right: auto !important;
+}
+body.sn-sidebar-active.sn-fullscreen .sn-exit-fullscreen svg { width: 24px; height: 24px; }

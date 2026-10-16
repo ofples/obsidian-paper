@@ -23,4 +23,4 @@ jobs:
       - run: npm run build
       - run: npm test
       - run: npm run check
-      - run: git diff --exit-code -- dist
+      - run: git diff --exit-code -- dist vendor

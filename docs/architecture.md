@@ -4,11 +4,28 @@
 
 - `src/theme/` contains the authored Supernote Paper theme sources, including the bundled Literata font definitions.
 - `src/sidebar/` contains the Supernote Sidebar plugin source.
-- `vendor/md-reader/main.js` is the pinned upstream MD Reader source used as input to the local adaptation.
-- `scripts/build-reader.cjs` applies the maintained Supernote Reader changes to that pinned source. The generated Reader file belongs in the distributable output; edit the adaptation script rather than hand-editing generated output.
-- `scripts/` builds the packages and runs focused checks. `dist/` is generated and should match the accepted 0.5.9 release behavior.
+- `src/sidebar/styles.css` supplies Sidebar's functional layout with standard Obsidian theme colors. Sidebar does not require Paper's stylesheet.
+- `vendor/md-reader/` is an immutable snapshot of the canonical Reader artifact pinned in `bundle-lock.json`.
+- `scripts/build-reader.cjs` validates and copies that snapshot byte-for-byte. Reader changes belong in [the canonical fork](https://github.com/ofples/obsidian-md-reader), never a local patch script or hand-edited distribution.
+- `scripts/` builds the packages and runs focused checks. `dist/` is generated and checked against the reviewed source artifact record.
 
-The theme and Sidebar sources are maintained directly. The Reader adaptation keeps upstream behavior where possible and adds Supernote-specific navigation, layout, fullscreen and touch handling. It consumes multi-touch without changing font size; existing one-finger paging remains. Literata is selected only for paginated Reader Book content and loaded from the theme's bundled font data.
+The theme and Sidebar sources are maintained directly. Paper is CSS only. Sidebar owns its `sn-sidebar-active` lifecycle marker and removes the controls, markers and behavior it added when unloaded. Paper hides native controls replaced by Sidebar only while that marker is present. Sidebar falls back to standard Markdown Preview when Reader is unavailable, preserving a stored Pages preference; its mode button then alternates editing and continuous reading.
+
+The Reader adaptation keeps upstream behavior where possible and adds Supernote-specific navigation, layout, fullscreen and touch handling. It consumes multi-touch without changing font size; existing one-finger paging remains. The optional Supernote preset or explicit Reader font setting selects Literata for paginated Book content using the theme's bundled font data. Reader's own default remains the theme font. Without Paper, the optional custom font preference falls back to the browser's serif family.
+
+The Reader 2.1.2 snapshot comes from canonical commit `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`. The old downstream Reader patch pipeline has been removed. The Reader retains its `md-reader` plugin ID for existing settings and positions. Upstream Reader and this fork are alternatives under that ID; install one at a time and preserve `data.json`.
+
+## Optional integration contract
+
+Transcripts owns recognition and the optional `nomad-transcripts.pageLinks` renderer. Reader owns pagination and may call `renderSection({element, sourcePath, markdown, sourceLineMap, component})`. The version-1 provider exposes `apiVersion: 1`, `capabilities: ['renderSection']` and `enabled()`. Legacy structurally compatible providers without an API version remain supported. Missing, disabled or unsupported providers use standard Markdown; false or an exception clears partial provider output and renders standard Markdown once. No recognition request is triggered by this build or bundle.
+
+Paper contains scoped optional Reader styling; Sidebar supplies navigation enhancements. Reader must still function without either. See the canonical [integration contract](../vendor/md-reader/INTEGRATION.md).
+
+## Pinned packaging
+
+Each component has its own manifest and version. `bundle-lock.json` records the optional component choices and pins all four external Reader files by SHA-256 and an exact source commit. Transcripts is an optional external companion, not bundled or enabled automatically here.
+
+The default build is offline. Maintainers review a canonical Reader change, update its lock entry, and run `npm run reader:vendor -- --from <artifact-directory>` explicitly. The importer validates every file and manifest before writing. Builds and importers write project artifacts only; they never select a vault, copy `data.json`, enable a plugin, or change configuration sync.
 
 ## Distribution layout
 

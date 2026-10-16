@@ -1,14 +1,16 @@
 {
-  "version": "0.5.9",
+  "version": "0.5.10",
   "validated": "2026-10-16",
-  "description": "SHA-256 of the accepted 0.5.9 distributable runtime files; import/build must retain these bytes.",
+  "description": "Reviewed 0.5.10 source candidate runtime hashes; local unit and synthetic CSS checks only, no device acceptance.",
   "files": {
-    "themes/Supernote Paper/theme.css": "33146df3b27bfb08fa5e07af39918a6e870798f2f18796323263cf57918e8416",
-    "themes/Supernote Paper/manifest.json": "fdfc92e73f19c5fd48503ea3e5e11a05f538b98d1d8ca1bb3adee41b8268720e",
-    "plugins/supernote-sidebar/main.js": "b57d29029aee02c678c5739ab7c87a5eb82dda1f7eb8a7251d1a6b45a787cfdf",
-    "plugins/supernote-sidebar/manifest.json": "7035793b62d8825a1a72be3d5eb796a9fe690441f4f11b7b9c06b47f7759f935",
-    "plugins/md-reader/main.js": "69f37881c2d46277c9c207c59efa1c1953c705c9220796f755d2422762b1e844",
-    "plugins/md-reader/styles.css": "ef3a82090a23135016e79b7d620e0d11d7be0a6acdc9eff4128f74e32d2786bd",
-    "plugins/md-reader/manifest.json": "0c34af2e0bd4264e9ac8fe8f3c21106d2001e953811f7ade8426f058af3530ef"
+    "themes/Supernote Paper/theme.css": "f5961da6846381bdd2e4d521c7e9aca0cc96cec7c82d46cbf732db45b7bfc652",
+    "themes/Supernote Paper/manifest.json": "4bd675b9cb6020a1b92d1e6a5b373593ce1124522822fdbe13263c88545fd8ee",
+    "plugins/supernote-sidebar/main.js": "9c902c09608d8b4d6c1329c5c34d56f165cf494557292bfa4f82e249612b1ea5",
+    "plugins/supernote-sidebar/styles.css": "478eef976c865d5365b88bacbffcb9dc2da79e5efe94bbcb36b576be47971882",
+    "plugins/supernote-sidebar/manifest.json": "bc9170c8b0481a572cb3320305f6022e4d4b59ff41248611754e00ddaa85881a",
+    "plugins/md-reader/main.js": "3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664",
+    "plugins/md-reader/styles.css": "86a3c8ce0b30f02a7b9ea1cfed6338f5f34e7976c14a200637a5004239d042a4",
+    "plugins/md-reader/manifest.json": "6d26dea44fb1ec89beddc7790d8cd8a44529b0cea8a89fef6db363f60373de65",
+    "plugins/md-reader/LICENSE": "53394eab0504fdd2fa705f80ec7a3b8e2dc10bb3df9065a889880275360af2d1"
   }
 }

@@ -442,7 +442,7 @@ class InterfaceSettings extends PluginSettingTab {
   display() {
     this.containerEl.empty();
     new Setting(this.containerEl).setName('Reading mode')
-      .setDesc('Choose the reading mode used by the Read note command. Page appearance is configured in MD Reader.')
+      .setDesc('Choose how Read note opens a note. Pages uses MD Reader; without it, notes open in continuous scrolling. Page appearance is configured in MD Reader.')
       .addDropdown(d => d.addOption('pages','Pages').addOption('scroll','Continuous scrolling')
         .setValue(this.plugin.settings.readingMode).onChange(async value => {
           this.plugin.settings.readingMode = value;
@@ -471,6 +471,7 @@ class InterfaceSettings extends PluginSettingTab {
 module.exports = class SupernoteSidebar extends Plugin {
   async onload() {
     this.settings = Object.assign({readingMode:'pages',fullscreenReading:false,fullscreenDoubleTap:true}, await this.loadData());
+    document.body.classList.add('sn-sidebar-active');
     this.seen = new WeakSet();
     this.modeButtons = new WeakMap();
     this.decorations = new Set();
@@ -721,7 +722,11 @@ module.exports = class SupernoteSidebar extends Plugin {
       this.modeButtons.set(view,mode);
       this.updateMode(view);
       mode.addClass('sn-mode-action'); cleanups.push(() => mode.remove());
-      for (const button of view.headerEl.querySelectorAll('[aria-label^="Current view:"]')) button.addClass('sn-native-mode');
+      for (const button of view.headerEl.querySelectorAll('[aria-label^="Current view:"]')) {
+        const alreadyMarked = button.hasClass?.('sn-native-mode') ?? button.classList?.contains('sn-native-mode');
+        button.addClass('sn-native-mode');
+        if (!alreadyMarked) cleanups.push(() => button.removeClass('sn-native-mode'));
+      }
       const original = view.onPaneMenu;
       const plugin = this;
       view.onPaneMenu = function(menu, ...args) {
@@ -742,7 +747,7 @@ module.exports = class SupernoteSidebar extends Plugin {
     const leaf = this.app.workspace.activeLeaf;
     if (leaf?.view) this.updateMode(leaf.view);
     this.syncFullscreen();
-    if (this.switching || this.settings.readingMode !== 'pages' || document.querySelector('.modal-container')) return;
+    if (this.switching || this.settings.readingMode !== 'pages' || !this.app.plugins.plugins['md-reader'] || document.querySelector('.modal-container')) return;
     if (leaf?.view.getViewType() === 'markdown' && leaf.view.file && leaf.view.getMode() === 'preview') {
       this.read(leaf).catch(error => console.error('Supernote reader:',error));
     }
@@ -751,9 +756,11 @@ module.exports = class SupernoteSidebar extends Plugin {
     const button = this.modeButtons.get(view);
     if (!button) return;
     const type = view.getViewType();
-    const reading = type === READER || (type === 'markdown' && view.getMode?.() === 'preview');
-    const label = type === READER ? 'Edit note' : reading ? 'Read with pages' : 'Read with scrolling';
-    const icon = type === READER ? 'pencil' : reading ? 'columns-2' : 'book-open';
+    const readerAvailable = Boolean(this.app.plugins.plugins['md-reader']);
+    const preview = type === 'markdown' && view.getMode?.() === 'preview';
+    const reading = type === READER || preview;
+    const label = type === READER || (preview && !readerAvailable) ? 'Edit note' : reading ? 'Read with pages' : 'Read with scrolling';
+    const icon = type === READER || (preview && !readerAvailable) ? 'pencil' : reading ? 'columns-2' : 'book-open';
     if (button.getAttribute('aria-label') !== label) {
       button.setAttribute('aria-label',label); button.setAttribute('title',label); setIcon(button,icon);
     }
@@ -761,13 +768,15 @@ module.exports = class SupernoteSidebar extends Plugin {
   async cycleReadingMode(leaf) {
     const view = leaf?.view;
     if (view?.getViewType() === READER) return this.edit(leaf);
-    if (view?.getViewType() === 'markdown' && view.getMode?.() === 'preview') return this.read(leaf,'pages');
+    if (view?.getViewType() === 'markdown' && view.getMode?.() === 'preview') {
+      return this.app.plugins.plugins['md-reader'] ? this.read(leaf,'pages') : this.edit(leaf);
+    }
     return this.read(leaf,'scroll');
   }
   async read(leaf, mode=this.settings.readingMode) {
     const file = leaf?.view.file;
     if (!file || !leaf.parent || this.switching) return;
-    if (mode === 'pages' && !this.app.plugins.plugins['md-reader']) return;
+    const effectiveMode = mode === 'pages' && !this.app.plugins.plugins['md-reader'] ? 'scroll' : mode;
     this.switching = true;
     try {
       if (arguments.length > 1) {
@@ -776,7 +785,7 @@ module.exports = class SupernoteSidebar extends Plugin {
       }
       if (!leaf.parent) return;
       this.closeDrawers();
-      await leaf.setViewState(mode === 'pages'
+      await leaf.setViewState(effectiveMode === 'pages'
         ? {type:READER,state:{filePath:file.path},active:true}
         : {type:'markdown',state:{file:file.path,mode:'preview'},active:true});
       if (!leaf.parent) return;
@@ -873,7 +882,7 @@ module.exports = class SupernoteSidebar extends Plugin {
   }
   onunload() {
     this.searchModal?.close(); this.notesModal?.close(); this.closeDrawers();
-    this.exitFullscreenButton?.remove(); document.body.classList.remove('sn-fullscreen','sn-right-fullscreen');
+    this.exitFullscreenButton?.remove(); document.body.classList.remove('sn-sidebar-active','sn-fullscreen','sn-right-fullscreen');
     for (const dispose of this.decorations || []) dispose();
   }
 };

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "version": "0.5.10",
+  "components": {
+    "paper": {
+      "kind": "theme",
+      "name": "Supernote Paper",
+      "version": "0.5.10",
+      "optional": true,
+      "directory": "themes/Supernote Paper"
+    },
+    "sidebar": {
+      "kind": "plugin",
+      "id": "supernote-sidebar",
+      "version": "0.4.1",
+      "optional": true,
+      "directory": "plugins/supernote-sidebar"
+    },
+    "reader": {
+      "kind": "plugin",
+      "id": "md-reader",
+      "version": "2.1.2",
+      "optional": true,
+      "directory": "plugins/md-reader",
+      "source": {
+        "repository": "https://github.com/ofples/obsidian-md-reader",
+        "commit": "2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3"
+      },
+      "files": {
+        "main.js": "3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664",
+        "styles.css": "86a3c8ce0b30f02a7b9ea1cfed6338f5f34e7976c14a200637a5004239d042a4",
+        "manifest.json": "6d26dea44fb1ec89beddc7790d8cd8a44529b0cea8a89fef6db363f60373de65",
+        "LICENSE": "53394eab0504fdd2fa705f80ec7a3b8e2dc10bb3df9065a889880275360af2d1"
+      }
+    }
+  },
+  "externalCompanions": {
+    "transcripts": {
+      "id": "nomad-transcripts",
+      "optional": true,
+      "bundled": false,
+      "renderApiVersion": 1
+    }
+  }
+}

@@ -1,5 +1,17 @@
 # Validation
 
+## 0.5.10 source candidate
+
+This candidate combines Paper 0.5.10, Sidebar 0.4.1 and the canonical Reader 2.1.2 snapshot pinned in `bundle-lock.json`. It is release preparation only: no candidate tag, public release or device installation was made.
+
+The project has 24 passing Node tests: eight file-reuse cases, five fullscreen-gesture cases, six optional-component/lifecycle cases and five Reader artifact integrity cases. The importer rejects changed bytes or incompatible manifests before changing output; valid copies preserve unrelated saved settings. The build verifies the canonical Reader's main, style, manifest and MIT license hashes and copies them byte-for-byte, without patches or network access.
+
+An isolated Chromium fixture checked five component states (neither, Paper only, Sidebar only, both, and Sidebar disabled with its stylesheet still loaded), each with fullscreen off/on: all ten records passed. Checks cover native control visibility, Sidebar replacement cleanup, fullscreen scoping, Search/Open notes geometry, right-sidebar expansion, and font fallback. Screenshots were reviewed. This is synthetic HTML/CSS validation, not a full Obsidian or Supernote test. No current device acceptance is claimed.
+
+The Reader maintainer separately reported syntax checks, 123 logic checks and 113 UI checks for exact commit `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`, plus the real Reader/provider isolated integration fixture. Those checks belong to the canonical fork; the package checks here verify the supplied artifact bytes and component boundaries. Last device verification of this new Reader line remains 2.1.1 in the other workspace.
+
+## Historical 0.5.9 device validation
+
 The 0.5.9 release was checked in an isolated Obsidian lab and on a Supernote Nomad using the separate `.obsidian-supernote` profile. The lab reported 32 passing checks and the device run reported 24 passing checks. These results cover the current 0.5.9 theme, Sidebar, and adapted Reader behavior.
 
 The lab checks confirmed that both embedded Literata faces load, paginated Reader body text and headings use the custom family, and editing, continuous scrolling, and interface text keep their existing font families. Appearance controls were checked at narrow and wider mobile widths, including slider-thumb alignment and wrapped setting rows. The device checks covered Literata rendering, retained Reader settings and reading state, fullscreen and navigation controls, and the new layout.

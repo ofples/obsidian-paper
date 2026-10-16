@@ -1,7 +1,7 @@
 {
   "id": "supernote-sidebar",
   "name": "Supernote Sidebar",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "minAppVersion": "1.13.7",
   "author": "Personal configuration",
   "description": "Reusable document tabs, edge-swipe sidebars and fullscreen paginated reading for the isolated Supernote profile.",

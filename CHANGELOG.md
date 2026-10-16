@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.10 (release preparation)
+
+- Consume the canonical MD Reader 2.1.2 artifact with strict hashes and an offline build, removing the downstream Reader patch pipeline.
+- Keep component versions separate in an optional bundle lock; no automatic installation or settings changes.
+- Keep native mobile navigation and view controls available when Sidebar is disabled.
+- Give Sidebar its own functional stylesheet, including fullscreen, Search and Open notes layouts.
+- Fall back to standard Markdown reading when MD Reader is unavailable, and keep the reading-mode action usable.
+- Restore Sidebar-owned control markers and body classes when the plugin unloads.
+
 ## 0.5.9
 
 - Bundle offline Literata upright/italic fonts for paginated Book mode while retaining editing, scrolling and interface fonts.

@@ -2,13 +2,16 @@
 
 ## MD Reader
 
-The pinned MD Reader 2.1.0 reference and the local adaptation are derived from
-[mrrepac/obsidian-md-reader](https://github.com/mrrepac/obsidian-md-reader),
-commit `b23d62ce4d341ed230ff403b0f292385b41d0364`.
+The pinned MD Reader 2.1.2 artifact comes from
+[ofples/obsidian-md-reader](https://github.com/ofples/obsidian-md-reader),
+commit `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`, based on
+[mrrepac/obsidian-md-reader](https://github.com/mrrepac/obsidian-md-reader)
+upstream commit `b23d62ce4d341ed230ff403b0f292385b41d0364`.
 
 Copyright (c) 2026 mrrepac. Licensed under the MIT License. Full notices are
 retained in `vendor/md-reader/LICENSE` and `dist/plugins/md-reader/LICENSE`.
-Supernote changes are maintained in `scripts/build-reader.cjs`.
+Supernote changes are maintained in the canonical fork; this package copies
+the reviewed artifact without patching it.
 
 ## Literata
 

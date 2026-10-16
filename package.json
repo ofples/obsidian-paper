@@ -1,12 +1,16 @@
 {
   "name": "obsidian-paper",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "private": true,
   "description": "Supernote-style Obsidian theme, navigation companion, and paginated Reader adaptation",
   "license": "UNLICENSED",
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node scripts/build.cjs",
+    "build:theme": "node scripts/build-theme.cjs",
+    "build:sidebar": "node scripts/build-sidebar.cjs",
+    "build:reader": "node scripts/build-reader.cjs",
+    "reader:vendor": "node scripts/vendor-reader.cjs",
     "test": "node scripts/test.cjs",
     "check": "node scripts/check.cjs"
   },
