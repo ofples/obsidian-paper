@@ -1,0 +1,19 @@
+# Local session history, device backups, private vaults and raw evidence.
+/work/
+/outputs/
+/lab/
+/artifacts/
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.zip
+data.json
+workspace.json
+workspace-mobile.json
+appearance.json
+.obsidian/
+.obsidian-supernote/
+.DS_Store
+Thumbs.db

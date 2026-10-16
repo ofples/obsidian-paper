@@ -1,0 +1,11 @@
+/* Optional Supernote Paper profile snippet.
+   Copy to <vault>/.obsidian-supernote/snippets/Adjustments.css and enable
+   it for the Supernote profile. Change these values to adjust the theme. */
+.theme-light,
+.theme-dark,
+.is-mobile.theme-light,
+.is-mobile.theme-dark {
+  --sn-content-margin: 28px;
+  --sn-line-height: 1.55;
+  --sn-ui-size: 20px;
+}

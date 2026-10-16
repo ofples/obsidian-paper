@@ -1,0 +1,809 @@
+/* Supernote Paper — reviewed interface, stability, and mobile rules.
+   Public variables first; structural selectors match Obsidian 1.13.7.
+   A theme cannot add native page turning or control device refresh policy. */
+body {
+  --sn-content-margin: 28px;
+  --sn-line-height: 1.55;
+  --sn-ui-size: 20px;
+  --sn-rule: #555555;
+  --line-height-normal: var(--sn-line-height);
+  --line-height-tight: 1.35;
+  --h1-size: 1.35em;
+  --h2-size: 1.2em;
+  --h3-size: 1.1em;
+  --h4-size: 1.05em;
+  --h5-size: 1em;
+  --h6-size: 1em;
+  --h1-line-height: 1.35;
+  --h2-line-height: 1.35;
+  --h3-line-height: 1.4;
+  --inline-title-size: 1.35em;
+  --inline-title-weight: 600;
+  --inline-title-line-height: 1.4;
+  --heading-spacing: 1.4em;
+  --p-spacing: 1em;
+  --nav-item-weight-hover: 400;
+  --nav-item-weight-active: 400;
+  --icon-color: #333333;
+  --icon-color-hover: #111111;
+  --icon-color-active: #111111;
+  --icon-opacity: 1;
+  --icon-opacity-hover: 1;
+  --icon-opacity-active: 1;
+  --icon-stroke: 1.75px;
+  --titlebar-background: #ffffff;
+  --titlebar-background-focused: #ffffff;
+  --tab-container-background: #ffffff;
+  --file-header-background: #ffffff;
+  --file-header-background-focused: #ffffff;
+  --callout-border-width: 1px;
+  --callout-blend-mode: normal;
+  --table-header-background: #ffffff;
+  --table-row-background-hover: #eeeeee;
+  --table-border-color: var(--sn-rule);
+  --metadata-label-text-color: #454545;
+  --metadata-label-font-size: 0.8em;
+  --metadata-input-font-size: 0.8em;
+  --metadata-border-color: var(--sn-rule);
+  --checkbox-size: 24px;
+  --toggle-radius: 0;
+  --toggle-thumb-radius: 0;
+  --toggle-thumb-color: #ffffff;
+  --toggle-background: #666666;
+  --toggle-background-hover: #555555;
+  --toggle-border-width: 1px;
+  --input-height: 44px;
+  --anim-duration-superfast: 0ms;
+  --anim-duration-fast: 0ms;
+  --anim-duration-moderate: 0ms;
+  --anim-duration-slow: 0ms;
+}
+
+/* Square corners also cover components with explicit native radii. */
+.menu-item, .suggestion-item, .vertical-tab-nav-item, .tree-item-self,
+.workspace-tab-header-inner, .workspace-tab-header-inner::before,
+.workspace-tab-header-inner::after, .checkbox-container,
+.checkbox-container::before, .checkbox-container::after,
+.multi-select-pill, .multi-select-pill-content, .notice,
+.mobile-navbar, .mobile-navbar-action, .mobile-toolbar-option,
+.mobile-tab-switcher, .mobile-tab-switcher .mobile-tab,
+.search-input-container, .search-result-file-match, .tag {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Selection uses an inset rule; its width and text weight never change. */
+.nav-file-title.is-active, .nav-folder-title.is-active,
+.tree-item-self.is-active, .bookmark-item.is-active,
+.vertical-tab-nav-item.is-active, .suggestion-item.is-selected {
+  font-weight: 400;
+  background: #eeeeee;
+  outline: 1px solid var(--sn-rule);
+  outline-offset: -1px;
+}
+.workspace-tab-header.is-active { background: #ffffff; }
+.workspace-tab-header-container, .view-header, .status-bar,
+.workspace-ribbon, .nav-header { border-color: var(--sn-rule); }
+.view-header { border-bottom: 1px solid var(--sn-rule); }
+.status-bar { border-top: 1px solid var(--sn-rule); }
+.status-bar-item.plugin-sync { min-width: 8em; text-align: end; }
+.view-header-title-container { min-width: 0; }
+.view-header-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Body size comes from Appearance. Heading scale matches editing and reading. */
+.markdown-rendered h1 { font-size: var(--h1-size); }
+.markdown-rendered h2 { font-size: var(--h2-size); }
+.markdown-rendered h3 { font-size: var(--h3-size); }
+.markdown-rendered h4 { font-size: var(--h4-size); }
+.markdown-rendered h5 { font-size: var(--h5-size); }
+.markdown-rendered h6 { font-size: var(--h6-size); }
+.markdown-rendered img, .markdown-rendered svg { max-width: 100%; height: auto; }
+.markdown-rendered .callout { background: #ffffff; border: 1px solid var(--sn-rule); }
+.markdown-rendered .callout-content { overflow-wrap: anywhere; }
+.markdown-rendered th { background: #ffffff; }
+.markdown-rendered tr:nth-child(even) td { background: #ffffff; }
+.markdown-rendered .table-wrapper, .markdown-rendered .el-table, .markdown-source-view .cm-table-widget {
+  max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain;
+}
+.markdown-rendered table { overflow-wrap: normal; word-break: normal; }
+.markdown-rendered th, .markdown-rendered td { min-width: 6em; }
+.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+  background: var(--code-background); border: 0; border-radius: 0;
+}
+/* Task hit areas are enlarged through row spacing, without enlarging every
+   checkbox or breaking Markdown editor baselines. */
+.markdown-rendered .task-list-item { min-height: 44px; }
+button.mod-cta, button.mod-warning {
+  background: #222222; color: #ffffff; border: 1px solid #222222;
+}
+button.mod-cta:hover, button.mod-warning:hover { background: #111111; color: #ffffff; }
+button:disabled { color: #666666; }
+
+/* Disable motion at its source. Native node-insertion lifecycle signals are
+   retained; loading stays visible through static marks and labels. */
+.workspace-drawer, .workspace-drawer-backdrop, .workspace-drawer-inner,
+.mobile-navbar, .mobile-navbar-action, .mobile-toolbar, .mobile-toolbar-option,
+.modal, .modal-bg, .prompt, .popover, .menu, .tooltip, .notice,
+.suggestion-container, .callout, .callout-fold, .collapse-icon,
+.clickable-icon, .checkbox-container, .checkbox-container::after,
+button, input, select, textarea, .tree-item-self, .nav-file-title,
+.nav-folder-title, .workspace-tab-header, .workspace-tab-header-inner {
+  transition: none !important;
+}
+.modal, .modal-bg, .prompt, .popover, .menu, .tooltip, .notice {
+  animation: none !important;
+}
+.markdown-preview-view, .markdown-source-view .cm-scroller,
+.workspace-drawer, .vertical-tab-content, .nav-files-container {
+  scroll-behavior: auto;
+}
+/* A steady editor caret is clearer on e-ink, while still marking insertion. */
+.markdown-source-view .cm-cursor, .markdown-source-view .cm-cursorLayer {
+  animation: none !important;
+}
+.loading-spinner, .loader-spinner svg, .loader-cube .sk-cube,
+.multi-select-duplicate { animation: none !important; }
+.loader-spinner { width: auto; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.loader-spinner::after { content: "Loading…"; font-size: var(--font-ui-small); color: var(--text-normal); }
+button.mod-loading::after {
+  animation: none; content: "…"; border: 0; border-radius: 0;
+  width: auto; height: auto; color: var(--text-normal);
+  display: flex; align-items: center; justify-content: center;
+}
+button.mod-cta.mod-loading::after, button.mod-warning.mod-loading::after { color: #ffffff; }
+.is-loading::before { animation: none; width: 24px; }
+
+/* The native keyboard and drawers remain available. */
+body.is-mobile {
+  --system-status-background: #ffffff;
+  --mobile-sidebar-radius: 0;
+  --touch-radius-xxs: 0;
+  --touch-radius-xs: 0;
+  --touch-radius-s: 0;
+  --touch-radius-m: 0;
+  --touch-radius-l: 0;
+  --touch-radius-xl: 0;
+  --radius-xl: 0;
+  --input-radius: 0;
+  --modal-radius: 0;
+  --prompt-backdrop-filter: none;
+  --menu-backdrop-filter: none;
+  --suggestion-backdrop-filter: none;
+  --input-border-width: 1px;
+  --interactive-normal: #ffffff;
+  --interactive-hover: #eeeeee;
+  --background-modifier-form-field: #ffffff;
+  --background-modifier-form-field-hover: #eeeeee;
+  --toggle-radius: 0;
+  --toggle-thumb-radius: 0;
+  --raised-background: #ffffff;
+  --raised-blur: none;
+  --raised-shadow: none;
+  --raised-mask-border-width: 0;
+  --view-header-height: 56px;
+  --navbar-height: 56px;
+  --navbar-bottom-offset: max(0px, var(--safe-area-inset-bottom));
+  --font-ui-smaller: 17px;
+  --font-ui-small: 18px;
+  --font-ui-medium: var(--sn-ui-size);
+  --font-ui-large: 22px;
+  --tab-font-size: 18px;
+  --nav-item-size: var(--sn-ui-size);
+  --nav-item-padding: 12px 12px;
+  --nav-item-children-padding-start: 12px;
+  --icon-size: 24px;
+  --icon-stroke: 1.75px;
+  --input-height: 48px;
+  --mobile-toolbar-height: 52px;
+}
+.is-mobile .view-header {
+  min-height: 56px; background: #ffffff; padding-inline: 8px;
+}
+.is-mobile .view-action, .is-mobile .nav-action-button,
+.is-mobile .mobile-navbar-action, .is-mobile .mobile-toolbar-option {
+  min-width: 48px; min-height: 48px;
+}
+.is-mobile .nav-file-title, .is-mobile .nav-folder-title,
+.is-mobile .tree-item-self, .is-mobile .menu-item,
+.is-mobile .suggestion-item { min-height: 48px; }
+.is-mobile .mobile-navbar, .is-mobile .mobile-toolbar {
+  background: #ffffff; border: 1px solid var(--sn-rule);
+  box-shadow: none; border-radius: 0;
+}
+.is-mobile .workspace-drawer, .is-mobile .workspace-drawer-inner,
+.is-mobile .workspace-drawer-header { background: #ffffff; box-shadow: none; }
+body.is-mobile .workspace-drawer,
+body.is-mobile.is-tablet .workspace-drawer { border-radius: 0; }
+.is-mobile .workspace-drawer { border-inline-end: 1px solid var(--sn-rule); }
+/* Keep the note at full contrast outside the solid drawer. The native
+   transparent click catcher still dismisses the drawer on an outside tap. */
+.is-mobile .workspace-drawer-backdrop { background: transparent; }
+.is-mobile .workspace-drawer-vault-name { color: #171717; }
+.is-mobile .workspace-tab-header-container { border-bottom: 1px solid var(--sn-rule); }
+.is-mobile .modal, .is-mobile .prompt { border-radius: 0; }
+.is-mobile .setting-item { gap: 12px; }
+.is-mobile .setting-item-control { flex-wrap: wrap; gap: 8px; }
+.is-mobile input[type="text"], .is-mobile input[type="search"],
+.is-mobile input[type="number"], .is-mobile select, .is-mobile textarea {
+  font-size: max(18px, var(--font-ui-medium));
+}
+.is-mobile .mod-raised {
+  background: #ffffff; box-shadow: none; backdrop-filter: none;
+  border-radius: 0;
+}
+.is-mobile .mobile-navbar-action .clickable-icon,
+.is-mobile .mobile-navbar-action button { border-radius: 0; }
+.is-mobile.is-floating-nav {
+  --navbar-max-width: 100%; --navbar-width: 100%; --navbar-height: 56px;
+  --navbar-radius: 0; --view-top-fade-mask: none; --view-bottom-fade-mask: none;
+}
+.is-mobile.is-floating-nav .mod-raised {
+  background: #ffffff; box-shadow: none; backdrop-filter: none;
+  border: 1px solid var(--sn-rule); border-radius: 0;
+}
+.is-mobile.is-floating-nav.is-phone .view-header { background: #ffffff; }
+.is-mobile .mobile-navbar-text { mask-image: none; }
+.is-mobile .workspace-drawer .workspace-leaf-content::after,
+.is-mobile .workspace-drawer .nav-buttons-container::after { background: none; }
+.is-mobile .mod-root,
+.is-mobile .mod-root .workspace-leaf-content[data-type="markdown"] .view-content {
+  mask-image: none;
+}
+.is-mobile .prompt { background: #ffffff; }
+.is-mobile .view-header-title-container { display: flex; min-width: 0; }
+.is-mobile .view-header-title { font-family: var(--font-interface); font-size: 18px; }
+.is-mobile.is-phone.show-inline-title .workspace-leaf-content[data-type="markdown"] .view-header-title-container {
+  display: flex; flex: 1; min-width: 0; overflow: hidden; margin-inline: 8px;
+}
+.is-mobile .view-header .view-action { width: 48px; height: 48px; flex-shrink: 0; }
+.is-mobile .view-header .view-actions { gap: 4px; }
+.is-mobile .view-header { height: calc(56px + var(--safe-area-inset-top)); }
+.is-mobile:not(.auto-full-screen):not(.is-floating-nav) .view-header { position: relative; }
+.is-mobile:not(.is-hidden-nav) .view-header::after {
+  content: ""; position: absolute; inset-inline: 0; top: auto; bottom: 0;
+  height: 1px; background: var(--sn-rule); z-index: 2; pointer-events: none;
+}
+/* Desktop mobile emulation adds synthetic status-bar insets. Real Android
+   safe-area values are preserved; only the isolated desktop preview is reset. */
+body.emulate-mobile { --safe-area-inset-top: 0px; --safe-area-inset-bottom: 0px; }
+.multi-select-pill-content { white-space: nowrap; overflow-wrap: normal; }
+.markdown-rendered input[type="checkbox"].task-list-item-checkbox,
+.markdown-source-view.mod-cm6 .task-list-item-checkbox {
+  --checkbox-size: 24px;
+  width: var(--checkbox-size); height: var(--checkbox-size);
+}
+.is-mobile .markdown-rendered input[type="checkbox"].task-list-item-checkbox::before {
+  content: ""; position: absolute; inset: -10px; background: transparent;
+}
+input[type="checkbox"]:focus-visible, input[type="radio"]:focus-visible,
+.text-icon-button:focus-visible { outline: 2px solid #111111; outline-offset: 2px; }
+@media (max-width: 440px) {
+  .is-mobile .view-header { padding-inline: 4px; }
+  .is-mobile .setting-item { flex-wrap: wrap; }
+}
+
+/* Solid paper surfaces: mobile defaults otherwise mix these with alpha. */
+body, body.is-mobile {
+  --blur-opacity-s: 100%; --blur-opacity-m: 100%;
+  --menu-background: #ffffff; --background-modifier-message: #ffffff;
+}
+body .menu, body .menu-scroll, body .suggestion-container,
+body .prompt, body .popover, body .tooltip, body .notice {
+  background: #ffffff !important; color: #171717;
+  backdrop-filter: none !important; box-shadow: none !important;
+  border-radius: 0; opacity: 1;
+}
+body .menu, body .tooltip, body .notice {
+  border: 1px solid var(--sn-rule);
+}
+/* Keep native file context menus crisply outlined. The Reader bottom sheet
+   supplies its own single top rule and remains excluded. */
+body .menu:not(.sn-reader-menu) { border: 1px solid #171717 !important; }
+/* Native mobile context menus use Obsidian's full-screen suggestion backdrop
+   as an outside-tap catcher. Keep its hit testing, but remove the dim layer. */
+body:has(.menu) .suggestion-bg {
+  background: transparent !important; opacity: 1 !important; backdrop-filter: none !important;
+}
+/* A square label does not need a translucent speech-bubble arrow. */
+body .tooltip .tooltip-arrow { display: none; }
+body .tooltip, body .tooltip.mod-error { color: #171717; font-weight: 400; }
+body .view-header, body.is-mobile .view-header { background: #ffffff; }
+body .view-header .view-action {
+  background: #ffffff; border: 1px solid var(--sn-rule); border-radius: 0;
+}
+body .view-header .view-action:hover,
+body .view-header .view-action:active { background: #eeeeee; color: #111111; }
+.workspace-drawer-tab-options-list, .menu-grabber,
+.workspace-drawer-tab-options-list .workspace-tab-header,
+.workspace-drawer-tab-options-list .workspace-tab-header-inner {
+  transition: none !important; animation: none !important; box-shadow: none;
+}
+.workspace-drawer-tab-options:not(.is-collapsed) .workspace-tab-header {
+  animation: none !important;
+}
+
+/* MD Reader integration. Paging uses its measured column layout; these
+   rules change controls only, never its translation or column geometry. */
+body .hr-viewport {
+  font-size: var(--font-text-size);
+  /* Match the stable scrollbar reservation in Obsidian's native editor. */
+  scrollbar-gutter: stable;
+}
+body .hr-statusbar {
+  background: #ffffff; border-top: 1px solid var(--sn-rule);
+  padding: 8px 68px; min-height: 64px; box-sizing: border-box;
+}
+body .hr-status-text { color: #171717; font-size: 16px; }
+body .hr-reader-tools { gap: 6px; flex-wrap: nowrap; }
+body .hr-reader-tools > button {
+  min-height: 48px; min-width: 48px; padding: 4px 8px;
+  border: 1px solid var(--sn-rule); border-radius: 0;
+  color: #171717; background: #ffffff;
+}
+body .hr-viewport .hr-nav-btn, body .hr-viewport:hover .hr-nav-btn {
+  display: flex !important;
+  z-index: 6;
+  top: auto; bottom: 8px; transform: none;
+  width: 48px; height: 48px; opacity: 1;
+  background: #ffffff; color: #171717;
+  border: 1px solid var(--sn-rule); border-radius: 0; box-shadow: none;
+}
+body .hr-content, body .hr-ui, body .hr-nav-btn,
+body .hr-progress-fill, body .hr-end, body .hr-viewport::after {
+  transition: none !important; animation: none !important;
+}
+body .hr-lib-continue-name { opacity: 1; }
+body .hr-end { background: #ffffff; }
+/* Gesture reader owns its page indicator; hide the native footer. The reader
+   measures its own footer reservation and sets it to zero in gesture mode. */
+body .hr-viewport.sn-gesture-reader .hr-ui { display: none !important; }
+body .hr-viewport > .sn-page-indicator {
+  position: absolute; z-index: 7; left: 50%; bottom: 12px; transform: translateX(-50%);
+  padding: 4px 8px; border: 0; background: #ffffff; color: #171717;
+  font-size: 16px; line-height: 1.25; white-space: nowrap;
+  pointer-events: none;
+}
+body .hr-viewport > .sn-page-indicator[hidden] { display: none !important; }
+body .modal-container:has(.hr-ap) .modal-bg { background: transparent; opacity: 1; }
+body .modal-bg { background: transparent !important; backdrop-filter: none !important; opacity: 1 !important; }
+
+/* One blank source line and one rendered paragraph gap share a rhythm.
+   Extra Markdown blank lines still follow the renderer's native semantics. */
+body .markdown-rendered p, body .hr-content p {
+  margin-block: calc(var(--font-text-size) * var(--sn-line-height));
+}
+body .markdown-rendered :is(h1,h2,h3,h4,h5,h6),
+body .hr-content :is(h1,h2,h3,h4,h5,h6) {
+  margin-block: calc(var(--font-text-size) * var(--sn-line-height));
+}
+body .markdown-source-view.mod-cm6 .cm-line.HyperMD-header {
+  padding-top: 0; line-height: 1.35;
+}
+
+/* Gesture reading keeps page arrows out of the on-demand controls. */
+body .hr-viewport .hr-nav-btn, body .hr-viewport:hover .hr-nav-btn { display: none !important; }
+body .hr-viewport.hr-hide-ui .hr-ui { opacity: 0; visibility: hidden; pointer-events: none; }
+/* Flush Files selector with a complete, square outline. */
+body.is-mobile .workspace-drawer-tab-options { padding: 0; margin: 0; }
+body.is-mobile .workspace-drawer-tab-options .workspace-drawer-tab-select {
+  box-sizing: border-box; margin: 0; border: 1px solid #171717 !important;
+}
+body.is-mobile .workspace-drawer-tab-options .workspace-drawer-tab-select .workspace-tab-header-inner {
+  padding: 0 12px; min-height: 52px; border-radius: 0; background: #ffffff;
+}
+/* Draw the complete border inside the selector so a child cannot cover it. */
+body.is-mobile .workspace-drawer-tab-select > .workspace-tab-header-inner {
+  box-shadow: none; min-height: 52px; border: 0 !important;
+}
+/* Palette/switcher prompts and the dedicated native Search view fill the screen. */
+body .modal-container:has(.prompt), body .modal-container:has(.sn-search-screen) {
+  padding: 0; align-items: stretch;
+}
+body .prompt, body .modal.sn-search-screen {
+  position: fixed !important; inset: 0 !important; margin: 0 !important;
+  width: 100vw !important; max-width: none !important;
+  height: 100dvh !important; max-height: none !important;
+  border: 0; border-radius: 0; background: #ffffff;
+}
+body .prompt .prompt-results { flex: 1; max-height: none; }
+body .sn-search-screen .modal-content {
+  height: 100%; padding: 48px 16px 16px; margin: 0;
+}
+body .sn-search-screen .workspace-leaf-content { height: 100%; }
+/* Settings uses the entire screen while preserving native category/back controls. */
+body .modal-container:has(.mod-settings) {
+  padding: 0 !important; align-items: stretch; justify-content: stretch;
+}
+body .modal.mod-settings {
+  position: fixed !important; inset: 0 !important; margin: 0 !important;
+  width: 100vw !important; max-width: none !important;
+  height: 100dvh !important; max-height: none !important;
+  border: 0; border-radius: 0; background: #ffffff;
+}
+/* Leave the Supernote's system Home overlay clear of the Settings close target. */
+body.is-mobile .modal.mod-settings > :is(.modal-close-button,.modal-header-button) {
+  top: 8px; right: 56px; width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0; border: 0 !important; border-radius: 0; background: #ffffff;
+  color: #171717; opacity: 1; box-shadow: none !important;
+}
+/* Respect each heading's shared line-height token in both renderers. */
+body :is(.markdown-rendered h1,.hr-content h1,.markdown-source-view .HyperMD-header-1) { line-height: var(--h1-line-height); }
+body :is(.markdown-rendered h2,.hr-content h2,.markdown-source-view .HyperMD-header-2) { line-height: var(--h2-line-height); }
+body :is(.markdown-rendered h3,.hr-content h3,.markdown-source-view .HyperMD-header-3) { line-height: var(--h3-line-height); }
+body :is(.markdown-rendered h4,.hr-content h4,.markdown-source-view .HyperMD-header-4) { line-height: var(--h4-line-height); }
+body :is(.markdown-rendered h5,.hr-content h5,.markdown-source-view .HyperMD-header-5) { line-height: var(--h5-line-height); }
+body :is(.markdown-rendered h6,.hr-content h6,.markdown-source-view .HyperMD-header-6) { line-height: var(--h6-line-height); }
+body .hr-content .hr-title, body .inline-title {
+  font-size: var(--inline-title-size); font-weight: var(--inline-title-weight);
+  line-height: var(--inline-title-line-height);
+  margin: 0 0 calc(var(--font-text-size) * var(--sn-line-height));
+  padding-bottom: 8px; border-bottom: 1px solid var(--sn-rule);
+}
+
+/* A compact tab strip above one header with Files, mode and note menu. */
+body.emulate-mobile { --frame-right-space: 0px !important; --frame-left-space: 0px !important; }
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container {
+  display: flex !important; min-height: 40px; height: 40px; padding: 0 !important; gap: 0;
+  position: relative; background: #ffffff; border-bottom: 0;
+  box-shadow: inset 0 -1px var(--sn-rule);
+}
+/* Keep the viewport's leading frame visible while the tab row scrolls. It
+   overlays the first tab's own left rule at rest, so the line stays one pixel. */
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container::before {
+  content: ""; display: block !important; position: absolute; z-index: 2;
+  inset: 0 auto 0 0; width: 1px !important; min-width: 1px;
+  background: var(--sn-rule); pointer-events: none;
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container > .sidebar-toggle-button { display: none !important; }
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-container-inner {
+  flex: 1 1 auto; min-width: 0; overflow-x: auto !important; overflow-y: hidden !important;
+  padding: 0 !important; margin: 0 !important; height: 40px; align-items: stretch;
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header {
+  display: flex !important; height: 40px; min-width: 88px; max-width: 220px; padding: 0;
+  border: 0; border-left: 1px solid var(--sn-rule); border-bottom: 1px solid var(--sn-rule);
+  border-radius: 0; background: #ffffff; box-shadow: none;
+}
+/* Each tab owns its leading rule, so the first tab remains framed after
+   clipping, scrolling, or reordering; only the final tab adds a trailing rule. */
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container
+  .workspace-tab-header:not(:has(~ .workspace-tab-header)) {
+  border-right: 1px solid var(--sn-rule);
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header.is-active {
+  background: #ffffff; border-bottom-color: #ffffff;
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-inner {
+  display: flex; height: 39px; padding: 0 8px; gap: 6px; border: 0; border-radius: 0; box-shadow: none;
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-inner::before,
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-inner::after { display: none; }
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header-inner-title {
+  display: block !important; font-size: 16px; line-height: 1.25; color: #171717;
+}
+body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container :is(.workspace-tab-header-new-tab,.workspace-tab-header-tab-list) {
+  min-width: 40px; width: 40px; height: 40px; margin: 0; padding: 0; border-radius: 0;
+}
+body.is-mobile .view-header .view-action.sn-native-mode,
+body.is-mobile .view-header .view-action[aria-label^="Current view:"],
+body.is-mobile .view-header .view-action[aria-label="Toggle Backlinks sidebar"],
+body.is-mobile .view-header .view-action[aria-label="Toggle Files sidebar"] { display: none !important; }
+body.is-mobile .view-header-left { display: flex; padding: 0; flex-shrink: 0; }
+body.is-mobile .sn-files-toggle {
+  width: 48px; height: 48px; min-width: 48px; padding: 0;
+  border: 0; border-radius: 0; background: #ffffff;
+  box-shadow: none; color: #171717;
+}
+body .view-header :is(.sn-files-toggle,.sn-mode-action,.view-action[aria-label="More options"]) {
+  border: 0 !important; background: transparent !important; box-shadow: none !important;
+}
+/* Files, sidebar, mode, reading and note-menu controls share one geometry. */
+body.is-mobile .view-header :is(.sn-files-toggle,.sn-mode-action,.sidebar-toggle-button,.view-action,
+  .nav-action-button,.view-header-nav-buttons button) {
+  display: inline-flex; flex: 0 0 48px; width: 48px; min-width: 48px;
+  height: 48px; min-height: 48px; padding: 0; margin: 0;
+  align-items: center; justify-content: center; border: 0 !important;
+  border-radius: 0; background: transparent !important; box-shadow: none !important;
+}
+body.is-mobile .view-header :is(.sn-files-toggle,.sn-mode-action,.sidebar-toggle-button,.view-action,
+  .nav-action-button,.view-header-nav-buttons button) svg {
+  display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
+}
+body.is-mobile .view-header .view-header-nav-buttons,
+body.is-mobile .view-header .sidebar-toggle-button,
+body.is-mobile .view-header .view-action.mod-bookmark { display: none !important; }
+body.is-mobile .view-header { gap: 8px; }
+body.is-mobile .view-header-title-container { margin: 0; flex: 1; }
+body.is-mobile .view-header-title { text-align: left; }
+body.is-mobile .view-header-title-parent { display: none; }
+body.is-mobile .workspace-drawer,
+body.is-mobile.is-tablet .workspace-drawer {
+  top: var(--safe-area-inset-top); bottom: var(--safe-area-inset-bottom);
+  margin: 0; height: auto; max-height: none; padding: 0;
+  width: min(420px, calc(100vw - 64px));
+  border: 1px solid var(--sn-rule); border-radius: 0;
+  transform: none !important; opacity: 1 !important;
+}
+body.is-mobile .workspace-drawer.mod-left { left: 0; }
+body.is-mobile .workspace-drawer.mod-right { right: 0; }
+body.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right {
+  top: var(--safe-area-inset-top,0px); right: 0; bottom: var(--safe-area-inset-bottom,0px);
+  width: 100vw; max-width: 100vw; box-sizing: border-box;
+}
+body.is-mobile .workspace-drawer-inner { padding: 0; }
+body.is-mobile .workspace-drawer-tab-options { flex-shrink: 0; order: 0; }
+body.is-mobile .workspace-drawer-tab-content { order: 1; }
+body.is-mobile .workspace-drawer-tab-select { padding: 0; height: 57px; }
+body.is-mobile .workspace-drawer-tab-select .workspace-tab-header-inner { height: 56px; }
+body.is-mobile .workspace-drawer-tab-options .workspace-drawer-tab-select .workspace-tab-header-inner { padding-inline: 16px; }
+body.is-mobile .workspace-drawer-tab-content { padding: 8px 10px 10px; }
+body.is-mobile .workspace-drawer-tab-options-list { border: 1px solid #171717; }
+body.is-mobile .workspace-drawer.mod-left .workspace-drawer-header-info {
+  padding-bottom: calc(var(--safe-area-inset-bottom,0px) + 16px);
+}
+body.is-mobile .workspace-drawer .workspace-drawer-header-icon.mod-pin { display: none; }
+body.is-mobile .workspace-drawer-ribbon { border-right: 1px solid var(--sn-rule); }
+body.is-mobile .workspace-drawer-ribbon .side-dock-actions { padding-top: 12px; }
+body.is-mobile .workspace-drawer-ribbon .sn-close-files {
+  order: -100; width: 48px; min-width: 48px; height: 48px; min-height: 48px;
+  padding: 0; border: 0 !important; border-radius: 0;
+  background: transparent !important; box-shadow: none !important;
+}
+body.is-mobile .workspace-drawer-ribbon [aria-label="MD Reader library"] { display: none; }
+body.is-mobile .workspace-drawer-backdrop { background: transparent !important; opacity: 1 !important; }
+/* Phone mode normally slides the entire note with its drawer. Keep the
+   reading surface fixed while the independent drawer overlays it. */
+body.is-mobile .mod-root { transform: none !important; }
+body .sn-close-drawer {
+  flex-shrink: 0; width: 48px; height: 48px; padding: 0; margin: 0 0 0 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: #ffffff; border: 0 !important; box-shadow: none !important; color: #171717;
+}
+body .sn-close-drawer { padding: 0 !important; }
+body .sn-close-drawer svg { flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important; }
+body.sn-right-open .sn-toggle-right-fullscreen {
+  display: inline-flex; flex: 0 0 48px; width: 48px; min-width: 48px;
+  height: 48px; min-height: 48px; margin: 0; padding: 0;
+  align-items: center; justify-content: center; border: 0 !important;
+  border-radius: 0; background: #ffffff; color: #171717; box-shadow: none !important;
+}
+body.sn-right-open .sn-toggle-right-fullscreen svg {
+  display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
+}
+body.sn-right-open.sn-right-fullscreen .workspace-drawer.mod-right { z-index: 6; }
+body.is-mobile .workspace-drawer.mod-right .workspace-tab-header-inner-title { flex: 1; }
+/* Match the page's top inset and title box to the native editor. */
+body .markdown-source-view.mod-cm6 .cm-scroller { padding-top: var(--font-text-size) !important; }
+body .markdown-preview-view { padding-top: var(--font-text-size); }
+body .markdown-source-view.mod-cm6 .inline-title { padding-top: 0; }
+body.is-mobile .view-header { border-bottom: 1px solid var(--sn-rule); }
+body.is-mobile .view-header::after { display: none; }
+/* Keep the same vertical navigation rail in the phone breakpoint. */
+body.is-mobile.is-phone .workspace-drawer.mod-left .workspace-drawer-ribbon {
+  display: flex; position: absolute; inset: 0 auto 0 0; width: 60px; height: auto;
+}
+body.is-mobile.is-phone .workspace-drawer-ribbon .side-dock-actions {
+  flex-direction: column; justify-content: flex-start; width: 60px; padding-top: 12px;
+}
+body.is-mobile.is-phone .workspace-drawer.mod-left .workspace-drawer-tab-container,
+body.is-mobile.is-phone .workspace-drawer.mod-left .workspace-drawer-header { margin-left: 60px; }
+body.is-mobile.is-phone .view-actions .view-action { border-radius: 0; }
+body.is-mobile.is-phone .workspace-drawer .nav-buttons-container {
+  position: relative; inset: auto; padding: 4px 0 8px;
+}
+
+/* Open notes shares the drawer geometry; its contents are a plain list. */
+body .modal-container:has(.sn-open-notes) { padding: 0; justify-content: flex-end; align-items: stretch; }
+body .modal.sn-open-notes {
+  position: fixed !important; top: var(--safe-area-inset-top,0px); bottom: var(--safe-area-inset-bottom,0px); right: 0; left: auto;
+  width: min(420px,calc(100vw - 64px)) !important; max-width: none !important;
+  height: auto !important; max-height: none !important; margin: 0 !important;
+  display: flex; flex-direction: column; padding: 0; border: 1px solid var(--sn-rule); border-radius: 0;
+  background: #ffffff; color: #171717; box-shadow: none;
+}
+body .sn-open-notes .modal-header {
+  display: flex; align-items: center; min-height: 56px; padding: 0 72px 0 16px; margin: 0;
+  border-bottom: 1px solid var(--sn-rule); flex-shrink: 0;
+}
+body .sn-open-notes .modal-title { position: static; text-align: left; margin: 0; font-size: 20px; font-weight: 600; padding: 0; }
+body .sn-open-notes :is(.modal-header-button,.modal-close-button) {
+  position: absolute; top: 4px; right: 12px; width: 48px; height: 48px; min-width: 48px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0 !important; border-radius: 0; color: #171717; background: #ffffff; box-shadow: none !important;
+}
+body .sn-open-notes .modal-content { margin: 0; padding: 0; flex: 1; overflow: auto; }
+body .sn-open-notes .sn-open-notes-footer {
+  display: flex; flex: 0 0 auto; align-items: center; padding: 8px 16px;
+  border-top: 1px solid var(--sn-rule); background: #ffffff;
+}
+body .sn-open-notes .sn-close-all-notes {
+  flex: 1 1 auto; min-width: 0; min-height: 48px; margin: 0; padding: 8px 12px;
+  border: 0 !important; border-radius: 0; background: #ffffff; color: #171717;
+  box-shadow: none !important; font-size: 18px; white-space: normal; overflow-wrap: anywhere;
+}
+body .sn-note-row {
+  display: flex; width: 100%; min-height: 56px; height: auto; margin: 0; padding: 12px 16px;
+  justify-content: space-between; align-items: center; gap: 12px; text-align: left;
+  font-size: 20px; line-height: 1.4; font-weight: 400;
+  color: #171717; background: #ffffff; border: 0; border-radius: 0; box-shadow: none;
+  white-space: normal; overflow-wrap: anywhere;
+}
+body .sn-note-row.is-active { outline: 1px solid var(--sn-rule); outline-offset: -1px; background: #eeeeee; }
+body .sn-note-row:hover { background: #eeeeee; }
+body .sn-note-label { display: flex; flex-direction: column; min-width: 0; }
+body .sn-note-folder { font-size: 16px; color: #555555; }
+body .sn-note-mark { flex: 0 0 24px; }
+body .sn-notes-empty { margin: 16px; font-size: 20px; }
+body.is-mobile .workspace-drawer-ribbon [aria-label="Search notes"] { order: -90; }
+body.is-mobile .workspace-drawer-ribbon [aria-label="Open notes"] { order: -80; }
+body.is-mobile .workspace-drawer-ribbon [aria-label="Bookmarks"] { order: -75; }
+body.is-mobile .workspace-drawer-ribbon [aria-label="Open quick switcher"] { order: -70; }
+body.is-mobile .workspace-drawer-ribbon [aria-label="Open command palette"] { order: -60; }
+
+/* Reader controls open as solid, bottom-anchored sheets. */
+body .menu.sn-reader-menu {
+  position: fixed !important; inset: auto 0 var(--safe-area-inset-bottom,0px) 0 !important;
+  width: 100vw !important; min-width: 0 !important; max-width: none !important;
+  height: 40dvh !important; max-height: none !important; margin: 0 !important; padding: 0 !important;
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 0; border-top: 1px solid var(--sn-rule); border-radius: 0; box-shadow: none;
+  background: #ffffff !important; color: #171717 !important;
+}
+body .sn-reader-menu-header {
+  display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  height: 56px; padding: 0 12px 0 16px; border-bottom: 1px solid var(--sn-rule);
+  font-size: 20px; font-weight: 600;
+}
+body .sn-reader-menu-close {
+  display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; min-width: 48px;
+  margin: 0; padding: 0; border: 0 !important; border-radius: 0; box-shadow: none !important;
+  background: #ffffff; color: #171717; font-size: 30px; line-height: 1;
+}
+body .menu.sn-reader-menu .menu-scroll {
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); align-content: start;
+  flex: 1; min-height: 0; max-height: none !important; padding: 0;
+  overflow-y: auto; overflow-x: hidden;
+}
+/* Obsidian groups actions inside wrappers; flatten them so individual actions
+   become grid items instead of leaving the second track empty. */
+body .menu.sn-reader-menu .menu-scroll > .menu-group { display: contents !important; }
+body .menu.sn-reader-menu .menu-item {
+  display: flex; align-items: center; min-width: 0; min-height: 48px; height: auto;
+  padding: 8px 10px; margin: 0; border-radius: 0;
+}
+body .menu.sn-reader-menu .menu-separator { grid-column: 1 / -1; width: auto; }
+body .menu.sn-reader-menu .menu-item-title {
+  min-width: 0; white-space: normal; overflow-wrap: anywhere; line-height: 1.2;
+}
+body .menu.sn-reader-menu .menu-grabber { display: none; }
+
+/* Appearance shares the reader menu's solid sheet geometry. Keep its single
+   top rule visible, with a fixed title row and independently scrolling form. */
+body .modal.sn-reader-settings {
+  --slider-track-background: #555555;
+  --slider-thumb-background: #ffffff;
+  position: fixed !important; inset: auto 0 var(--safe-area-inset-bottom,0px) 0 !important;
+  width: 100vw !important; min-width: 0 !important; max-width: none !important;
+  height: 40dvh !important; max-height: none !important; margin: 0 !important; padding: 0 !important;
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 0; border-top: 1px solid var(--sn-rule); border-radius: 0; box-shadow: none;
+  background: #ffffff !important; color: #171717 !important; opacity: 1 !important;
+}
+body .modal.sn-reader-settings .modal-header {
+  position: relative; display: flex; align-items: center; flex: 0 0 56px;
+  min-height: 56px; height: 56px; margin: 0; padding: 0 72px 0 16px;
+  border: 0; border-bottom: 1px solid var(--sn-rule); background: #ffffff; color: #171717;
+}
+body .modal.sn-reader-settings .modal-title {
+  position: static; margin: 0; padding: 0; text-align: left;
+  font-size: 20px; line-height: 1.25; font-weight: 600;
+}
+body .modal.sn-reader-settings :is(.modal-header-button,.modal-close-button) {
+  position: absolute; top: 4px; right: 12px; display: flex;
+  align-items: center; justify-content: center; width: 48px; height: 48px; min-width: 48px;
+  margin: 0; padding: 0; border: 0 !important; border-radius: 0;
+  background: #ffffff; color: #171717; box-shadow: none !important;
+}
+body .modal.sn-reader-settings .modal-content {
+  flex: 1 1 auto; min-height: 0; min-width: 0; margin: 0; padding: 0 16px;
+  overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain;
+  background: #ffffff; color: #171717; font-size: 20px;
+}
+body .modal.sn-reader-settings .hr-ap { min-width: 0; font-size: 20px; }
+body .modal.sn-reader-settings .hr-ap-hint { display: none; }
+body .modal.sn-reader-settings .hr-ap-presets,
+body .modal.sn-reader-settings .hr-ap-tints { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+body .modal.sn-reader-settings .hr-ap-presets button {
+  flex: 1 1 80px; min-width: 0; min-height: 48px; padding: 8px;
+  font-size: 18px; line-height: 1.25; white-space: normal; overflow-wrap: anywhere;
+  border: 1px solid var(--sn-rule); background: #ffffff;
+}
+body .modal.sn-reader-settings .hr-ap-size {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0;
+  padding: 6px 0 14px; font-size: 20px;
+}
+body .modal.sn-reader-settings .hr-ap-name { flex: 1 1 110px; min-width: 0; overflow-wrap: anywhere; }
+body .modal.sn-reader-settings .hr-ap-value { flex: 0 0 3.4em; min-width: 0; text-align: center; }
+body .modal.sn-reader-settings .hr-ap-step {
+  flex: 0 0 48px; width: 48px; height: 48px; min-width: 48px; min-height: 48px;
+  border-radius: 0; font-size: 20px;
+}
+body .modal.sn-reader-settings .hr-ap-tints { padding-bottom: 14px; }
+body .modal.sn-reader-settings .hr-ap-tint,
+body .modal.sn-reader-settings .hr-ap .hr-ap-tints button.hr-ap-tint {
+  flex: 1 1 88px; min-width: 72px; max-width: 100%; min-height: 48px; height: auto;
+  padding: 6px 8px; border: 1px solid #777777; border-radius: 0;
+  color: #171717; font-size: 18px; line-height: 1.2; white-space: normal;
+  overflow-wrap: anywhere; box-shadow: none;
+  background: #ffffff !important; color: #171717 !important;
+}
+body .modal.sn-reader-settings .hr-ap-tint.is-active {
+  outline: 2px solid #171717; outline-offset: -3px; border-color: #171717;
+}
+body .modal.sn-reader-settings .setting-item {
+  display: flex !important; flex-direction: row !important; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  /* Rows with wrapped labels and 48px controls need their intrinsic height;
+     the modal content is the scrolling container, so rows must not shrink. */
+  flex: 0 0 auto; max-height: none; overflow: visible;
+  min-width: 0; min-height: 48px; height: auto !important; padding: 10px 0; border-top: 0;
+  font-size: 20px;
+}
+body .modal.sn-reader-settings .setting-item-info { flex: 1 1 128px; min-width: 0; width: auto !important; }
+body .modal.sn-reader-settings .setting-item-control {
+  display: flex; flex: 1 1 240px; flex-wrap: wrap; justify-content: flex-start;
+  gap: 8px; min-width: 0; max-width: 100%;
+  width: auto !important;
+}
+body .modal.sn-reader-settings .setting-item-control > :is(button,select,input,.slider) {
+  min-height: 48px; max-width: 100%; font-size: 18px;
+}
+body .modal.sn-reader-settings select,
+body .modal.sn-reader-settings input[type="text"] { min-width: 0; width: 100%; }
+body .modal.sn-reader-settings input[type="range"],
+body .modal.sn-reader-settings .slider { flex: 1 1 180px; min-width: 120px; }
+body .modal.sn-reader-settings input[type="range"] {
+  height: 48px; background: transparent !important;
+}
+@media (max-width: 420px) {
+  body .modal.sn-reader-settings .hr-ap-name { flex-basis: 100%; }
+}
+body .modal.sn-reader-settings .hr-lib-row { min-height: 56px; padding: 12px 0; }
+body .modal.sn-reader-settings .hr-lib-title { font-size: 20px; }
+body .modal.sn-reader-settings .hr-lib-actions { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
+body .modal.sn-reader-settings .hr-lib-actions button { min-height: 48px; flex: 1 1 180px; }
+body .modal.sn-reader-settings .hr-ap-reset { min-height: 48px; max-width: 100%; margin: 12px 0; font-size: 18px; }
+
+/* Fullscreen leaves the writing surface unobstructed while preserving the
+   drawer controls and modal-owned navigation. The exit target overlays the
+   page without reserving layout space. */
+body.sn-fullscreen .mod-root .workspace-tabs > .workspace-tab-header-container,
+body.sn-fullscreen .mod-root .view-header,
+body.sn-fullscreen .workspace-ribbon:not(.workspace-drawer-ribbon),
+body.sn-fullscreen .status-bar,
+body.sn-fullscreen .mobile-navbar,
+body.sn-fullscreen .mobile-toolbar,
+body.sn-fullscreen .titlebar {
+  display: none !important;
+}
+body.sn-fullscreen .sn-exit-fullscreen {
+  position: fixed !important; top: max(8px, var(--safe-area-inset-top, 0px));
+  right: max(8px, var(--safe-area-inset-right, 0px)); z-index: 5;
+  display: flex; align-items: center; justify-content: center;
+  box-sizing: border-box; width: 48px; min-width: 48px; height: 48px; min-height: 48px;
+  margin: 0; padding: 0; border: 0 !important; border-radius: 0;
+  background: #ffffff !important; color: #171717; box-shadow: none !important;
+}
+body.is-mobile.sn-fullscreen .sn-exit-fullscreen {
+  top: max(0px, var(--safe-area-inset-top, 0px));
+  left: max(8px, var(--safe-area-inset-left, 0px));
+  right: auto !important;
+  align-items: flex-start; justify-content: flex-start;
+  background: transparent !important;
+}
+body.sn-fullscreen .sn-exit-fullscreen svg {
+  display: block; flex: 0 0 24px; width: 24px !important; height: 24px; margin: 0 !important;
+}
+body.is-mobile.sn-fullscreen .sn-exit-fullscreen svg {
+  background: #ffffff;
+}

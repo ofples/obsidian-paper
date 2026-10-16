@@ -1,0 +1,29 @@
+/* Literata 3 variable fonts, distributed under the SIL Open Font License.
+   The family is selected only in MD Reader's paginated Book view settings;
+   native Scroll, editors, and the rest of the interface keep their own fonts. */
+@font-face {
+  font-family: "Supernote Literata";
+  src: url("./fonts/Literata[opsz,wght].ttf") format("truetype");
+  font-style: normal;
+  font-weight: 200 900;
+  font-display: swap;
+}
+
+/* Reader's inline custom-family variable is authoritative. Explicitly inherit
+   it for headings, which the base theme otherwise resets to its body font. */
+.hr-viewport .hr-content {
+  font-family: var(--hr-font-family, var(--font-text));
+}
+
+.hr-viewport .hr-content :is(h1, h2, h3, h4, h5, h6) {
+  font-family: inherit;
+}
+
+@font-face {
+  font-family: "Supernote Literata";
+  src: url("./fonts/Literata-Italic[opsz,wght].ttf") format("truetype");
+  font-style: italic;
+  font-weight: 200 900;
+  font-display: swap;
+}
+

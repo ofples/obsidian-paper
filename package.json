@@ -1,0 +1,17 @@
+{
+  "name": "obsidian-supernote-paper",
+  "version": "0.5.9",
+  "private": true,
+  "description": "Supernote-style Obsidian theme, navigation companion, and paginated Reader adaptation",
+  "license": "UNLICENSED",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "test": "node scripts/test.cjs",
+    "check": "node scripts/check.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ofples/obsidian-supernote-paper.git"
+  }
+}

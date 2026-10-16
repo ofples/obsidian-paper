@@ -1,0 +1,670 @@
+/* Supernote Paper — shared foundations and core Obsidian surfaces.
+   The palette stays paper-white in both app appearance modes for an e-ink feel. */
+
+.theme-light,
+.theme-dark,
+.is-mobile.theme-light,
+.is-mobile.theme-dark {
+  color-scheme: light;
+
+  /* Neutral palette: crisp ink, quiet gray paper, and dark rules. */
+  --color-base-00: #ffffff;
+  --color-base-05: #fbfbfb;
+  --color-base-10: #f7f7f7;
+  --color-base-20: #eeeeee;
+  --color-base-25: #e6e6e6;
+  --color-base-30: #d8d8d8;
+  --color-base-35: #c8c8c8;
+  --color-base-40: #aaaaaa;
+  --color-base-50: #858585;
+  --color-base-60: #696969;
+  --color-base-70: #4c4c4c;
+  --color-base-100: #171717;
+  --mono-0: #ffffff;
+  --mono-100: #000000;
+
+  --background-primary: #ffffff;
+  --background-primary-alt: #ffffff;
+  --background-secondary: #ffffff;
+  --background-secondary-alt: #ffffff;
+  --background-modifier-hover: #ededed;
+  --background-modifier-active-hover: #e2e2e2;
+  --background-modifier-border: #252525;
+  --background-modifier-border-hover: #111111;
+  --background-modifier-border-focus: #111111;
+  --background-modifier-error: #eeeeee;
+  --background-modifier-error-hover: #e0e0e0;
+  --background-modifier-success: #eeeeee;
+  --background-modifier-message: #f1f1f1;
+  --background-modifier-form-field: #ffffff;
+
+  --text-normal: #171717;
+  --text-muted: #555555;
+  --text-faint: #737373;
+  --text-on-accent: #ffffff;
+  --text-on-accent-inverted: #171717;
+  --text-success: #333333;
+  --text-warning: #333333;
+  --text-error: #222222;
+  --text-accent: #171717;
+  --text-accent-hover: #000000;
+  --text-selection: #d7d7d7;
+  --text-highlight-bg: #e2e2e2;
+  --caret-color: #111111;
+
+  /* Accent remains monochrome; links and active controls rely on underline,
+     weight, borders, and focus outlines as well as color. */
+  --accent-h: 0;
+  --accent-s: 0%;
+  --accent-l: 15%;
+  --color-accent: #262626;
+  --color-accent-1: #171717;
+  --color-accent-2: #080808;
+  --interactive-normal: #f4f4f4;
+  --interactive-hover: #e8e8e8;
+  --interactive-accent: #262626;
+  --interactive-accent-hover: #111111;
+
+  --color-red: #333333;
+  --color-orange: #444444;
+  --color-yellow: #444444;
+  --color-green: #333333;
+  --color-cyan: #444444;
+  --color-blue: #333333;
+  --color-purple: #222222;
+  --color-pink: #444444;
+
+  /* Local system fonts only. The theme default is separate from Obsidian's
+     user override, and does not set a body text size. */
+  --font-text-theme: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans Malayalam", "Noto Sans", "Nirmala UI", sans-serif;
+  --font-interface-theme: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Noto Sans Malayalam", "Noto Sans", "Nirmala UI", sans-serif;
+  --font-monospace-theme: ui-monospace, "Cascadia Mono", "Segoe UI Mono",
+    "Noto Sans Mono", Consolas, monospace;
+
+  --line-width: 1px;
+  --border-width: 1px;
+  --radius-s: 0;
+  --radius-m: 0;
+  --radius-l: 0;
+  --radius-xl: 0;
+  --input-radius: 0;
+  --button-radius: 0;
+  --checkbox-radius: 0;
+  --modal-radius: 0;
+  --dialog-radius: 0;
+  --tab-radius: 0;
+  --tab-radius-active: 0;
+  --tab-curve: 0;
+  --pill-radius: 0;
+  --tag-radius: 0;
+  --code-radius: 0;
+  --callout-radius: 0;
+  --blockquote-border-thickness: 1px;
+  --blockquote-border-color: #252525;
+  --blockquote-background-color: transparent;
+  --hr-color: #252525;
+
+  --shadow-s: none;
+  --shadow-m: none;
+  --shadow-l: none;
+  --modal-shadow: none;
+  --prompt-shadow: none;
+  --input-shadow: none;
+  --button-shadow: none;
+  --tab-stacked-shadow: none;
+
+  --tag-background: #eeeeee;
+  --tag-background-hover: #e2e2e2;
+  --tag-color: #333333;
+  --tag-color-hover: #111111;
+  --tag-border-color: #555555;
+  --tag-border-color-hover: #171717;
+
+  --link-color: #171717;
+  --link-color-hover: #000000;
+  --link-decoration: underline;
+  --link-decoration-hover: underline;
+  --link-external-color: #171717;
+  --link-external-color-hover: #000000;
+  --link-external-decoration: underline;
+  --link-external-decoration-hover: underline;
+  --link-unresolved-color: #555555;
+  --link-unresolved-opacity: 1;
+  --link-unresolved-filter: none;
+  --link-unresolved-decoration-style: dashed;
+
+  --code-background: #f1f1f1;
+  --code-normal: #202020;
+  --code-comment: #595959;
+  --code-function: #333333;
+  --code-important: #222222;
+  --code-keyword: #222222;
+  --code-operator: #333333;
+  --code-property: #333333;
+  --code-punctuation: #454545;
+  --code-string: #444444;
+  --code-tag: #222222;
+  --code-value: #333333;
+
+  --titlebar-background: #f3f3f3;
+  --titlebar-background-focused: #f3f3f3;
+  --titlebar-text-color: #444444;
+  --titlebar-text-color-focused: #171717;
+  --tab-container-background: #f3f3f3;
+  --tab-background-active: #ffffff;
+  --tab-text-color: #555555;
+  --tab-text-color-active: #171717;
+  --tab-text-color-focused: #555555;
+  --tab-text-color-focused-active: #171717;
+  --tab-text-color-focused-active-current: #111111;
+  --tab-divider-color: #252525;
+  --tab-outline-color: #252525;
+  --tab-outline-width: 1px;
+
+  --modal-background: #ffffff;
+  --modal-border-width: 1px;
+  --modal-border-color: #252525;
+  --prompt-background: #ffffff;
+  --prompt-border-color: #252525;
+  --popover-background: #ffffff;
+  --popover-border-color: #252525;
+  --menu-background: #ffffff;
+  --menu-border-color: #252525;
+
+  --nav-item-color: #333333;
+  --nav-item-color-hover: #111111;
+  --nav-item-color-active: #111111;
+  --nav-item-background-hover: #e9e9e9;
+  --nav-item-background-active: #e2e2e2;
+  --nav-item-weight: 400;
+  --nav-item-weight-hover: 400;
+  --nav-item-weight-active: 400;
+
+  --file-line-width: 46rem;
+  --file-header-background: #f3f3f3;
+  --file-header-background-focused: #f3f3f3;
+  --file-margins: var(--sn-content-margin);
+  --file-border-color: #252525;
+
+  --checkbox-size: 1em;
+  --checkbox-marker-color: #ffffff;
+  --checkbox-color: #262626;
+  --checkbox-color-hover: #111111;
+  --checkbox-border-color: #262626;
+  --checkbox-border-color-hover: #111111;
+
+  --slider-track-background: #d8d8d8;
+  --slider-track-background-hover: #c8c8c8;
+  --slider-thumb-background: #262626;
+  --slider-thumb-background-hover: #111111;
+  --scrollbar-bg: transparent;
+  --scrollbar-thumb-bg: #aaaaaa;
+  --scrollbar-active-thumb-bg: #777777;
+
+  --graph-line: #666666;
+  --graph-node: #171717;
+  --graph-node-focused: #000000;
+  --graph-node-tag: #333333;
+  --graph-node-attachment: #555555;
+  --graph-node-unresolved: #858585;
+  --graph-node-unresolved-opacity: 1;
+}
+
+/* Keep application text readable and let Obsidian apply its configured body
+   size and --font-text override. */
+body,
+.app-container {
+  color: var(--text-normal);
+  font-family: var(--font-interface);
+  background-color: var(--background-primary);
+}
+
+/* Paper surfaces remain flat. Rules, rather than rounded cards or shadows,
+   define the edges between panes and controls. */
+.workspace,
+.workspace-split,
+.workspace-leaf,
+.workspace-leaf-content,
+.workspace-tabs,
+.workspace-tab-container,
+.workspace-tab-header-container,
+.workspace-tab-header,
+.view-content,
+.modal,
+.prompt,
+.menu,
+.popover,
+.suggestion-container,
+.document-search-container,
+.search-result-container,
+.vertical-tab-header,
+.vertical-tab-content,
+.setting-item,
+.setting-item-control,
+.nav-file-title,
+.nav-folder-title,
+.nav-header,
+.nav-buttons-container,
+.status-bar,
+.titlebar,
+.titlebar-inner,
+.inline-title,
+.metadata-container,
+.metadata-property,
+.metadata-property-value,
+input,
+textarea,
+select,
+button,
+.dropdown,
+.clickable-icon {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.workspace-split.mod-horizontal > * > .workspace-leaf,
+.workspace-split.mod-vertical > * > .workspace-leaf,
+.workspace-tab-header-container,
+.workspace-ribbon,
+.side-dock-ribbon,
+.status-bar,
+.nav-header,
+.vertical-tab-header,
+.setting-item,
+.metadata-container,
+.metadata-property {
+  border-color: var(--background-modifier-border);
+}
+
+/* Reading view and live preview share one quiet paper measure and rhythm.
+   The body size remains the user's Obsidian setting (25px in this profile). */
+.markdown-rendered,
+.markdown-source-view.mod-cm6 .cm-content,
+.markdown-source-view.mod-cm6 .cm-line {
+  color: var(--text-normal);
+  font-family: var(--font-text);
+  line-height: var(--sn-line-height);
+}
+
+.markdown-rendered {
+  overflow-wrap: anywhere;
+}
+
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3,
+.markdown-rendered h4,
+.markdown-rendered h5,
+.markdown-rendered h6,
+.markdown-source-view.mod-cm6 .cm-header {
+  color: #111111;
+  font-family: var(--font-text);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.markdown-rendered h1 { font-size: 1.55em; }
+.markdown-rendered h2 { font-size: 1.35em; }
+.markdown-rendered h3 { font-size: 1.18em; }
+.markdown-rendered h4 { font-size: 1.08em; }
+.markdown-rendered h5 { font-size: 1em; }
+.markdown-rendered h6 { font-size: 0.96em; }
+
+.markdown-rendered a,
+.markdown-source-view.mod-cm6 .cm-link,
+.markdown-source-view.mod-cm6 .cm-url,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link,
+.markdown-source-view.mod-cm6 .cm-underline {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.14em;
+}
+
+.markdown-rendered a:hover,
+.markdown-source-view.mod-cm6 .cm-link:hover {
+  color: var(--link-color-hover);
+}
+
+.markdown-rendered a.is-unresolved,
+.markdown-source-view.mod-cm6 .is-unresolved {
+  color: var(--link-unresolved-color);
+  text-decoration-style: dashed;
+}
+
+.markdown-rendered hr {
+  border: 0;
+  border-top: 1px solid var(--hr-color);
+}
+
+.markdown-rendered blockquote {
+  border-inline-start: 1px solid var(--blockquote-border-color);
+  background: transparent;
+  color: #333333;
+  padding-inline-start: 1em;
+}
+
+.markdown-source-view.mod-cm6 .HyperMD-quote {
+  border-inline-start: 1px solid var(--blockquote-border-color);
+}
+
+/* Tables scroll within their own wrapper instead of widening the note pane. */
+.markdown-rendered .table-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.markdown-rendered table {
+  border-collapse: collapse;
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-normal);
+  min-width: min-content;
+}
+
+.markdown-rendered th,
+.markdown-rendered td {
+  border: 1px solid var(--background-modifier-border);
+  padding: 0.45em 0.65em;
+  vertical-align: top;
+}
+
+.markdown-rendered th {
+  background: var(--background-secondary);
+  font-weight: 600;
+  text-align: start;
+}
+
+.markdown-rendered tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+/* Square, monochrome task boxes keep completion visible without relying on hue. */
+.markdown-rendered input[type="checkbox"],
+.markdown-source-view.mod-cm6 .task-list-item-checkbox {
+  width: 1em;
+  height: 1em;
+  border-radius: 0;
+  accent-color: #262626;
+  vertical-align: -0.12em;
+}
+
+.markdown-rendered li.task-list-item.is-checked,
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="x"] {
+  color: var(--text-muted);
+}
+
+/* Code stays distinct through a soft neutral field and a local monospace face. */
+.markdown-rendered :not(pre) > code,
+.markdown-source-view.mod-cm6 .cm-inline-code {
+  color: var(--code-normal);
+  background: var(--code-background);
+  border: 1px solid #d8d8d8;
+  border-radius: 0;
+  font-family: var(--font-monospace);
+  padding: 0.05em 0.22em;
+}
+
+.markdown-rendered pre {
+  color: var(--code-normal);
+  background: var(--code-background);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: var(--font-monospace);
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+.markdown-rendered pre code {
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+/* Highlights stay visible in monochrome and retain their text color. */
+.markdown-rendered mark,
+.markdown-source-view.mod-cm6 .cm-highlight {
+  color: var(--text-normal);
+  background: #e2e2e2;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.12em;
+}
+
+/* Callouts use the same dark border and icon; their type label preserves meaning. */
+.callout {
+  border: 1px solid var(--background-modifier-border);
+  border-inline-start-width: 2px;
+  border-radius: 0;
+  background: #fafafa;
+  color: var(--text-normal);
+  box-shadow: none;
+}
+
+.callout-title,
+.callout-icon,
+.callout-title-inner {
+  color: #171717;
+}
+
+.callout-icon svg {
+  color: #171717;
+  stroke: currentColor;
+}
+
+.callout-content {
+  color: var(--text-normal);
+}
+
+/* Properties use compact labels and visible dividing rules while preserving
+   Obsidian's native property editing controls. */
+.metadata-container {
+  border-top: 1px solid var(--background-modifier-border);
+  border-bottom: 1px solid var(--background-modifier-border);
+  background: transparent;
+}
+
+.metadata-property {
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.metadata-property:last-child {
+  border-bottom: 0;
+}
+
+.metadata-property-key,
+.metadata-property-type,
+.metadata-add-button {
+  color: var(--text-muted);
+}
+
+.metadata-property-value,
+.metadata-input-longtext {
+  color: var(--text-normal);
+  background: #ffffff;
+}
+
+/* Search results keep a clear active result and readable context snippets. */
+.search-result-file-title,
+.search-result-file-match,
+.search-result-file-matches,
+.search-result-container {
+  color: var(--text-normal);
+}
+
+.search-result-file-title {
+  font-weight: 600;
+}
+
+.search-result-file-match,
+.search-result-file-matches {
+  background: #f7f7f7;
+}
+
+.search-result-file-match mark,
+.search-result-file-matches mark,
+.search-result-file-match .search-result-file-match-highlight {
+  color: #111111;
+  background: #dedede;
+  text-decoration: underline;
+}
+
+/* Native focus outlines remain present and use a high-contrast ink token. */
+:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.clickable-icon:focus-visible,
+.nav-file-title:focus-visible,
+.nav-folder-title:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 2px;
+}
+
+input:not([type="range"]),
+textarea,
+select,
+.dropdown,
+button,
+.clickable-icon {
+  color: var(--text-normal);
+  background-color: var(--background-modifier-form-field);
+  border-color: var(--background-modifier-border);
+}
+
+/* Give native and plugin settings sliders the same roomy hit target and
+   center their square thumb on a two-pixel track across browser engines. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: middle;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  box-sizing: border-box;
+  height: 2px;
+  border: 0;
+  background: var(--slider-track-background);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  /* Obsidian adds its own negative top offset for the native-size thumb.
+     Our 24px square already centers through margin-top below. */
+  top: 0 !important;
+  margin-top: -11px;
+  border: 1px solid #171717;
+  border-radius: 0;
+  background: var(--slider-thumb-background);
+  box-shadow: none;
+}
+input[type="range"]::-moz-range-track,
+input[type="range"]::-moz-range-progress {
+  box-sizing: border-box;
+  height: 2px;
+  border: 0;
+  background: var(--slider-track-background);
+}
+input[type="range"]::-moz-range-thumb {
+  appearance: none;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 1px solid #171717;
+  border-radius: 0;
+  background: var(--slider-thumb-background);
+  box-shadow: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-faint);
+  opacity: 1;
+}
+
+button:hover,
+.dropdown:hover,
+.clickable-icon:hover {
+  background-color: var(--interactive-hover);
+}
+
+/* Settings and modal content use the same paper, crisp rule, and square geometry. */
+.modal,
+.prompt,
+.menu,
+.popover,
+.suggestion-container {
+  color: var(--text-normal);
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+}
+
+.modal-header,
+.modal-title,
+.setting-item-name,
+.setting-item-description,
+.vertical-tab-nav-item {
+  color: var(--text-normal);
+}
+
+.setting-item-description,
+.setting-item-control .setting-editor-extra-setting-button {
+  color: var(--text-muted);
+}
+
+.setting-item {
+  border-top: 1px solid #d7d7d7;
+}
+
+.setting-item-heading {
+  border-color: var(--background-modifier-border);
+}
+
+.vertical-tab-nav-item.is-active,
+.nav-file-title.is-active,
+.nav-folder-title.is-active,
+.workspace-tab-header.is-active {
+  color: #111111;
+  background: #e9e9e9;
+}
+
+/* Bookmarks and file navigation use separators and text weight to show state. */
+.nav-file-title,
+.nav-folder-title,
+.tree-item-self,
+.bookmark-item {
+  color: var(--text-normal);
+  border-radius: 0;
+}
+
+.nav-file-title:hover,
+.nav-folder-title:hover,
+.tree-item-self:hover,
+.bookmark-item:hover {
+  color: #111111;
+  background: #ededed;
+}
+
+.nav-file-title.is-active,
+.nav-folder-title.is-active,
+.bookmark-item.is-active {
+  color: #111111;
+  background: #e2e2e2;
+  font-weight: 400;
+}
+
+/* Do not apply text rules to canvases, image embeds, or their descendants. */

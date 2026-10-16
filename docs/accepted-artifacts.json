@@ -1,0 +1,14 @@
+{
+  "version": "0.5.9",
+  "validated": "2026-10-16",
+  "description": "SHA-256 of the accepted 0.5.9 distributable runtime files; import/build must retain these bytes.",
+  "files": {
+    "themes/Supernote Paper/theme.css": "33146df3b27bfb08fa5e07af39918a6e870798f2f18796323263cf57918e8416",
+    "themes/Supernote Paper/manifest.json": "fdfc92e73f19c5fd48503ea3e5e11a05f538b98d1d8ca1bb3adee41b8268720e",
+    "plugins/supernote-sidebar/main.js": "b57d29029aee02c678c5739ab7c87a5eb82dda1f7eb8a7251d1a6b45a787cfdf",
+    "plugins/supernote-sidebar/manifest.json": "7035793b62d8825a1a72be3d5eb796a9fe690441f4f11b7b9c06b47f7759f935",
+    "plugins/md-reader/main.js": "69f37881c2d46277c9c207c59efa1c1953c705c9220796f755d2422762b1e844",
+    "plugins/md-reader/styles.css": "ef3a82090a23135016e79b7d620e0d11d7be0a6acdc9eff4128f74e32d2786bd",
+    "plugins/md-reader/manifest.json": "0c34af2e0bd4264e9ac8fe8f3c21106d2001e953811f7ade8426f058af3530ef"
+  }
+}

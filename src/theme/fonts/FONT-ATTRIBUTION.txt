@@ -1,0 +1,14 @@
+Literata 3 variable fonts
+
+Designed by TypeTogether for Google Play Books. Upstream source: Google Fonts
+Literata project, https://github.com/googlefonts/literata
+
+Included files:
+- Literata[opsz,wght].ttf (variable upright)
+- Literata-Italic[opsz,wght].ttf (variable italic)
+
+Copyright 2017 The Literata Project Authors.
+Licensed under the SIL Open Font License, Version 1.1. See OFL-Literata.txt.
+
+The font binaries are embedded in theme.css at build time and are also copied
+to the package's fonts/ directory for inspection and reuse.

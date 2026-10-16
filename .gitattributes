@@ -1,0 +1,9 @@
+* text=auto eol=lf
+# Preserve the exact accepted build input/output bytes, including fonts.
+src/theme/** -text whitespace=cr-at-eol,-blank-at-eof
+src/theme/fonts/** -whitespace
+vendor/** -text -whitespace
+dist/** -text -whitespace
+*.ttf binary
+*.otf binary
+*.png binary
