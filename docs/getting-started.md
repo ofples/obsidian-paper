@@ -18,7 +18,7 @@ These are two different sync paths. Obsidian Sync is for vault Markdown and shar
 ## Start with the notebook workflow
 
 1. Follow the [desktop setup](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md#set-up-the-desktop) to make a notebook available locally, exclude the raw notebook folder from Obsidian Sync, and configure Transcripts.
-2. Follow the [Nomad setup](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md#set-up-the-nomad) to connect the same vault and shared mirror identity while retaining each device's own notebook path and configuration.
+2. Follow the [Nomad setup](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md#set-up-obsidian-and-sync-on-nomad) to connect the same vault and shared mirror identity while retaining each device's own notebook path and configuration.
 3. Check a transcript in standard Obsidian before adding optional presentation components. Follow the guide's sync order whenever notebook edits need to reach the other device.
 
 ## Read transcripts and jump to notebook pages
