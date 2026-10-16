@@ -2,6 +2,8 @@
 
 Obsidian Paper contains a high-contrast theme and an independent navigation plugin for a separate Supernote profile. It also carries a pinned MD Reader adaptation for optional paginated reading.
 
+Starting from scratch? Begin with the [desktop and Nomad overview](docs/getting-started.md), then follow the [Transcripts setup and sync guide](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md). Paper, Sidebar and Reader can be added independently after your basic notebook workflow is working.
+
 Candidate 0.5.10 bundles optional Literata for paginated Book reading only. Editing, continuous scrolling, and Obsidian's interface retain their own font settings. Multi-touch pinch is consumed without changing Reader font size; the Reader's controls remain available. A two-finger double-tap from Sidebar toggles fullscreen by default in paginated and continuous reading. Turn the gesture off in Supernote Sidebar settings to restore the small mobile fullscreen exit button. The reader menu, command, and Escape remain available as fallbacks.
 
 The companion provides Files and Backlinks edge gestures in both reading modes, same-tab reading-mode changes, an Open notes panel with save-before-close behavior, and a right-sidebar expansion control. See [architecture](docs/architecture.md) for source and build ownership and [validation](docs/validation.md) for the latest checks and their limits.
@@ -16,9 +18,9 @@ Choose only the components you want; none requires the whole package:
 | Supernote Sidebar | Native reading, navigation, Search and fullscreen with any theme | Adds Pages mode when MD Reader is enabled |
 | MD Reader | Paginated Markdown reading | Uses Sidebar controls and Paper styling when available |
 
-Transcripts is maintained separately. It is not required for ordinary notes, and installing Paper does not install or enable it.
+Transcripts is an optional, separately maintained plugin for recognition and page links in Supernote notebook transcripts. It works with standard Obsidian and does not require Paper, Sidebar, or Reader. Paper does not install or enable it. See the [beginner desktop and Nomad overview](docs/getting-started.md) and the [canonical Transcripts workflow guide](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md) for setup and sync order.
 
-The checked-in `dist/` folders are ready to install. To rebuild them, use Node.js 22 or newer:
+The checked-in `dist/` folders are ready for manual installation; nothing automatically downloads, installs, or enables a component. Node.js 22 or newer is needed only if you want to rebuild the packages:
 
 ```sh
 npm ci --ignore-scripts
