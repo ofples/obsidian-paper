@@ -18,6 +18,7 @@ for (const folder of ['src', 'scripts', 'tests', 'vendor', 'dist']) {
 const release = JSON.parse(fs.readFileSync(path.join(root, 'docs', 'accepted-artifacts.json')));
 const current = JSON.parse(fs.readFileSync(path.join(root, 'package.json')));
 if (release.version !== current.version) throw Error('Update the accepted artifact record for this release.');
+if (current.license !== 'MIT') throw Error('Original project source must declare the selected MIT license.');
 const lock = JSON.parse(fs.readFileSync(path.join(root, 'bundle-lock.json')));
 if (lock.schemaVersion !== 1 || lock.version !== current.version) throw Error('Bundle lock schema/version mismatch.');
 const directories = { paper: 'themes/Supernote Paper', sidebar: 'plugins/supernote-sidebar', reader: 'plugins/md-reader' };
@@ -28,6 +29,20 @@ for (const [name, directory] of Object.entries(directories)) {
   if (manifest.version !== pin.version || (pin.id && manifest.id !== pin.id) || (pin.name && manifest.name !== pin.name)) {
     throw Error('Component manifest differs from lock: ' + name);
   }
+}
+const ownLicense = fs.readFileSync(path.join(root, 'LICENSE'));
+for (const [name, source] of [['paper', 'theme'], ['sidebar', 'sidebar']]) {
+  const pin = lock.components[name];
+  for (const directory of [path.join(root, 'src', source), path.join(root, 'dist', pin.directory)]) {
+    const manifest = JSON.parse(fs.readFileSync(path.join(directory, 'manifest.json')));
+    if (pin.license !== 'MIT' || manifest.license !== 'MIT') throw Error('Missing original-source MIT metadata: ' + name);
+    if (!fs.readFileSync(path.join(directory, 'LICENSE')).equals(ownLicense)) throw Error('Original-source license copy differs: ' + directory);
+  }
+}
+for (const name of ['OFL-Literata.txt', 'FONT-ATTRIBUTION.txt']) {
+  const source = fs.readFileSync(path.join(root, 'src', 'theme', 'fonts', name));
+  const output = fs.readFileSync(path.join(root, 'dist', 'themes', 'Supernote Paper', 'fonts', name));
+  if (!source.equals(output)) throw Error('Bundled font license or attribution differs: ' + name);
 }
 const reader = lock.components.reader;
 if (!/^[a-f0-9]{40}$/.test(reader.source.commit)) throw Error('Reader must pin an exact source commit.');

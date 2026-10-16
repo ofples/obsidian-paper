@@ -8,6 +8,7 @@
 - Give Sidebar its own functional stylesheet, including fullscreen, Search and Open notes layouts.
 - Fall back to standard Markdown reading when MD Reader is unavailable, and keep the reading-mode action usable.
 - Restore Sidebar-owned control markers and body classes when the plugin unloads.
+- License the original Paper and Sidebar components under MIT while preserving Reader MIT, Literata OFL, and external Transcripts GPL-3.0 boundaries.
 
 ## 0.5.9
 

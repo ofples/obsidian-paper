@@ -14,4 +14,5 @@ fs.mkdirSync(output, { recursive: true });
 fs.writeFileSync(path.join(output, 'main.js'), main);
 fs.copyFileSync(path.join(source, 'manifest.json'), path.join(output, 'manifest.json'));
 fs.copyFileSync(path.join(source, 'styles.css'), path.join(output, 'styles.css'));
+fs.copyFileSync(path.join(source, 'LICENSE'), path.join(output, 'LICENSE'));
 console.log('Built Supernote Sidebar.');

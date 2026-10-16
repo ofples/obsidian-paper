@@ -42,4 +42,4 @@ Copy those folders into the dedicated vault configuration directory, such as `.o
 
 ## Licensing
 
-No license grant is currently selected for the original Supernote Paper theme or Supernote Sidebar source. The MD Reader adaptation keeps the upstream MIT license and attribution. Literata is distributed under the SIL Open Font License with its notices. Do not add a repository-wide license until the theme and Sidebar license is chosen.
+The original Supernote Paper theme and Supernote Sidebar source are licensed under MIT, with matching notices at the repository root and in each component's source and installable folder. The canonical MD Reader artifact keeps its upstream MIT license and attribution. Literata remains under the SIL Open Font License with its original notices. The external Transcripts companion remains GPL-3.0, is not bundled, and is not relicensed by this repository.

@@ -3,7 +3,7 @@
   "version": "0.5.10",
   "private": true,
   "description": "Supernote-style Obsidian theme, navigation companion, and paginated Reader adaptation",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": { "node": ">=22" },
   "scripts": {
     "build": "node scripts/build.cjs",

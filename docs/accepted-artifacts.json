@@ -4,13 +4,15 @@
   "description": "Reviewed 0.5.10 source candidate runtime hashes; local unit and synthetic CSS checks only, no device acceptance.",
   "files": {
     "themes/Supernote Paper/theme.css": "f5961da6846381bdd2e4d521c7e9aca0cc96cec7c82d46cbf732db45b7bfc652",
-    "themes/Supernote Paper/manifest.json": "4bd675b9cb6020a1b92d1e6a5b373593ce1124522822fdbe13263c88545fd8ee",
+    "themes/Supernote Paper/manifest.json": "323c82240bb710a7971a22776c6c4c3ae343db7985e1342171f318585e14c02a",
     "plugins/supernote-sidebar/main.js": "9c902c09608d8b4d6c1329c5c34d56f165cf494557292bfa4f82e249612b1ea5",
     "plugins/supernote-sidebar/styles.css": "478eef976c865d5365b88bacbffcb9dc2da79e5efe94bbcb36b576be47971882",
-    "plugins/supernote-sidebar/manifest.json": "bc9170c8b0481a572cb3320305f6022e4d4b59ff41248611754e00ddaa85881a",
+    "plugins/supernote-sidebar/manifest.json": "c7757f202149b1c6582b806b9f9185c8d61ea6954802b0f1be4318a0eaf54994",
     "plugins/md-reader/main.js": "3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664",
     "plugins/md-reader/styles.css": "86a3c8ce0b30f02a7b9ea1cfed6338f5f34e7976c14a200637a5004239d042a4",
     "plugins/md-reader/manifest.json": "6d26dea44fb1ec89beddc7790d8cd8a44529b0cea8a89fef6db363f60373de65",
-    "plugins/md-reader/LICENSE": "53394eab0504fdd2fa705f80ec7a3b8e2dc10bb3df9065a889880275360af2d1"
+    "plugins/md-reader/LICENSE": "53394eab0504fdd2fa705f80ec7a3b8e2dc10bb3df9065a889880275360af2d1",
+    "themes/Supernote Paper/LICENSE": "0bf8d5ff679a6317257fe4ef72c2a5eb089161fbd85ba60ef2331bf44f4e891f",
+    "plugins/supernote-sidebar/LICENSE": "0bf8d5ff679a6317257fe4ef72c2a5eb089161fbd85ba60ef2331bf44f4e891f"
   }
 }

@@ -1,5 +1,13 @@
 # Third-party notices
 
+## Supernote Paper and Supernote Sidebar
+
+The original theme and Sidebar source are licensed under the MIT License.
+Copyright (c) 2026 Ofer Plesser. The complete notice is in the repository-root
+`LICENSE` and is copied into each component's source and installable folder.
+This grant does not replace the separate licenses below or the license of the
+external Transcripts companion.
+
 ## MD Reader
 
 The pinned MD Reader 2.1.2 artifact comes from
@@ -22,5 +30,7 @@ License, Version 1.1. The original binaries, full license and attribution are in
 `src/theme/fonts` and `dist/themes/Supernote Paper/fonts`. The generated CSS
 embeds those unchanged binaries for offline use.
 
-No project-wide license grant has been selected for the original theme and
-Sidebar source. These notices retain the separate third-party licenses.
+## Transcripts companion
+
+Transcripts is a separately maintained GPL-3.0 companion. It is optional, is
+not bundled or distributed here, and remains under its own license.

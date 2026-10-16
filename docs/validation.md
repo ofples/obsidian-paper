@@ -4,6 +4,8 @@
 
 This candidate combines Paper 0.5.10, Sidebar 0.4.1 and the canonical Reader 2.1.2 snapshot pinned in `bundle-lock.json`. It is release preparation only: no candidate tag, public release or device installation was made.
 
+The original Paper and Sidebar packages carry their MIT notices in source and distribution output. The build continues to retain Reader's separately pinned MIT notice and Literata's SIL Open Font License files; external GPL-3.0 Transcripts files are not included.
+
 The project has 24 passing Node tests: eight file-reuse cases, five fullscreen-gesture cases, six optional-component/lifecycle cases and five Reader artifact integrity cases. The importer rejects changed bytes or incompatible manifests before changing output; valid copies preserve unrelated saved settings. The build verifies the canonical Reader's main, style, manifest and MIT license hashes and copies them byte-for-byte, without patches or network access.
 
 An isolated Chromium fixture checked five component states (neither, Paper only, Sidebar only, both, and Sidebar disabled with its stylesheet still loaded), each with fullscreen off/on: all ten records passed. Checks cover native control visibility, Sidebar replacement cleanup, fullscreen scoping, Search/Open notes geometry, right-sidebar expansion, and font fallback. Screenshots were reviewed. This is synthetic HTML/CSS validation, not a full Obsidian or Supernote test. No current device acceptance is claimed.

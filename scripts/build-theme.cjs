@@ -14,6 +14,7 @@ for (const name of files) {
 fs.mkdirSync(path.join(output, 'fonts'), { recursive: true });
 fs.writeFileSync(path.join(output, 'theme.css'), css);
 fs.copyFileSync(path.join(source, 'manifest.json'), path.join(output, 'manifest.json'));
+fs.copyFileSync(path.join(source, 'LICENSE'), path.join(output, 'LICENSE'));
 for (const name of [...files, 'OFL-Literata.txt', 'FONT-ATTRIBUTION.txt']) {
   fs.copyFileSync(path.join(source, 'fonts', name), path.join(output, 'fonts', name));
 }

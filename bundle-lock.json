@@ -6,6 +6,7 @@
       "kind": "theme",
       "name": "Supernote Paper",
       "version": "0.5.10",
+      "license": "MIT",
       "optional": true,
       "directory": "themes/Supernote Paper"
     },
@@ -13,6 +14,7 @@
       "kind": "plugin",
       "id": "supernote-sidebar",
       "version": "0.4.1",
+      "license": "MIT",
       "optional": true,
       "directory": "plugins/supernote-sidebar"
     },

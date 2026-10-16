@@ -55,4 +55,4 @@ Build components separately with `npm run build:theme`, `npm run build:sidebar`,
 
 Local session files, vaults, raw device reports, backups and application runtimes are intentionally excluded by `.gitignore`. No device connection is needed to build or run the focused tests.
 
-The original Supernote Paper theme and Sidebar source do not yet include a project license grant. The MD Reader adaptation retains its upstream MIT license; bundled Literata fonts retain their SIL Open Font License. See [third-party notices](THIRD_PARTY_NOTICES.md) and the distribution folders for their licenses.
+The original Supernote Paper theme and Supernote Sidebar are licensed under MIT; each installed component includes its own `LICENSE` file, and the repository root contains the same notice. The canonical MD Reader artifact carries its upstream MIT license, while Literata remains under the SIL Open Font License. Transcripts is an external GPL-3.0 companion and is not included or relicensed by this package. See [third-party notices](THIRD_PARTY_NOTICES.md) for the license boundaries.
