@@ -1,5 +1,5 @@
 {
-  "name": "obsidian-supernote-paper",
+  "name": "obsidian-paper",
   "version": "0.5.9",
   "private": true,
   "description": "Supernote-style Obsidian theme, navigation companion, and paginated Reader adaptation",
@@ -12,6 +12,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ofples/obsidian-supernote-paper.git"
+    "url": "https://github.com/ofples/obsidian-paper.git"
   }
 }

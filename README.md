@@ -1,4 +1,4 @@
-# Supernote Paper
+# Obsidian Paper
 
 Supernote Paper is a high-contrast Obsidian theme and companion navigation plugin for a separate Supernote profile. The release includes the local MD Reader adaptation used for paginated reading.
 
