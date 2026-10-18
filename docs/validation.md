@@ -2,11 +2,13 @@
 
 ## 0.5.11 / Sidebar 0.4.2 source checks
 
-The toolbar now switches directly between editing and the saved reading mode. The focused Sidebar cases verify a single edit-to-Pages transition, the saved Scroll choice, native fallback without Reader, direct return to editing from either reading view, unchanged explicit Scroll selection, and matching labels/icons. The full Node suite has 28 passing tests. These local checks do not claim physical device acceptance; installation and toolbar checks are coordinated with the Transcripts chat's sole device operator.
+The toolbar now switches directly between editing and the saved reading mode. The focused Sidebar cases verify a single edit-to-Pages transition, the saved Scroll choice, native fallback without Reader, direct return to editing from either reading view, unchanged explicit Scroll selection, and matching labels/icons. The full Node suite has 28 passing tests.
 
-On 2026-10-18, the device disconnected before Sidebar files were copied or reloaded. The last verified installed Sidebar remains 0.4.0. Installing 0.4.2 and physically checking the Read/Write toolbar remain pending a reconnect; the available 0.4.2 artifact has passed source checks only.
+On 2026-10-18, the coordinated device operator repaired the stylesheet after an interrupted transfer and confirmed all four installed Sidebar 0.4.2 files match the approved hashes. Physical taps changed the existing paginated note directly to editing and back to its Reader view without an intermediate scrolling view. The mode and separate Transcripts page-link controls were aligned at 48×48 px with a 4 px gap. Sidebar settings, Reader tabs and protected Transcripts state were checked for preservation. The explicit Scroll-menu path remains source-tested; its optional physical submenu inspection was not completed, and no full Transcripts settings-UI acceptance is claimed here.
 
 Only Sidebar runtime code and its manifest changed. Paper 0.5.10, the pinned Reader 2.1.2 files, styles, licenses and fonts retain their previous bytes. Existing reading preferences are preserved; no plugin data or live vault files are written by the build.
+
+Release packaging uses explicit component file lists and checks versions, pinned runtime hashes, ZIP member bytes and CRCs. Each archive contains its install sheet and license notices. The independent theme, Sidebar and Reader ZIPs and optional combined ZIP exclude saved settings and vault files; checksums and a per-member manifest accompany them. The manifest records the exact clean source commit used to package the release.
 
 ## Historical 0.5.10 source candidate
 

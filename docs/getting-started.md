@@ -35,9 +35,7 @@ Use a separate Obsidian configuration folder/profile on the Nomad, such as `.obs
 
 ## Install only what you want
 
-The checked-in `dist/` folders are ready to copy manually into the matching theme or plugin folder under the active Obsidian configuration. Select the theme in Appearance and enable each plugin you want in Community plugins. These components do not install or enable one another. Node.js is needed only when rebuilding from source; normal installation uses the checked-in files.
-
-For the exact destination folders, see the [installation paths in the README](../README.md#install).
+Download the named ZIP files from the [v0.5.11 prerelease page](https://github.com/ofples/obsidian-paper/releases/tag/v0.5.11) after it is published, then follow the self-contained [release installation guide](release-install.md). Use only the named release assets, not GitHub's generated source archives. Node.js is needed only when rebuilding from source; normal installation does not require a build.
 
 The MD Reader bundled here is the [canonical Supernote fork](https://github.com/ofples/obsidian-md-reader). It and the upstream Reader use the same `md-reader` plugin ID, so install one at a time. Preserve an existing Reader `data.json`, which holds settings and reading state; do not replace it with the optional fresh-install defaults file.
 

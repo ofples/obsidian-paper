@@ -27,6 +27,8 @@ Each component has its own manifest and version. `bundle-lock.json` records the 
 
 The default build is offline. Maintainers review a canonical Reader change, update its lock entry, and run `npm run reader:vendor -- --from <artifact-directory>` explicitly. The importer validates every file and manifest before writing. Builds and importers write project artifacts only; they never select a vault, copy `data.json`, enable a plugin, or change configuration sync.
 
+Release ZIPs are created separately with `python scripts/package-release.py` from a clean reviewed commit. The packager uses explicit component file lists, validates versions and hashes, preserves license notices, and checks the complete ZIP contents after writing. It emits three independent component ZIPs and an optional combined bundle, plus archive checksums and a per-member manifest. Source snapshots from GitHub are not the installable assets. See [installation](release-install.md) and [source builds](building.md).
+
 ## Distribution layout
 
 The build produces installable Obsidian folders under `dist/`:
