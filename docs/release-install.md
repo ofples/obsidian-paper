@@ -1,6 +1,6 @@
 # Install Obsidian Paper components
 
-This guide works with each component ZIP and the optional combined ZIP. Open the [v0.5.11 prerelease page](https://github.com/ofples/obsidian-paper/releases/tag/v0.5.11) or the [GitHub Releases list](https://github.com/ofples/obsidian-paper/releases). If the v0.5.11 prerelease is not visible yet, wait for publication.
+This guide works with each component ZIP and the optional combined ZIP. Open the [v0.5.12 prerelease page](https://github.com/ofples/obsidian-paper/releases/tag/v0.5.12) or the [GitHub Releases list](https://github.com/ofples/obsidian-paper/releases). If the v0.5.12 prerelease is not visible yet, wait for publication.
 
 Download the named ZIP asset for each component you want. Do not use GitHub's automatically generated **Source code** ZIP or TAR archives; they are source snapshots, not installable packages. `SHA256SUMS.txt` is published alongside the component ZIPs so you can compare the downloaded files before extracting them.
 
@@ -10,8 +10,8 @@ On Windows, calculate a downloaded ZIP's hash in PowerShell with `Get-FileHash .
 | --- | --- | --- |
 | `supernote-paper-0.5.10.zip` | `Supernote Paper/` | `themes/Supernote Paper/` |
 | `supernote-sidebar-0.4.2.zip` | `supernote-sidebar/` | `plugins/supernote-sidebar/` |
-| `md-reader-2.1.2.zip` | `md-reader/` | `plugins/md-reader/` |
-| `obsidian-paper-0.5.11.zip` | `obsidian-paper-0.5.11/` containing `themes/` and `plugins/` | Copy only the component folders you chose from its `themes/` and `plugins/` subfolders |
+| `md-reader-2.1.3.zip` | `md-reader/` | `plugins/md-reader/` |
+| `obsidian-paper-0.5.12.zip` | `obsidian-paper-0.5.12/` containing `themes/` and `plugins/` | Copy only the component folders you chose from its `themes/` and `plugins/` subfolders |
 
 ## Install on desktop or Nomad
 
@@ -28,6 +28,7 @@ For the Nomad profile, disable Obsidian Sync's **Vault configuration** sync cate
 - **Paper** is an optional Obsidian theme. You can use standard Obsidian with your existing theme and Transcripts without installing Paper.
 - **Sidebar** is an optional plugin. It provides navigation and can use standard Obsidian Markdown Preview when Reader is absent.
 - **MD Reader** is optional and supplies paginated Book reading. The package contains this project's [canonical Supernote fork](https://github.com/ofples/obsidian-md-reader); the upstream Reader and this fork use the same `md-reader` plugin ID, so install only one. Preserve an existing Reader `data.json` because it stores your settings and reading state. `Supernote defaults.json` is an optional sample for a fresh installation only; never replace an existing `data.json` with it.
+- **Android Digest handoff** is optional and requires the separate Supernote Bridge 0.4.0 app. The Paper bundle does not include or install Bridge or Transcripts, and it does not perform a Save action. See the [Reader integration guide](https://github.com/ofples/obsidian-md-reader/blob/30a51e694655f922850f2bc38d264d1509242b23/INTEGRATION.md) for the handoff behavior and limits.
 - **Transcripts** is a separate optional plugin for recognition and page links. It is not included in these ZIPs; see its [repository](https://github.com/ofples/supernote-transcripts) and [desktop/Nomad workflow](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md).
 
 ## Licenses

@@ -19,7 +19,7 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "artifacts" / "v0.5.11"
+DEFAULT_OUTPUT = ROOT / "artifacts" / "v0.5.12"
 ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
 THEME_FILES = (
@@ -174,8 +174,8 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         fail("Unsupported bundle-lock schema version")
     if lock.get("version") != project.get("version") or accepted.get("version") != project.get("version"):
         fail("package.json, bundle-lock.json, and accepted-artifacts.json versions must agree")
-    if project.get("version") != "0.5.11":
-        fail("This release packager is pinned to project version 0.5.11")
+    if project.get("version") != "0.5.12":
+        fail("This release packager is pinned to project version 0.5.12")
 
     components = lock.get("components")
     if not isinstance(components, dict) or set(components) != {"paper", "sidebar", "reader"}:
@@ -183,7 +183,7 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
     paper_pin = components["paper"]
     sidebar_pin = components["sidebar"]
     reader_pin = components["reader"]
-    expected_component_versions = {"paper": "0.5.10", "sidebar": "0.4.2", "reader": "2.1.2"}
+    expected_component_versions = {"paper": "0.5.10", "sidebar": "0.4.2", "reader": "2.1.3"}
     for key, expected in expected_component_versions.items():
         if not isinstance(components[key], dict) or components[key].get("version") != expected:
             fail(f"This release packager expects {key} version {expected}")
@@ -345,24 +345,24 @@ def package_members() -> list[dict]:
         "members": sidebar_assets + docs("supernote-sidebar"),
     })
     members.append({
-        "name": "md-reader-2.1.2.zip",
-        "version": "2.1.2",
+        "name": "md-reader-2.1.3.zip",
+        "version": "2.1.3",
         "members": reader_assets + docs("md-reader"),
     })
 
     combined: list[Member] = []
-    combined.extend(component("obsidian-paper-0.5.11/themes/Supernote Paper", "dist/themes/Supernote Paper", THEME_FILES))
-    combined.extend(component("obsidian-paper-0.5.11/plugins/supernote-sidebar", "dist/plugins/supernote-sidebar", SIDEBAR_FILES))
-    combined.extend(component("obsidian-paper-0.5.11/plugins/md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES))
+    combined.extend(component("obsidian-paper-0.5.12/themes/Supernote Paper", "dist/themes/Supernote Paper", THEME_FILES))
+    combined.extend(component("obsidian-paper-0.5.12/plugins/supernote-sidebar", "dist/plugins/supernote-sidebar", SIDEBAR_FILES))
+    combined.extend(component("obsidian-paper-0.5.12/plugins/md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES))
     if "Supernote defaults.json" in reader_inventory:
-        combined.extend(component("obsidian-paper-0.5.11/plugins/md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES))
+        combined.extend(component("obsidian-paper-0.5.12/plugins/md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES))
     combined.extend([
-        make_member("obsidian-paper-0.5.11/LICENSE", "LICENSE"),
-        make_member("obsidian-paper-0.5.11/THIRD_PARTY_NOTICES.md", notices_source),
-        make_member("obsidian-paper-0.5.11/INSTALL.md", install_source),
-        make_member("obsidian-paper-0.5.11/bundle-lock.json", "bundle-lock.json"),
+        make_member("obsidian-paper-0.5.12/LICENSE", "LICENSE"),
+        make_member("obsidian-paper-0.5.12/THIRD_PARTY_NOTICES.md", notices_source),
+        make_member("obsidian-paper-0.5.12/INSTALL.md", install_source),
+        make_member("obsidian-paper-0.5.12/bundle-lock.json", "bundle-lock.json"),
     ])
-    members.append({"name": "obsidian-paper-0.5.11.zip", "version": "0.5.11", "members": combined})
+    members.append({"name": "obsidian-paper-0.5.12.zip", "version": "0.5.12", "members": combined})
     return members
 
 
@@ -477,7 +477,7 @@ def write_release(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", help="output directory (default: artifacts/v0.5.11)")
+    parser.add_argument("--output", help="output directory (default: artifacts/v0.5.12)")
     parser.add_argument(
         "--allow-dirty",
         action="store_true",

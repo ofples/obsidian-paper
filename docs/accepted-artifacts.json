@@ -1,16 +1,16 @@
 {
-  "version": "0.5.11",
+  "version": "0.5.12",
   "validated": "2026-10-18",
-  "description": "Reviewed 0.5.11 / Sidebar 0.4.2 Read-Write source candidate hashes; 28 local Node tests, device verification coordinated separately.",
+  "description": "Reviewed Reader 2.1.3 preview artifact; Paper 0.5.10 and Sidebar 0.4.2 unchanged. Coordinated confirmation/Cancel passed; full production Save remains untested.",
   "files": {
     "themes/Supernote Paper/theme.css": "f5961da6846381bdd2e4d521c7e9aca0cc96cec7c82d46cbf732db45b7bfc652",
     "themes/Supernote Paper/manifest.json": "323c82240bb710a7971a22776c6c4c3ae343db7985e1342171f318585e14c02a",
     "plugins/supernote-sidebar/main.js": "4442fac296193631cac0897df88ce5f7ff8be9f6a4c2ac99a4f235af23f33dc9",
     "plugins/supernote-sidebar/styles.css": "478eef976c865d5365b88bacbffcb9dc2da79e5efe94bbcb36b576be47971882",
     "plugins/supernote-sidebar/manifest.json": "3ff09e97c4375eb9c706296c9cecba66d55cc02e166bd0f0a34adaafa5a2da54",
-    "plugins/md-reader/main.js": "3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664",
-    "plugins/md-reader/styles.css": "86a3c8ce0b30f02a7b9ea1cfed6338f5f34e7976c14a200637a5004239d042a4",
-    "plugins/md-reader/manifest.json": "6d26dea44fb1ec89beddc7790d8cd8a44529b0cea8a89fef6db363f60373de65",
+    "plugins/md-reader/main.js": "537fcf0bbbb7796e83b329a073348d4e4ae7a885a1a329e77984866b8f5cdc75",
+    "plugins/md-reader/styles.css": "5fa10567daf4e241154e55e4cbdd6665f78c4a9471c5a56e7c0608d4e120c476",
+    "plugins/md-reader/manifest.json": "6fe41e5dc16a13755ae602378f7c47e47384f9c7cc29de68b746dcb300a0eca4",
     "plugins/md-reader/LICENSE": "53394eab0504fdd2fa705f80ec7a3b8e2dc10bb3df9065a889880275360af2d1",
     "themes/Supernote Paper/LICENSE": "0bf8d5ff679a6317257fe4ef72c2a5eb089161fbd85ba60ef2331bf44f4e891f",
     "plugins/supernote-sidebar/LICENSE": "0bf8d5ff679a6317257fe4ef72c2a5eb089161fbd85ba60ef2331bf44f4e891f"

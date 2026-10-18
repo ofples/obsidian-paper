@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.12 (Reader 2.1.3 preview)
+
+- Import the canonical MD Reader 2.1.3 release artifact with four verified SHA-256 pins; keep Paper 0.5.10 and Sidebar 0.4.2 unchanged.
+- Offer optional Android text selection to the separately installed Supernote Bridge 0.4.0 for native Digest capture. Ordinary Markdown works independently; managed transcript selections require Transcripts 0.15 provenance and a matching local mirror.
+- Keep capture confirmation and explicit Save in Bridge. Native Digest-to-notebook backlinks remain unsupported; Bridge provides Open original notebook instead.
+- Publish the feature as a preview: confirmation and Cancel passed on the Nomad, while the full production Save/acknowledgement flow still needs a live test.
+
 ## 0.5.11 (Sidebar 0.4.2)
 
 - Simplify the toolbar to Read/Write: editing opens the saved reading preference directly, and both paginated and continuous reading return to editing.

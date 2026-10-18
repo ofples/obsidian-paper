@@ -13,13 +13,15 @@ The theme and Sidebar sources are maintained directly. Paper is CSS only. Sideba
 
 The Reader adaptation keeps upstream behavior where possible and adds Supernote-specific navigation, layout, fullscreen and touch handling. It consumes multi-touch without changing font size; existing one-finger paging remains. The optional Supernote preset or explicit Reader font setting selects Literata for paginated Book content using the theme's bundled font data. Reader's own default remains the theme font. Without Paper, the optional custom font preference falls back to the browser's serif family.
 
-The Reader 2.1.2 snapshot comes from canonical commit `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`. The old downstream Reader patch pipeline has been removed. The Reader retains its `md-reader` plugin ID for existing settings and positions. Upstream Reader and this fork are alternatives under that ID; install one at a time and preserve `data.json`.
+The Reader 2.1.3 snapshot comes from canonical commit `30a51e694655f922850f2bc38d264d1509242b23`. The old downstream Reader patch pipeline has been removed. The Reader retains its `md-reader` plugin ID for existing settings and positions. Upstream Reader and this fork are alternatives under that ID; install one at a time and preserve `data.json`.
 
 ## Optional integration contract
 
 Transcripts owns recognition and the optional `nomad-transcripts.pageLinks` renderer. Reader owns pagination and may call `renderSection({element, sourcePath, markdown, sourceLineMap, component})`. The version-1 provider exposes `apiVersion: 1`, `capabilities: ['renderSection']` and `enabled()`. Legacy structurally compatible providers without an API version remain supported. Missing, disabled or unsupported providers use standard Markdown; false or an exception clears partial provider output and renders standard Markdown once. No recognition request is triggered by this build or bundle.
 
 Paper contains scoped optional Reader styling; Sidebar supplies navigation enhancements. Reader must still function without either. See the canonical [integration contract](../vendor/md-reader/INTEGRATION.md).
+
+Reader 2.1.3 also supports an optional Android selection handoff to the separately installed Supernote Bridge 0.4.0. Ordinary Markdown needs neither Transcripts nor Paper. Managed transcript Markdown requires Transcripts 0.15's version-1 `selectionProvenance` capability and a matching local mirror; Reader does not silently convert a failed managed selection to an ordinary Markdown source. Bridge owns confirmation and explicit Save, while Reader accepts a successful result only through a valid callback. Reopening the same pending handoff reviews its status with the same request ID; Bridge's durable ledger and write lock prevent a second provider insertion. Pending or uncertain provider writes are one-shot; only confirmed cancellation with no write permits a new reviewed Save. Neither Bridge nor Transcripts modifies `.note` files, so native Digest-to-notebook backlinks are unsupported. Bridge supplies an Open original notebook action. See [validation](validation.md) for the tested confirmation/Cancel path and the untested production Save path.
 
 ## Pinned packaging
 

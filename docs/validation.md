@@ -1,5 +1,15 @@
 # Validation
 
+## 0.5.12 / Reader 2.1.3 preview
+
+This bundle imports the four canonical Reader files from release commit `30a51e694655f922850f2bc38d264d1509242b23`, using the SHA-256 values in `bundle-lock.json`. Only Reader's main script, stylesheet and manifest change among the accepted runtime files. Its MIT license, Paper 0.5.10, Sidebar 0.4.2 and both Literata font binaries retain their bytes. The build remains offline and writes no live profile or saved settings.
+
+On 2026-10-18, the coordinated device operator confirmed Reader 2.1.3, Bridge 0.4.0 and Transcripts 0.15.0 are installed and active on the Nomad. Ordinary Markdown and managed transcript selections reached the real Bridge confirmation screen and were cancelled without saving. Native provider creation, readback and visibility were proved separately with a controlled test. The full production Reader-to-Bridge Save and acknowledgement sequence has not been live-tested; this remains a preview. Native Digest-to-notebook backlinks are unsupported because no `.note` reference is written. Bridge provides Open original notebook instead.
+
+The operator preserved Transcripts settings/state byte-for-byte, kept recognition paused and automatic recognition off, and reported no recognition or AI calls. Reader's prior reading anchor and other settings were preserved. The known synthetic Digest and disposable probe were removed; an unidentified same-text Manual Entry was left untouched. This packaging workspace made no device changes. The canonical integration snapshot retains its release-time wording; this paragraph records the newer coordinated confirmation/Cancel evidence.
+
+The local build and all 28 Node tests pass; syntax and integrity checks cover 18 JavaScript files and all 11 accepted runtime hashes. The release packager verifies explicit member allowlists, four Reader pins, unchanged licenses/fonts, exact archive bytes and CRCs. Final assets must come from a clean commit and carry its source identifier. Device confirmation/Cancel evidence and the separate provider proof do not substitute for production Save acceptance.
+
 ## 0.5.11 / Sidebar 0.4.2 source checks
 
 The toolbar now switches directly between editing and the saved reading mode. The focused Sidebar cases verify a single edit-to-Pages transition, the saved Scroll choice, native fallback without Reader, direct return to editing from either reading view, unchanged explicit Scroll selection, and matching labels/icons. The full Node suite has 28 passing tests.

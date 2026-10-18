@@ -1,12 +1,12 @@
 # Pinned canonical MD Reader artifact
 
 - Canonical fork: https://github.com/ofples/obsidian-md-reader
-- Version: 2.1.2 (source candidate; not device-verified in this package)
-- Commit: `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`
+- Version: 2.1.3 (Digest preview; see ../../docs/validation.md for device-test limits)
+- Commit: `30a51e694655f922850f2bc38d264d1509242b23`
 - Upstream: https://github.com/mrrepac/obsidian-md-reader
 - Upstream base: `b23d62ce4d341ed230ff403b0f292385b41d0364` (2.1.0)
 - License: MIT, copyright 2026 mrrepac; see `LICENSE`.
-- Canonical `main.js` SHA-256: `3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664`
+- Canonical `main.js` SHA-256: `537fcf0bbbb7796e83b329a073348d4e4ae7a885a1a329e77984866b8f5cdc75`
 
 The four artifact files (`main.js`, `styles.css`, `manifest.json`, `LICENSE`)
 were imported from the clean canonical checkout at that exact commit, matching

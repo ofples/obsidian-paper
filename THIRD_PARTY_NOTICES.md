@@ -10,9 +10,9 @@ external Transcripts companion.
 
 ## MD Reader
 
-The pinned MD Reader 2.1.2 artifact comes from
+The pinned MD Reader 2.1.3 artifact comes from
 [ofples/obsidian-md-reader](https://github.com/ofples/obsidian-md-reader),
-commit `2c05d4b0a8d2ec2dcb3e7be6b553947302efdbe3`, based on
+commit `30a51e694655f922850f2bc38d264d1509242b23`, based on
 [mrrepac/obsidian-md-reader](https://github.com/mrrepac/obsidian-md-reader)
 upstream commit `b23d62ce4d341ed230ff403b0f292385b41d0364`.
 
