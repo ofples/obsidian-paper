@@ -4,7 +4,7 @@ Obsidian Paper contains a high-contrast theme and an independent navigation plug
 
 Starting from scratch? Begin with the [desktop and Nomad overview](docs/getting-started.md), then follow the [Transcripts setup and sync guide](https://github.com/ofples/supernote-transcripts/blob/main/docs/workflow.md). Paper, Sidebar and Reader can be added independently after your basic notebook workflow is working.
 
-Candidate 0.5.10 bundles optional Literata for paginated Book reading only. Editing, continuous scrolling, and Obsidian's interface retain their own font settings. Multi-touch pinch is consumed without changing Reader font size; the Reader's controls remain available. A two-finger double-tap from Sidebar toggles fullscreen by default in paginated and continuous reading. Turn the gesture off in Supernote Sidebar settings to restore the small mobile fullscreen exit button. The reader menu, command, and Escape remain available as fallbacks.
+Bundle candidate 0.5.11 includes Paper 0.5.10, Sidebar 0.4.2 and Reader 2.1.2. It bundles optional Literata for paginated Book reading only. Editing, continuous scrolling, and Obsidian's interface retain their own font settings. Multi-touch pinch is consumed without changing Reader font size; the Reader's controls remain available. A two-finger double-tap from Sidebar toggles fullscreen by default in paginated and continuous reading. Turn the gesture off in Supernote Sidebar settings to restore the small mobile fullscreen exit button. The reader menu, command, and Escape remain available as fallbacks.
 
 The companion provides Files and Backlinks edge gestures in both reading modes, same-tab reading-mode changes, an Open notes panel with save-before-close behavior, and a right-sidebar expansion control. See [architecture](docs/architecture.md) for source and build ownership and [validation](docs/validation.md) for the latest checks and their limits.
 
@@ -43,7 +43,7 @@ Existing MD Reader settings contain font and size choices, saved reading positio
 
 ## Features
 
-- Edit → continuous scrolling → paginated Pages mode cycling, with direct scrolling access in the Reader menu.
+- A Read/Write toolbar toggle: Read opens the saved Pages or continuous-reading preference; either reading view switches directly back to editing. Choose scrolling from Reader options or Sidebar's Reading mode setting.
 - Fullscreen reading controls in the Reader menu, note menu, and command palette, plus the configurable two-finger double-tap.
 - Inward edge swipes in reading views: left opens Files and right opens Backlinks. The outer 12 px are left for Android navigation; middle horizontal page swipes retain their behavior.
 - Open notes lists root file tabs, including deferred files. Close all saves each root tab before detaching any; a save failure leaves the tabs open.
@@ -53,7 +53,7 @@ Existing MD Reader settings contain font and size choices, saved reading positio
 
 Edit `src/theme` and `src/sidebar` for the theme and companion. Reader development belongs in [the canonical fork](https://github.com/ofples/obsidian-md-reader). This package pins its 2.1.2 artifact by exact commit and SHA-256 in `bundle-lock.json`, validates the vendored snapshot, then copies it without patches. Normal builds are offline. Maintainer updates are explicit: review the new artifact and lock entry, then run `npm run reader:vendor -- --from <artifact-directory>`.
 
-Build components separately with `npm run build:theme`, `npm run build:sidebar`, or `npm run build:reader`. Run build, test and check before committing generated `dist/` changes. `npm run check` validates component versions, the Reader pin, the independent Sidebar stylesheet and the reviewed runtime hashes. CI runs on Windows and Linux with Node.js 22 and 24. Version 0.5.10 / Reader 2.1.2 are source candidates; this preparation does not tag a release or install on the device.
+Build components separately with `npm run build:theme`, `npm run build:sidebar`, or `npm run build:reader`. Run build, test and check before committing generated `dist/` changes. `npm run check` validates component versions, the Reader pin, the independent Sidebar stylesheet and the reviewed runtime hashes. CI runs on Windows and Linux with Node.js 22 and 24. Bundle 0.5.11 / Sidebar 0.4.2 / Reader 2.1.2 are source candidates; this preparation does not tag a release or install on the device.
 
 Local session files, vaults, raw device reports, backups and application runtimes are intentionally excluded by `.gitignore`. No device connection is needed to build or run the focused tests.
 

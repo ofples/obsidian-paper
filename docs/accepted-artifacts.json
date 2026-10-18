@@ -1,13 +1,13 @@
 {
-  "version": "0.5.10",
-  "validated": "2026-10-16",
-  "description": "Reviewed 0.5.10 source candidate runtime hashes; local unit and synthetic CSS checks only, no device acceptance.",
+  "version": "0.5.11",
+  "validated": "2026-10-18",
+  "description": "Reviewed 0.5.11 / Sidebar 0.4.2 Read-Write source candidate hashes; 28 local Node tests, device verification coordinated separately.",
   "files": {
     "themes/Supernote Paper/theme.css": "f5961da6846381bdd2e4d521c7e9aca0cc96cec7c82d46cbf732db45b7bfc652",
     "themes/Supernote Paper/manifest.json": "323c82240bb710a7971a22776c6c4c3ae343db7985e1342171f318585e14c02a",
-    "plugins/supernote-sidebar/main.js": "9c902c09608d8b4d6c1329c5c34d56f165cf494557292bfa4f82e249612b1ea5",
+    "plugins/supernote-sidebar/main.js": "4442fac296193631cac0897df88ce5f7ff8be9f6a4c2ac99a4f235af23f33dc9",
     "plugins/supernote-sidebar/styles.css": "478eef976c865d5365b88bacbffcb9dc2da79e5efe94bbcb36b576be47971882",
-    "plugins/supernote-sidebar/manifest.json": "c7757f202149b1c6582b806b9f9185c8d61ea6954802b0f1be4318a0eaf54994",
+    "plugins/supernote-sidebar/manifest.json": "3ff09e97c4375eb9c706296c9cecba66d55cc02e166bd0f0a34adaafa5a2da54",
     "plugins/md-reader/main.js": "3c59826d75cafd9b5045f248c31ed438e18beed2aff743edf685c22b6db61664",
     "plugins/md-reader/styles.css": "86a3c8ce0b30f02a7b9ea1cfed6338f5f34e7976c14a200637a5004239d042a4",
     "plugins/md-reader/manifest.json": "6d26dea44fb1ec89beddc7790d8cd8a44529b0cea8a89fef6db363f60373de65",

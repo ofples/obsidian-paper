@@ -1,6 +1,12 @@
 # Validation
 
-## 0.5.10 source candidate
+## 0.5.11 / Sidebar 0.4.2 source checks
+
+The toolbar now switches directly between editing and the saved reading mode. The focused Sidebar cases verify a single edit-to-Pages transition, the saved Scroll choice, native fallback without Reader, direct return to editing from either reading view, unchanged explicit Scroll selection, and matching labels/icons. The full Node suite has 28 passing tests. These local checks do not claim physical device acceptance; installation and toolbar checks are coordinated with the Transcripts chat's sole device operator.
+
+Only Sidebar runtime code and its manifest changed. Paper 0.5.10, the pinned Reader 2.1.2 files, styles, licenses and fonts retain their previous bytes. Existing reading preferences are preserved; no plugin data or live vault files are written by the build.
+
+## Historical 0.5.10 source candidate
 
 This candidate combines Paper 0.5.10, Sidebar 0.4.1 and the canonical Reader 2.1.2 snapshot pinned in `bundle-lock.json`. It is release preparation only: no candidate tag, public release or device installation was made.
 

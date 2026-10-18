@@ -10,7 +10,7 @@ Module._load = function(request, parent, isMain) {
   if (request === 'obsidian') {
     return {
       Plugin: class Plugin {}, Modal: class Modal {}, PluginSettingTab: class PluginSettingTab {},
-      Setting: class Setting {}, Notice: class Notice {}, setIcon() {},
+      Setting: class Setting {}, Notice: class Notice {}, setIcon(target, icon) { target.icon = icon; },
     };
   }
   return originalLoad.call(this, request, parent, isMain);
@@ -57,6 +57,7 @@ function makeLeaf({ type = 'markdown', mode = 'source' } = {}) {
     },
     async setViewState(state) {
       this.state = state;
+      this.viewStates = [...(this.viewStates || []), state];
       this.view.type = state.type;
       this.view.mode = state.state.mode;
     },
@@ -81,25 +82,90 @@ test('Read note falls back to native Markdown Preview without MD Reader and keep
   });
 });
 
-test('mode action alternates between edit and scrolling when MD Reader is unavailable', async () => {
-  const plugin = makePlugin();
-  const preview = makeLeaf({ mode: 'preview' });
-  let edits = 0;
-  plugin.edit = async () => { edits++; };
-  await plugin.cycleReadingMode(preview);
-  assert.equal(edits, 1, 'the action exits native preview instead of requesting unavailable pages');
-
+test('editing opens configured Pages directly without saving a preference', async () => {
+  const plugin = makePlugin({ reader: true });
   const source = makeLeaf({ mode: 'source' });
-  let requestedMode;
-  plugin.read = async (_leaf, mode) => { requestedMode = mode; };
-  await plugin.cycleReadingMode(source);
-  assert.equal(requestedMode, 'scroll');
-
-  const label = { value: null, icon: null, getAttribute() { return this.value; }, setAttribute(_key, value) { this.value = value; } };
-  plugin.modeButtons = new WeakMap([[preview.view, label]]);
-  plugin.updateMode(preview.view);
-  assert.equal(label.value, 'Edit note');
+  plugin.app.workspace.activeLeaf = source;
+  await withDocument({ body: { classList: { matches: () => false } } }, async () => {
+    await plugin.cycleReadingMode(source);
+  });
+  assert.deepEqual(source.state, {
+    type: 'horizontal-reader-view', state: { filePath: 'Note.md' }, active: true,
+  }, 'the toolbar goes straight from editing to the configured Reader view');
+  assert.deepEqual(source.viewStates.map(state => state.type), ['horizontal-reader-view'],
+    'there is exactly one transition, with no intermediate Markdown Preview');
   assert.equal(plugin.settings.readingMode, 'pages');
+  assert.equal(plugin.saved, undefined, 'the toolbar does not rewrite the reading preference');
+});
+
+test('editing falls back to native Preview without Reader and preserves the Pages preference', async () => {
+  const plugin = makePlugin();
+  const source = makeLeaf({ mode: 'source' });
+  plugin.app.workspace.activeLeaf = source;
+  await withDocument({ body: { classList: { matches: () => false } } }, async () => {
+    await plugin.cycleReadingMode(source);
+  });
+  assert.deepEqual(source.state, {
+    type: 'markdown', state: { file: 'Note.md', mode: 'preview' }, active: true,
+  });
+  assert.equal(plugin.settings.readingMode, 'pages');
+  assert.equal(plugin.saved, undefined);
+});
+
+test('either reading view returns directly to editing, even when Reader is installed', async () => {
+  for (const initial of [
+    { type: 'markdown', mode: 'preview' },
+    { type: 'horizontal-reader-view', mode: 'reader' },
+  ]) {
+    const plugin = makePlugin({ reader: true });
+    const leaf = makeLeaf(initial);
+    plugin.app.workspace.activeLeaf = leaf;
+    await withDocument({ body: { classList: { matches: () => false } } }, async () => {
+      await plugin.cycleReadingMode(leaf);
+    });
+    assert.deepEqual(leaf.state, {
+      type: 'markdown', state: { file: 'Note.md', mode: 'source', source: false }, active: true,
+    }, `${initial.type} returns to source editing`);
+  }
+});
+
+test('explicit Scroll preference survives toolbar read and edit toggles', async () => {
+  const plugin = makePlugin({ reader: true });
+  const leaf = makeLeaf({ mode: 'source' });
+  plugin.app.workspace.activeLeaf = leaf;
+  await withDocument({ body: { classList: { matches: () => false } } }, async () => {
+    await plugin.read(leaf, 'scroll');
+    assert.equal(plugin.settings.readingMode, 'scroll');
+    assert.equal(plugin.saved.readingMode, 'scroll', 'the explicit Reader Scroll path still stores the preference');
+    await plugin.cycleReadingMode(leaf);
+    assert.equal(leaf.view.getMode(), 'source');
+    await plugin.cycleReadingMode(leaf);
+  });
+  assert.deepEqual(leaf.state, {
+    type: 'markdown', state: { file: 'Note.md', mode: 'preview' }, active: true,
+  });
+  assert.equal(plugin.settings.readingMode, 'scroll');
+  assert.equal(plugin.saved.readingMode, 'scroll');
+});
+
+test('toolbar labels are Read note while editing and Edit note in either reading view', () => {
+  const plugin = makePlugin({ reader: true });
+  const source = makeLeaf({ mode: 'source' }).view;
+  const markdownPreview = makeLeaf({ mode: 'preview' }).view;
+  const reader = makeLeaf({ type: 'horizontal-reader-view', mode: 'reader' }).view;
+  const button = () => ({
+    label: null, title: null, icon: null,
+    getAttribute(name) { return this[name === 'aria-label' ? 'label' : name]; },
+    setAttribute(name, value) { this[name === 'aria-label' ? 'label' : name] = value; },
+  });
+  const sourceButton = button(), previewButton = button(), readerButton = button();
+  plugin.modeButtons = new WeakMap([[source, sourceButton], [markdownPreview, previewButton], [reader, readerButton]]);
+  plugin.updateMode(source);
+  plugin.updateMode(markdownPreview);
+  plugin.updateMode(reader);
+  assert.deepEqual([sourceButton.label, sourceButton.icon], ['Read note', 'book-open']);
+  assert.deepEqual([previewButton.label, previewButton.icon], ['Edit note', 'pencil']);
+  assert.deepEqual([readerButton.label, readerButton.icon], ['Edit note', 'pencil']);
 });
 
 test('automatic page routing stays idle without MD Reader instead of reopening Preview on every interval', async () => {

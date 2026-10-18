@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.11 (Sidebar 0.4.2)
+
+- Simplify the toolbar to Read/Write: editing opens the saved reading preference directly, and both paginated and continuous reading return to editing.
+- Keep scrolling as an explicit Reader-menu or Sidebar-settings choice, with native reading fallback when Reader is absent.
+- Keep Paper 0.5.10 and the canonical Reader 2.1.2 artifact unchanged.
+
 ## 0.5.10 (release preparation)
 
 - Consume the canonical MD Reader 2.1.2 artifact with strict hashes and an offline build, removing the downstream Reader patch pipeline.

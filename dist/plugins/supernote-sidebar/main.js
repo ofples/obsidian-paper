@@ -718,7 +718,7 @@ module.exports = class SupernoteSidebar extends Plugin {
         button.addEventListener('click', () => this.openDrawer('left'));
         cleanups.push(() => button.remove());
       }
-      const mode = view.addAction('book-open','Read with scrolling',() => this.cycleReadingMode(leaf));
+      const mode = view.addAction('book-open','Read note',() => this.cycleReadingMode(leaf));
       this.modeButtons.set(view,mode);
       this.updateMode(view);
       mode.addClass('sn-mode-action'); cleanups.push(() => mode.remove());
@@ -755,23 +755,17 @@ module.exports = class SupernoteSidebar extends Plugin {
   updateMode(view) {
     const button = this.modeButtons.get(view);
     if (!button) return;
-    const type = view.getViewType();
-    const readerAvailable = Boolean(this.app.plugins.plugins['md-reader']);
-    const preview = type === 'markdown' && view.getMode?.() === 'preview';
-    const reading = type === READER || preview;
-    const label = type === READER || (preview && !readerAvailable) ? 'Edit note' : reading ? 'Read with pages' : 'Read with scrolling';
-    const icon = type === READER || (preview && !readerAvailable) ? 'pencil' : reading ? 'columns-2' : 'book-open';
+    const reading = this.isReadingView(view);
+    const label = reading ? 'Edit note' : 'Read note';
+    const icon = reading ? 'pencil' : 'book-open';
     if (button.getAttribute('aria-label') !== label) {
       button.setAttribute('aria-label',label); button.setAttribute('title',label); setIcon(button,icon);
     }
   }
   async cycleReadingMode(leaf) {
     const view = leaf?.view;
-    if (view?.getViewType() === READER) return this.edit(leaf);
-    if (view?.getViewType() === 'markdown' && view.getMode?.() === 'preview') {
-      return this.app.plugins.plugins['md-reader'] ? this.read(leaf,'pages') : this.edit(leaf);
-    }
-    return this.read(leaf,'scroll');
+    if (this.isReadingView(view)) return this.edit(leaf);
+    return this.read(leaf);
   }
   async read(leaf, mode=this.settings.readingMode) {
     const file = leaf?.view.file;
