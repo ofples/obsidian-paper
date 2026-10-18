@@ -17,6 +17,6 @@ The build writes component folders under `dist/`; it does not install or enable 
 python scripts/package-release.py
 ```
 
-Commit the reviewed source and documentation before packaging so the manifest identifies a clean source commit. The command writes the ZIPs, `SHA256SUMS.txt` and a per-file `release-manifest.json` under `artifacts/v0.5.12/`. Downloading users do not need Python or Node.js.
+Commit the reviewed source and documentation before packaging so the manifest identifies a clean source commit. The command writes the ZIPs, `SHA256SUMS.txt` and a per-file `release-manifest.json` under `artifacts/v0.5.13/`. Downloading users do not need Python or Node.js.
 
 Reader is an optional pinned artifact. Updating Reader belongs in the [canonical Supernote fork](https://github.com/ofples/obsidian-md-reader); the Paper build copies the reviewed snapshot recorded in `bundle-lock.json` and does not download or patch it.

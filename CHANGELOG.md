@@ -1,10 +1,12 @@
 # Changelog
 
-## 0.5.13 (in preparation; Sidebar 0.4.3)
+## 0.5.13 (Reader 2.2.0 / Sidebar 0.4.3)
 
 - Exclude the whole Reader selection-actions dock from Sidebar's edge-swipe and two-finger fullscreen gestures, including empty padding after the selection collapses.
 - Support both the optional `data-reader-gesture-ignore` marker and the selection-dock class while preserving existing button and nested-icon exclusions.
-- Keep the published Reader 2.1.3 pin until the next canonical release completes its checks; this preparation does not publish or install a bundle.
+- Import the canonical Reader 2.2.0 artifact with labeled Digest, Digest with note…, Highlight and Copy actions, plus persistent highlights stored as separate Markdown annotations.
+- Support first-use approval and trusted Quick Digest, detailed notes/list selection, saved-highlight menus and local receipt reopening through the separately installed Bridge 0.6.0. Native Digest editing leaves the Reader annotation unchanged.
+- Preserve source Markdown, notebooks, reading positions and settings; retain Paper 0.5.10, licenses and fonts unchanged. Final coordinated Nomad acceptance and cleanup passed.
 
 ## 0.5.12 (Reader 2.1.3 preview)
 

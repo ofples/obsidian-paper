@@ -183,7 +183,7 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
     paper_pin = components["paper"]
     sidebar_pin = components["sidebar"]
     reader_pin = components["reader"]
-    expected_component_versions = {"paper": "0.5.10", "sidebar": "0.4.3", "reader": "2.1.3"}
+    expected_component_versions = {"paper": "0.5.10", "sidebar": "0.4.3", "reader": "2.2.0"}
     for key, expected in expected_component_versions.items():
         if not isinstance(components[key], dict) or components[key].get("version") != expected:
             fail(f"This release packager expects {key} version {expected}")
@@ -345,8 +345,8 @@ def package_members() -> list[dict]:
         "members": sidebar_assets + docs("supernote-sidebar"),
     })
     members.append({
-        "name": "md-reader-2.1.3.zip",
-        "version": "2.1.3",
+        "name": "md-reader-2.2.0.zip",
+        "version": "2.2.0",
         "members": reader_assets + docs("md-reader"),
     })
 

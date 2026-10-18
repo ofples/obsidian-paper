@@ -4,9 +4,9 @@ Obsidian Paper contains a high-contrast theme and an independent navigation plug
 
 ## Install
 
-Open the [v0.5.12 prerelease page](https://github.com/ofples/obsidian-paper/releases/tag/v0.5.12) or the [GitHub Releases list](https://github.com/ofples/obsidian-paper/releases). If the v0.5.12 prerelease is not visible yet, wait for publication. Download the named ZIP assets, not GitHub's automatically generated **Source code** archives; those are repository snapshots, not installable component packages.
+Open the [v0.5.13 prerelease page](https://github.com/ofples/obsidian-paper/releases/tag/v0.5.13) or the [GitHub Releases list](https://github.com/ofples/obsidian-paper/releases). If the v0.5.13 prerelease is not visible yet, wait for publication. Download the named ZIP assets, not GitHub's automatically generated **Source code** archives; those are repository snapshots, not installable component packages.
 
-The independent assets are `supernote-paper-0.5.10.zip`, `supernote-sidebar-0.4.2.zip`, and `md-reader-2.1.3.zip`. The optional combined asset is `obsidian-paper-0.5.12.zip`. These are ready-to-install packages; no build tools are needed. Each ZIP has a single top-level folder and `INSTALL.md`; the release includes `SHA256SUMS.txt` for checking downloads. Follow the [release installation guide](docs/release-install.md) for extraction and manual copying.
+The independent assets are `supernote-paper-0.5.10.zip`, `supernote-sidebar-0.4.3.zip`, and `md-reader-2.2.0.zip`. The optional combined asset is `obsidian-paper-0.5.13.zip`. These are ready-to-install packages; no build tools are needed. Each ZIP has a single top-level folder and `INSTALL.md`; the release includes `SHA256SUMS.txt` for checking downloads. Follow the [release installation guide](docs/release-install.md) for extraction and manual copying.
 
 ## Components
 
@@ -22,7 +22,9 @@ Transcripts is an optional, separately maintained plugin for recognition and pag
 
 ## Features
 
-The v0.5.12 bundle pairs Paper 0.5.10, Sidebar 0.4.2, and Reader 2.1.3. Literata is optional and applies only to paginated Book reading; editing, continuous reading, and Obsidian's interface retain their own font settings. Multi-touch pinch does not change Reader font size. Sidebar adds Files and Backlinks edge gestures, same-tab read/edit controls, fullscreen options, an Open notes panel, and right-sidebar expansion. Read the [desktop and Nomad overview](docs/getting-started.md) before setting up the optional components.
+The v0.5.13 bundle pairs Paper 0.5.10, Sidebar 0.4.3, and Reader 2.2.0. Literata is optional and applies only to paginated Book reading; editing, continuous reading, and Obsidian's interface retain their own font settings. Multi-touch pinch does not change Reader font size. Sidebar adds Files and Backlinks edge gestures, same-tab read/edit controls, fullscreen options, an Open notes panel, and right-sidebar expansion. Read the [desktop and Nomad overview](docs/getting-started.md) before setting up the optional components.
+
+On Android, Reader adds **Digest**, **Digest with note…**, **Highlight**, and **Copy** selection actions; Digest handoff requires the separate Supernote Bridge 0.6.0 app. Reader highlights are separate Markdown files in `Reader Highlights` and sync with the vault without changing source notes or `.note` notebooks. Transcripts 0.15 is optional for ordinary Markdown; managed transcript excerpts require its selection provenance and a matching local mirror. See the [Reader Digest guide](https://github.com/ofples/obsidian-md-reader/blob/v2.2.0/docs/native-digests.md) for behavior and limits.
 
 - A Read/Write toolbar toggle: Read opens the saved Pages or continuous-reading preference; either reading view switches directly back to editing. Choose scrolling from Reader options or Sidebar's Reading mode setting.
 - Fullscreen reading controls in the Reader menu, note menu, and command palette, plus the configurable two-finger double-tap.

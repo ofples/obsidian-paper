@@ -1,14 +1,20 @@
 # Validation
 
-## 0.5.13 preparation / Sidebar 0.4.3 selection-dock compatibility
+## 0.5.13 / Reader 2.2.0 and Sidebar 0.4.3
 
 Sidebar's edge-swipe and two-finger fullscreen capture handlers now exclude the complete Reader selection-actions dock using either `[data-reader-gesture-ignore]` or `.hr-reader-selection-actions`. The exclusion includes dock descendants and empty padding when the DOM selection has collapsed; it does not depend on Reader being enabled. Existing button/SVG exclusions and ordinary-content gestures remain covered.
 
-The offline build, all 31 Node tests and syntax/integrity checks for 19 JavaScript files pass. All 11 accepted runtime hashes match; only Sidebar's main script and manifest change from bundle 0.5.12. Its styles/license, Paper 0.5.10, Reader 2.1.3 and fonts retain their bytes. Reading preferences and saved state are not read or written by this change. The coordinating chat owns device installation and acceptance; this workspace made no device calls. Reader remains pinned to 2.1.3 until its next canonical release finishes validation. No intermediate bundle has been published.
+Sidebar's local build and all 31 Node tests pass, including independent marker exclusions, button/SVG ancestry, collapsed-selection dock behavior and ordinary-content gesture controls. The 11 accepted runtime files cover the frozen Sidebar 0.4.3 and the imported canonical Reader 2.2.0. Paper 0.5.10, Sidebar's stylesheet/license, Reader's MIT license and the fonts retain their bytes. Builds do not install into a vault or read/write its saved settings.
 
-An independent Chromium harness exercised the actual edge-gesture method and fullscreen helper with real DOM targets and a collapsed selection. Attribute-only and class-only docks, buttons and nested SVG paths left touches/clicks unconsumed and did not trigger navigation. Ordinary content still opened the left drawer by an edge swipe and toggled fullscreen by a two-finger double-tap. These are synthetic browser events; physical Nomad acceptance remains with the sole coordinated device operator.
+An independent Chromium harness exercised the actual edge-gesture method and fullscreen helper with real DOM targets and a collapsed selection. All ten cases passed: attribute-only and class-only docks, buttons and nested SVG paths left touches/clicks unconsumed and did not trigger navigation. Ordinary content still opened the left drawer by an edge swipe and toggled fullscreen by a two-finger double-tap. These are synthetic browser events, separate from the coordinated physical acceptance below.
 
-## 0.5.12 / Reader 2.1.3 preview
+On 2026-10-18, the sole coordinated device operator verified the final Reader 2.2.0, Sidebar 0.4.3 and Bridge 0.6.0 on the Nomad. Installed Sidebar hashes match the frozen candidate, and physical selection-dock/highlight gesture compatibility passed. Live checks covered Copy with clipboard restoration; persistent Highlight/reopen/removal; first Quick Digest approval and acknowledgement; reopening the same request without insertion; trusted Quick Digest; detailed review with a typed note and non-default list; the saved-highlight dropdown; Open Digest into native Edit; and reopening the edited entry by its local receipt. Native Edit changed the Digest excerpt while leaving the Reader annotation unchanged.
+
+All three synthetic native Digests were removed through the UI, Reader highlights and the test fixture were removed, and prior reading positions, settings and clipboard state were preserved. Source Markdown and `.note` files were unchanged. Recognition remained paused and no AI calls were made. This packaging workspace made no device calls. The canonical Reader also passed its own logic, layout, UI, reading and Digest suites; its upstream validation is separate from this package's artifact integrity checks.
+
+These results apply to the checked Nomad/provider combination. Native Digest-to-notebook backlinks are unsupported because this integration does not write embedded `.note` references. Bridge's Open original notebook, native Cloud/Partner sync, rename handling and cross-device behavior remain unverified. Annotation Markdown can sync as vault files, but native receipt associations and Quick Digest trust stay local; no cross-device acceptance is claimed here.
+
+## Historical 0.5.12 / Reader 2.1.3 preview at publication
 
 This bundle imports the four canonical Reader files from release commit `30a51e694655f922850f2bc38d264d1509242b23`, using the SHA-256 values in `bundle-lock.json`. Only Reader's main script, stylesheet and manifest change among the accepted runtime files. Its MIT license, Paper 0.5.10, Sidebar 0.4.2 and both Literata font binaries retain their bytes. The build remains offline and writes no live profile or saved settings.
 
