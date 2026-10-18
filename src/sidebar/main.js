@@ -211,7 +211,7 @@ module.exports = class SupernoteSidebar extends Plugin {
     let gesture = null;
     const drawerOpen = () => document.body.matches('.sn-left-open,.sn-right-open');
     const outside = target => target.closest('.mod-root .view-content,.workspace-drawer-backdrop,.sn-exit-fullscreen');
-    const blocked = target => target.closest('a,button,input,textarea,select,[contenteditable="true"],.clickable-icon,.view-action,.workspace-tab-header,.hr-fn-pop,video,audio');
+    const blocked = target => target.closest('a,button,input,textarea,select,[contenteditable="true"],.clickable-icon,.view-action,.workspace-tab-header,.hr-fn-pop,[data-reader-gesture-ignore],.hr-reader-selection-actions,video,audio');
     const selected = () => { const s = document.getSelection(); return s && !s.isCollapsed; };
     const consume = event => { event.preventDefault(); event.stopImmediatePropagation(); };
     this.registerDomEvent(document,'touchstart',event => {

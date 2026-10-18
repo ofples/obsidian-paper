@@ -6,7 +6,8 @@ module.exports = function installFullscreenDoubleTap(plugin) {
   const blockedSelector = [
     'a','button','input','textarea','select','[contenteditable]','[role="button"]',
     '.clickable-icon','.view-action','.workspace-tab-header','.hr-ui','.hr-scrub',
-    '.hr-fn','.hr-fn-pop','.sn-exit-fullscreen','video','audio'
+    '.hr-fn','.hr-fn-pop','.hr-reader-selection-actions','[data-reader-gesture-ignore]',
+    '.sn-exit-fullscreen','video','audio'
   ].join(',');
   let current = null;
   let firstTap = null;

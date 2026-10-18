@@ -4,19 +4,48 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const installFullscreenDoubleTap = require('../src/sidebar/fullscreen-double-tap.js');
 
-function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked = false, selected = false, root = true } = {}) {
+function makeElement({ tag = 'div', classes = [], attrs = {}, parentElement = null, insideArea = true } = {}) {
+  const classNames = new Set(classes);
+  return {
+    nodeType: 1,
+    tagName: tag.toUpperCase(),
+    insideArea,
+    attrs,
+    parentElement,
+    classList: { contains: name => classNames.has(name) },
+    hasAttribute(name) { return Object.hasOwn(attrs, name); },
+    closest(selector) {
+      const selectors = selector.split(',').map(value => value.trim());
+      for (let node = this; node; node = node.parentElement) {
+        if (selectors.some(value => {
+          if (value.startsWith('.')) return node.classList.contains(value.slice(1));
+          if (value.startsWith('[')) return node.hasAttribute(value.slice(1, -1).split('=')[0]);
+          return node.tagName.toLowerCase() === value.toLowerCase();
+        })) return node;
+      }
+      return null;
+    },
+  };
+}
+
+function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked = false, blockedMarker = null, selected = false, root = true } = {}) {
   const handlers = new Map();
   const timers = new Map();
   let nextTimer = 1;
   let toggles = 0;
   let target;
-  const makeTarget = (isBlocked = false, insideArea = true) => ({
-    nodeType: 1,
+  const makeTarget = (isBlocked = false, insideArea = true) => makeElement({
+    tag: isBlocked ? 'button' : 'div',
     insideArea,
-    parentElement: null,
-    closest(selector) { return isBlocked && /button|hr-ui|clickable-icon/.test(selector) ? this : null; },
   });
-  target = makeTarget(blocked);
+  if (blockedMarker) {
+    const dock = makeElement({
+      tag: 'div', insideArea: true,
+      classes: blockedMarker === '.hr-reader-selection-actions' ? ['hr-reader-selection-actions'] : [],
+      attrs: blockedMarker === '[data-reader-gesture-ignore]' ? { 'data-reader-gesture-ignore': '' } : {},
+    });
+    target = makeElement({ tag: 'svg', parentElement: dock, insideArea: true });
+  } else target = makeTarget(blocked);
   const area = {
     isConnected: true,
     contains(node) { return node === this || node?.insideArea === true || node === target; },
@@ -120,6 +149,22 @@ test('disabled setting, selection, controls, wrong view, or non-root leaf cannot
       assert.equal(f.toggles, 0, JSON.stringify(options));
     } finally { f.restore(); }
   }
+});
+
+test('Reader selection controls and marked gesture-ignore elements block fullscreen taps through nested SVG targets', () => {
+  for (const blockedMarker of ['[data-reader-gesture-ignore]', '.hr-reader-selection-actions']) {
+    const f = fixture({ blockedMarker });
+    try {
+      f.tapPair(0); f.tapPair(200); f.flush();
+      assert.equal(f.toggles, 0, `${blockedMarker} on an ancestor blocks its SVG child`);
+    } finally { f.restore(); }
+  }
+
+  const button = fixture({ blocked: true });
+  try {
+    button.tapPair(0); button.tapPair(200); button.flush();
+    assert.equal(button.toggles, 0, 'a touch on a button is blocked');
+  } finally { button.restore(); }
 });
 
 test('native Markdown Preview is eligible, while an outside-pane contact is rejected', () => {

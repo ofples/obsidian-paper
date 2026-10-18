@@ -1,5 +1,13 @@
 # Validation
 
+## 0.5.13 preparation / Sidebar 0.4.3 selection-dock compatibility
+
+Sidebar's edge-swipe and two-finger fullscreen capture handlers now exclude the complete Reader selection-actions dock using either `[data-reader-gesture-ignore]` or `.hr-reader-selection-actions`. The exclusion includes dock descendants and empty padding when the DOM selection has collapsed; it does not depend on Reader being enabled. Existing button/SVG exclusions and ordinary-content gestures remain covered.
+
+The offline build, all 31 Node tests and syntax/integrity checks for 19 JavaScript files pass. All 11 accepted runtime hashes match; only Sidebar's main script and manifest change from bundle 0.5.12. Its styles/license, Paper 0.5.10, Reader 2.1.3 and fonts retain their bytes. Reading preferences and saved state are not read or written by this change. The coordinating chat owns device installation and acceptance; this workspace made no device calls. Reader remains pinned to 2.1.3 until its next canonical release finishes validation. No intermediate bundle has been published.
+
+An independent Chromium harness exercised the actual edge-gesture method and fullscreen helper with real DOM targets and a collapsed selection. Attribute-only and class-only docks, buttons and nested SVG paths left touches/clicks unconsumed and did not trigger navigation. Ordinary content still opened the left drawer by an edge swipe and toggled fullscreen by a two-finger double-tap. These are synthetic browser events; physical Nomad acceptance remains with the sole coordinated device operator.
+
 ## 0.5.12 / Reader 2.1.3 preview
 
 This bundle imports the four canonical Reader files from release commit `30a51e694655f922850f2bc38d264d1509242b23`, using the SHA-256 values in `bundle-lock.json`. Only Reader's main script, stylesheet and manifest change among the accepted runtime files. Its MIT license, Paper 0.5.10, Sidebar 0.4.2 and both Literata font binaries retain their bytes. The build remains offline and writes no live profile or saved settings.

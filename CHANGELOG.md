@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.13 (in preparation; Sidebar 0.4.3)
+
+- Exclude the whole Reader selection-actions dock from Sidebar's edge-swipe and two-finger fullscreen gestures, including empty padding after the selection collapses.
+- Support both the optional `data-reader-gesture-ignore` marker and the selection-dock class while preserving existing button and nested-icon exclusions.
+- Keep the published Reader 2.1.3 pin until the next canonical release completes its checks; this preparation does not publish or install a bundle.
+
 ## 0.5.12 (Reader 2.1.3 preview)
 
 - Import the canonical MD Reader 2.1.3 release artifact with four verified SHA-256 pins; keep Paper 0.5.10 and Sidebar 0.4.2 unchanged.
