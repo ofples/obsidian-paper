@@ -19,7 +19,7 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUTPUT = ROOT / "artifacts" / "v0.5.13"
+DEFAULT_OUTPUT = ROOT / "artifacts" / "v0.5.14"
 ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
 THEME_FILES = (
@@ -174,8 +174,8 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         fail("Unsupported bundle-lock schema version")
     if lock.get("version") != project.get("version") or accepted.get("version") != project.get("version"):
         fail("package.json, bundle-lock.json, and accepted-artifacts.json versions must agree")
-    if project.get("version") != "0.5.13":
-        fail("This release packager is pinned to project version 0.5.13")
+    if project.get("version") != "0.5.14":
+        fail("This release packager is pinned to project version 0.5.14")
 
     components = lock.get("components")
     if not isinstance(components, dict) or set(components) != {"paper", "sidebar", "reader"}:
@@ -183,7 +183,7 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
     paper_pin = components["paper"]
     sidebar_pin = components["sidebar"]
     reader_pin = components["reader"]
-    expected_component_versions = {"paper": "0.5.10", "sidebar": "0.4.3", "reader": "2.2.0"}
+    expected_component_versions = {"paper": "0.5.11", "sidebar": "0.4.4", "reader": "2.2.0"}
     for key, expected in expected_component_versions.items():
         if not isinstance(components[key], dict) or components[key].get("version") != expected:
             fail(f"This release packager expects {key} version {expected}")
@@ -335,13 +335,13 @@ def package_members() -> list[dict]:
         ]
 
     members.append({
-        "name": "supernote-paper-0.5.10.zip",
-        "version": "0.5.10",
+        "name": "supernote-paper-0.5.11.zip",
+        "version": "0.5.11",
         "members": theme_assets + docs("Supernote Paper"),
     })
     members.append({
-        "name": "supernote-sidebar-0.4.3.zip",
-        "version": "0.4.3",
+        "name": "supernote-sidebar-0.4.4.zip",
+        "version": "0.4.4",
         "members": sidebar_assets + docs("supernote-sidebar"),
     })
     members.append({
@@ -351,18 +351,18 @@ def package_members() -> list[dict]:
     })
 
     combined: list[Member] = []
-    combined.extend(component("obsidian-paper-0.5.13/themes/Supernote Paper", "dist/themes/Supernote Paper", THEME_FILES))
-    combined.extend(component("obsidian-paper-0.5.13/plugins/supernote-sidebar", "dist/plugins/supernote-sidebar", SIDEBAR_FILES))
-    combined.extend(component("obsidian-paper-0.5.13/plugins/md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES))
+    combined.extend(component("obsidian-paper-0.5.14/themes/Supernote Paper", "dist/themes/Supernote Paper", THEME_FILES))
+    combined.extend(component("obsidian-paper-0.5.14/plugins/supernote-sidebar", "dist/plugins/supernote-sidebar", SIDEBAR_FILES))
+    combined.extend(component("obsidian-paper-0.5.14/plugins/md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES))
     if "Supernote defaults.json" in reader_inventory:
-        combined.extend(component("obsidian-paper-0.5.13/plugins/md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES))
+        combined.extend(component("obsidian-paper-0.5.14/plugins/md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES))
     combined.extend([
-        make_member("obsidian-paper-0.5.13/LICENSE", "LICENSE"),
-        make_member("obsidian-paper-0.5.13/THIRD_PARTY_NOTICES.md", notices_source),
-        make_member("obsidian-paper-0.5.13/INSTALL.md", install_source),
-        make_member("obsidian-paper-0.5.13/bundle-lock.json", "bundle-lock.json"),
+        make_member("obsidian-paper-0.5.14/LICENSE", "LICENSE"),
+        make_member("obsidian-paper-0.5.14/THIRD_PARTY_NOTICES.md", notices_source),
+        make_member("obsidian-paper-0.5.14/INSTALL.md", install_source),
+        make_member("obsidian-paper-0.5.14/bundle-lock.json", "bundle-lock.json"),
     ])
-    members.append({"name": "obsidian-paper-0.5.13.zip", "version": "0.5.13", "members": combined})
+    members.append({"name": "obsidian-paper-0.5.14.zip", "version": "0.5.14", "members": combined})
     return members
 
 
@@ -477,7 +477,7 @@ def write_release(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", help="output directory (default: artifacts/v0.5.13)")
+    parser.add_argument("--output", help="output directory (default: artifacts/v0.5.14)")
     parser.add_argument(
         "--allow-dirty",
         action="store_true",

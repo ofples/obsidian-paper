@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.14 (local development; Paper 0.5.11 / Sidebar 0.4.4)
+
+- Keep tab right borders visible without relying on the `:has()` selector, while preserving single rules between tabs and the active tab's open bottom edge.
+- Open the native file Quick Switcher with a deliberate two-finger downward drag from the reading area's top edge. Keep one-finger command-palette and sidebar gestures, text selection and controls separate.
+- Give the command-palette pull-down hint an opaque background and thin border.
+- Leave the pinned Reader snapshot unchanged. This local candidate is not a release and must not replace newer device Reader fixes.
+
 ## 0.5.13 (Reader 2.2.0 / Sidebar 0.4.3)
 
 - Exclude the whole Reader selection-actions dock from Sidebar's edge-swipe and two-finger fullscreen gestures, including empty padding after the selection collapses.

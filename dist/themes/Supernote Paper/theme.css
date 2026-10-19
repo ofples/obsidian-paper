@@ -1135,15 +1135,11 @@ body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .work
 }
 body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header {
   display: flex !important; height: 40px; min-width: 88px; max-width: 220px; padding: 0;
-  border: 0; border-left: 1px solid var(--sn-rule); border-bottom: 1px solid var(--sn-rule);
+  border: 0; border-right: 1px solid var(--sn-rule); border-bottom: 1px solid var(--sn-rule);
   border-radius: 0; background: #ffffff; box-shadow: none;
 }
-/* Each tab owns its leading rule, so the first tab remains framed after
-   clipping, scrolling, or reordering; only the final tab adds a trailing rule. */
-body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container
-  .workspace-tab-header:not(:has(~ .workspace-tab-header)) {
-  border-right: 1px solid var(--sn-rule);
-}
+/* Every tab owns its trailing rule. Separators stay one pixel wide and the
+   visible end stays framed after scrolling, reordering, or hiding later tabs. */
 body.is-mobile .mod-root .workspace-tabs > .workspace-tab-header-container .workspace-tab-header.is-active {
   background: #ffffff; border-bottom-color: #ffffff;
 }
@@ -1313,6 +1309,13 @@ body.is-mobile .workspace-drawer-ribbon [aria-label="Open notes"] { order: -80; 
 body.is-mobile .workspace-drawer-ribbon [aria-label="Bookmarks"] { order: -75; }
 body.is-mobile .workspace-drawer-ribbon [aria-label="Open quick switcher"] { order: -70; }
 body.is-mobile .workspace-drawer-ribbon [aria-label="Open command palette"] { order: -60; }
+/* Keep Obsidian's pull-down command hint legible over page content. Preserve
+   the native gesture's position and transform while replacing only its wash. */
+body.is-mobile .pull-down-action {
+  background: #ffffff !important; border: 1px solid var(--sn-rule) !important;
+  border-radius: 0 !important; box-shadow: none !important; color: #171717 !important;
+  padding: calc(var(--safe-area-inset-top, 0px) + 12px) 16px 12px;
+}
 
 /* Reader controls open as solid, bottom-anchored sheets. */
 body .menu.sn-reader-menu {

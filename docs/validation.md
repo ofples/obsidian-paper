@@ -1,5 +1,15 @@
 # Validation
 
+## Local 0.5.14 candidate / Paper 0.5.11 and Sidebar 0.4.4
+
+This local update changes Paper's tab trailing borders and native pull-down hint, plus Sidebar's top two-finger drag to Quick Switcher. It does not import Reader or alter its four pinned artifact files. The newer Reader running on the Nomad is managed by the coordinated chat and must not be overwritten from this repository's older pinned distribution.
+
+The local Node suite has 38 passing tests. An independent Chromium fixture using the actual Sidebar handlers passed 21 gesture cases: valid joint top-down drag, exactly one switcher command, generated-click suppression, fresh modal-row taps, existing palette/sidebar/fullscreen positives, pen/selection/menu/control exclusions, pinch/third-finger/cancellation rejection and Reader text-selection guards through deferred fullscreen work. Ordinary held-finger pointers remain eligible: the guards use the optional `isTextSelectionActive()` hook, not the broader held-pointer flag. These are simulated browser events, not physical finger or stylus acceptance.
+
+Six CSS fixtures with native Obsidian CSS cover normal tabs, narrow overflow at both scroll positions, hidden trailing tabs, reordering and a wide viewport. All pass with a one-pixel trailing rule per tab, no doubled neighboring rules and the active tab's bottom open. Before/after screenshots were reviewed. The native `.pull-down-action` hint has a solid white surface, black text, a thin border and compact padding while retaining Obsidian's position/transform lifecycle.
+
+Only Paper's CSS/manifest and Sidebar's script/manifest differ among the 11 accepted runtime files; fonts, licenses, Sidebar styles and Reader remain unchanged. Device installation and acceptance are coordinated separately. No GitHub push, tag or release is authorized for this candidate, and none was made.
+
 ## 0.5.13 / Reader 2.2.0 and Sidebar 0.4.3
 
 Sidebar's edge-swipe and two-finger fullscreen capture handlers now exclude the complete Reader selection-actions dock using either `[data-reader-gesture-ignore]` or `.hr-reader-selection-actions`. The exclusion includes dock descendants and empty padding when the DOM selection has collapsed; it does not depend on Reader being enabled. Existing button/SVG exclusions and ordinary-content gestures remain covered.

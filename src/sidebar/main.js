@@ -211,31 +211,164 @@ module.exports = class SupernoteSidebar extends Plugin {
     let gesture = null;
     const drawerOpen = () => document.body.matches('.sn-left-open,.sn-right-open');
     const outside = target => target.closest('.mod-root .view-content,.workspace-drawer-backdrop,.sn-exit-fullscreen');
-    const blocked = target => target.closest('a,button,input,textarea,select,[contenteditable="true"],.clickable-icon,.view-action,.workspace-tab-header,.hr-fn-pop,[data-reader-gesture-ignore],.hr-reader-selection-actions,video,audio');
+    const blocked = target => target?.closest?.('a,button,input,textarea,select,form,[contenteditable],[role="button"],[role="dialog"],.clickable-icon,.view-action,.workspace-tab-header,.hr-fn-pop,[data-reader-gesture-ignore],.hr-reader-selection-actions,video,audio');
     const selected = () => { const s = document.getSelection(); return s && !s.isCollapsed; };
     const consume = event => { event.preventDefault(); event.stopImmediatePropagation(); };
+    const timeOf = event => Number.isFinite(event?.timeStamp) ? event.timeStamp : Date.now();
+    const contacts = list => Array.from(list || []);
+    const contactTarget = (touch,event) => touch?.target?.nodeType === 1 ? touch.target : event.target;
+    const point = touch => ({id:touch.identifier,x:touch.clientX,y:touch.clientY});
+    const menuOrDrawer = () => Boolean(document.querySelector('.menu,.modal-container')) || drawerOpen();
+    const isTouchInput = touch => !touch?.touchType || touch.touchType === 'direct';
+    const textSelectionActive = view => view?.isTextSelectionActive?.() === true;
+    const sameReadingView = g => this.app.workspace.activeLeaf?.view === g.view &&
+      this.isReadingView(g.view) && this.readingViewport(g.view) === g.area;
+    const pairStartAllowed = (event,view,area,touch) => {
+      const target = contactTarget(touch,event), rect = area.getBoundingClientRect();
+      return isTouchInput(touch) && area.contains(target) && !blocked(target) &&
+        touch.clientX >= rect.left + 12 && touch.clientX <= rect.right - 12 &&
+        touch.clientY >= Math.max(rect.top,12) && touch.clientY <= rect.top + 48 &&
+        !selected() && !textSelectionActive(view) && !menuOrDrawer() && this.app.workspace.activeLeaf?.view === view;
+    };
+    const startSwitcher = (event, first, second, view, area, firstStartedAt) => {
+      const pair = [first,second].map(point);
+      const spacing = Math.hypot(pair[0].x-pair[1].x,pair[0].y-pair[1].y);
+      if (pair[0].id === pair[1].id || spacing < 24 ||
+          !pairStartAllowed(event,view,area,first) || !pairStartAllowed(event,view,area,second)) return false;
+      gesture = {
+        kind:'switcher-candidate', view, area, startedAt:firstStartedAt,
+        starts:new Map(pair.map(p => [p.id,{x:p.x,y:p.y}])),
+        points:new Map(pair.map(p => [p.id,p])), releases:new Map(), initialSpacing:spacing,
+        claimed:false, valid:true,
+      };
+      return true;
+    };
+    const updateSwitcher = (g,touches) => {
+      const values = contacts(touches);
+      if (values.length !== 2 || values.some(touch => !isTouchInput(touch))) return false;
+      const next = new Map();
+      for (const touch of values) {
+        const original = g.starts.get(touch.identifier);
+        if (!original) return false;
+        next.set(touch.identifier,{id:touch.identifier,x:touch.clientX,y:touch.clientY});
+      }
+      const points = [...next.values()];
+      const moves = points.map(p => ({dx:p.x-g.starts.get(p.id).x,dy:p.y-g.starts.get(p.id).y}));
+      const spacing = Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);
+      const dy = moves.map(move => move.dy);
+      const stable = spacing > 0 && Math.abs(spacing-g.initialSpacing) <= 16 &&
+        Math.max(...moves.map(move => Math.abs(move.dx))) <= 20 &&
+        Math.min(...dy) >= 0 && Math.max(...dy)-Math.min(...dy) <= 20;
+      if (!stable) return false;
+      g.points = next;
+      return {moves};
+    };
+    const consumeClaimedGesture = g => { g.claimed = true; g.consumed = true; };
+    const finishTouch = (g,event) => {
+      const endedAt = timeOf(event);
+      for (const touch of contacts(event.changedTouches)) {
+        const old = g.points.get(touch.identifier);
+        if (old) g.points.set(touch.identifier,{id:touch.identifier,x:touch.clientX,y:touch.clientY});
+        g.releases.set(touch.identifier,endedAt);
+      }
+      if (event.touches.length !== 0) return false;
+      if (g.releases.size !== 2 || Math.max(...g.releases.values())-Math.min(...g.releases.values()) > 100) return false;
+      const points = [...g.points.values()];
+      if (points.length !== 2) return false;
+      const moves = points.map(p => ({dx:p.x-g.starts.get(p.id).x,dy:p.y-g.starts.get(p.id).y}));
+      const spacing = Math.hypot(points[0].x-points[1].x,points[0].y-points[1].y);
+      return endedAt-g.startedAt <= 1200 && Math.min(...moves.map(move => move.dy)) >= 60 &&
+        Math.max(...moves.map(move => Math.abs(move.dx))) <= 20 &&
+        Math.max(...moves.map(move => move.dy))-Math.min(...moves.map(move => move.dy)) <= 20 &&
+        Math.abs(spacing-g.initialSpacing) <= 16 && sameReadingView(g) && !selected() &&
+        !textSelectionActive(g.view) && !menuOrDrawer();
+    };
     this.registerDomEvent(document,'touchstart',event => {
+      // A new real touch starts a fresh interaction; only the click immediately
+      // following a gesture we consumed should be treated as its ghost click.
+      this.consumedTouchEndpoint = null;
+      const touches = contacts(event.touches), startedAt = timeOf(event);
+      if (gesture?.claimed && gesture.kind !== 'dismiss') {
+        if (touches.length !== (gesture.kind === 'switcher-candidate' ? 2 : 1)) {
+          gesture.kind = 'cancelled'; gesture.valid = false; consume(event);
+        }
+        return;
+      }
+      if (!document.body.classList.contains('is-mobile') || document.querySelector('.menu,.modal-container')) { gesture = null; return; }
+      if (textSelectionActive(this.app.workspace.activeLeaf?.view)) { gesture = null; return; }
+      if (touches.length === 2) {
+        const view = this.app.workspace.activeLeaf?.view;
+        const area = this.isReadingView(view) ? this.readingViewport(view) : null;
+        if (!area || selected() || drawerOpen()) { gesture = null; return; }
+        const pending = gesture?.kind === null && gesture.points?.size === 1 ? gesture : null;
+        const changed = contacts(event.changedTouches);
+        let first,second,firstStartedAt;
+        if (pending) {
+          const previousId = [...pending.points.keys()][0];
+          first = touches.find(touch => touch.identifier === previousId);
+          second = touches.find(touch => touch.identifier !== previousId);
+          const original = pending.points.get(previousId);
+          if (!first || !second || startedAt-pending.startedAt > 100 ||
+              Math.hypot(first.clientX-original.x,first.clientY-original.y) > 10 ||
+              !changed.some(touch => touch.identifier === second.identifier)) { gesture = null; return; }
+          firstStartedAt = pending.startedAt;
+        } else if (changed.length === 2) {
+          [first,second] = touches; firstStartedAt = startedAt;
+        } else { gesture = null; return; }
+        gesture = null;
+        startSwitcher(event,first,second,view,area,firstStartedAt);
+        return;
+      }
+      if (touches.length !== 1) { gesture = null; return; }
       gesture = null;
-      if (!document.body.classList.contains('is-mobile') || event.touches.length !== 1 || document.querySelector('.menu,.modal-container')) return;
       if (drawerOpen() && outside(event.target)) {
-        gesture = {kind:'dismiss'}; consume(event); return;
+        gesture = {kind:'dismiss',claimed:true,consumed:true}; consume(event); return;
       }
       if (selected() || blocked(event.target) || drawerOpen()) return;
       const view = this.app.workspace.activeLeaf?.view;
       if (!this.isReadingView(view)) return;
       const area = this.readingViewport(view);
       if (!area?.contains(event.target) && !view.headerEl?.contains(event.target)) return;
-      const point = event.touches[0], rect = area.getBoundingClientRect();
+      const touch = touches[0], rect = area.getBoundingClientRect();
+      if (!isTouchInput(touch)) return;
       const top = view.viewport?.getBoundingClientRect().top || view.headerEl?.getBoundingClientRect().bottom || rect.top;
-      const left = point.clientX >= rect.left + 12 && point.clientX <= rect.left + 48;
-      const right = point.clientX <= rect.right - 12 && point.clientX >= rect.right - 48;
-      const down = point.clientY >= Math.max(rect.top,12) && point.clientY <= top + 48;
-      if (left || right || down) gesture = {view, x:point.clientX, y:point.clientY, at:Date.now(), left, right, down, kind:null};
+      const left = touch.clientX >= rect.left + 12 && touch.clientX <= rect.left + 48;
+      const right = touch.clientX <= rect.right - 12 && touch.clientX >= rect.right - 48;
+      const down = touch.clientY >= Math.max(rect.top,12) && touch.clientY <= top + 48;
+      if (left || right || down) gesture = {
+        view, area, x:touch.clientX, y:touch.clientY, at:Date.now(), startedAt,
+        left, right, down, kind:null,
+        points:new Map([[touch.identifier,{id:touch.identifier,x:touch.clientX,y:touch.clientY}]])
+      };
     },{capture:true,passive:false});
     this.registerDomEvent(document,'touchmove',event => {
       if (!gesture) return;
       if (gesture.kind === 'dismiss') { consume(event); return; }
-      if (event.touches.length !== 1 || selected()) { if (gesture.kind) consume(event); gesture = null; return; }
+      if (gesture.kind === 'cancelled') { if (gesture.consumed) consume(event); return; }
+      if (gesture.kind === 'switcher-candidate' || gesture.kind === 'switcher') {
+        const g = gesture;
+        if (!sameReadingView(g) || selected() || textSelectionActive(g.view) || menuOrDrawer() || timeOf(event)-g.startedAt > 1200) {
+          g.valid = false;
+        }
+        const movement = g.valid ? updateSwitcher(g,event.touches) : false;
+        if (!movement) {
+          if (g.claimed) { g.valid = false; g.kind = 'cancelled'; consume(event); }
+          else gesture = null;
+          return;
+        }
+        const moves = movement.moves, minDown = Math.min(...moves.map(move => move.dy));
+        if (!g.claimed && minDown >= 24) {
+          consumeClaimedGesture(g); g.kind = 'switcher'; g.view.cancelPaperGesture?.();
+        }
+        if (g.claimed) consume(event);
+        return;
+      }
+      if (event.touches.length !== 1 || selected() || textSelectionActive(gesture.view) || !sameReadingView(gesture)) {
+        if (gesture.kind) consume(event);
+        if (gesture.kind) { gesture.kind = 'cancelled'; gesture.consumed = true; gesture.valid = false; }
+        else gesture = null;
+        return;
+      }
       const point = event.touches[0], dx = point.clientX - gesture.x, dy = point.clientY - gesture.y;
       if (!gesture.kind) {
         if (Math.max(Math.abs(dx),Math.abs(dy)) < 8) return;
@@ -243,21 +376,60 @@ module.exports = class SupernoteSidebar extends Plugin {
         else if (gesture.left && dx > 0 && dx > Math.abs(dy) * 1.5) gesture.kind = 'files';
         else if (gesture.right && dx < 0 && -dx > Math.abs(dy) * 1.5) gesture.kind = 'backlinks';
         else { gesture = null; return; }
+        gesture.claimed = true; gesture.consumed = true;
         gesture.view.cancelPaperGesture?.();
       }
       consume(event);
     },{capture:true,passive:false});
     this.registerDomEvent(document,'touchend',event => {
-      const g = gesture; gesture = null;
-      if (!g?.kind) return;
+      const g = gesture;
+      if (!g?.kind) { gesture = null; return; }
+      if (g.kind === 'switcher-candidate' || g.kind === 'switcher') {
+        const claimed = g.claimed;
+        if (claimed) consume(event);
+        const valid = g.valid && finishTouch(g,event);
+        if (event.touches.length !== 0) {
+          if (!claimed) gesture = null;
+          return;
+        }
+        if (claimed) {
+          const touchPoint = contacts(event.changedTouches)[0];
+          if (g.consumed && touchPoint) this.consumedTouchEndpoint = {
+            x:touchPoint.clientX,y:touchPoint.clientY,at:Date.now(),target:event.target
+          };
+          if (valid && sameReadingView(g)) this.app.commands.executeCommandById('switcher:open');
+        }
+        gesture = null;
+        return;
+      }
+      if (g.kind === 'cancelled') {
+        if (g.consumed) consume(event);
+        if (event.touches.length === 0) {
+          const touchPoint = contacts(event.changedTouches)[0];
+          if (g.consumed && touchPoint) this.consumedTouchEndpoint = {
+            x:touchPoint.clientX,y:touchPoint.clientY,at:Date.now(),target:event.target
+          };
+          gesture = null;
+        }
+        return;
+      }
+      if (g.kind === 'dismiss') {
+        const touchPoint = contacts(event.changedTouches)[0];
+        if (touchPoint) this.consumedTouchEndpoint = {
+          x:touchPoint.clientX,y:touchPoint.clientY,at:Date.now(),target:event.target
+        };
+        consume(event);
+        if (event.touches.length === 0) { gesture = null; this.closeDrawers(); }
+        return;
+      }
+      gesture = null;
       const touchPoint = event.changedTouches[0];
-      this.consumedTouchEndpoint = touchPoint ? {
+      this.consumedTouchEndpoint = g.consumed && touchPoint ? {
         x:touchPoint.clientX, y:touchPoint.clientY, at:Date.now(), target:event.target
       } : null;
       consume(event);
-      if (g.kind === 'dismiss') { this.closeDrawers(); return; }
       const point = event.changedTouches[0];
-      if (!point || selected() || Date.now() - g.at > 1200 || this.app.workspace.activeLeaf?.view !== g.view) return;
+      if (!point || selected() || textSelectionActive(g.view) || Date.now() - g.at > 1200 || this.app.workspace.activeLeaf?.view !== g.view) return;
       const dx = point.clientX - g.x, dy = point.clientY - g.y;
       if (g.kind === 'palette' && dy >= 60 && dy > Math.abs(dx) * 1.5) {
         this.closeDrawers(); g.view.focus?.();
@@ -265,7 +437,12 @@ module.exports = class SupernoteSidebar extends Plugin {
       } else if (g.kind === 'files' && dx >= 60 && dx > Math.abs(dy) * 1.5) this.openDrawer('left');
       else if (g.kind === 'backlinks' && dx <= -60 && -dx > Math.abs(dy) * 1.5) this.openDrawer('right');
     },{capture:true,passive:false});
-    this.registerDomEvent(document,'touchcancel',() => { gesture = null; },{capture:true});
+    this.registerDomEvent(document,'touchcancel',event => {
+      if (gesture?.claimed && gesture.consumed && event.touches?.length) {
+        gesture.kind = 'cancelled'; gesture.valid = false; consume(event); return;
+      }
+      gesture = null;
+    },{capture:true});
     this.registerDomEvent(document,'click',event => {
       const endpoint = this.consumedTouchEndpoint;
       this.consumedTouchEndpoint = null;

@@ -28,7 +28,11 @@ function makeElement({ tag = 'div', classes = [], attrs = {}, parentElement = nu
   };
 }
 
-function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked = false, blockedMarker = null, selected = false, root = true } = {}) {
+function fixture(options = {}) {
+  const {
+    enabled = true, viewType = 'horizontal-reader-view', blocked = false,
+    blockedMarker = null, selected = false, collapsedSelection = false, root = true,
+  } = options;
   const handlers = new Map();
   const timers = new Map();
   let nextTimer = 1;
@@ -54,6 +58,8 @@ function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked 
   const view = {
     getViewType: () => viewType,
     getMode: () => 'preview',
+    isSelectionGestureActive: () => options.contentPointerHeld === true,
+    isTextSelectionActive: () => options.textSelectionActive === true,
     viewport: area,
     containerEl: { querySelector: () => area },
   };
@@ -63,7 +69,7 @@ function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked 
   const body = { classList: { contains: name => bodyClasses.has(name) }, matches: selector => selector.split(',').some(x => bodyClasses.has(x.trim().replace(/^\./, ''))) };
   const doc = {
     body,
-    getSelection: () => selected ? { isCollapsed: false, anchorNode: target } : null,
+    getSelection: () => selected ? { isCollapsed: false, anchorNode: target } : collapsedSelection ? { isCollapsed: true, anchorNode: target } : null,
     querySelector: selector => selector.split(',').some(x => bodyClasses.has(x.trim().replace(/^\./, ''))) ? {} : null,
     elementFromPoint: () => target,
   };
@@ -113,6 +119,7 @@ function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked 
   };
   return {
     plugin, handlers, timers, fire, touch, tapPair, target, makeTarget, area, leaf, bodyClasses,
+    setTextSelectionActive(value) { options.textSelectionActive = value; },
     get toggles() { return toggles; },
     flush() { for (const [id, fn] of [...timers]) { timers.delete(id); fn(); } },
     restore() {
@@ -123,8 +130,8 @@ function fixture({ enabled = true, viewType = 'horizontal-reader-view', blocked 
   };
 }
 
-test('two valid two-finger taps toggle fullscreen once and suppress the generated click', () => {
-  const f = fixture();
+test('ordinary finger pointers can still double-tap fullscreen while Reader reports held content pointers', () => {
+  const f = fixture({ contentPointerHeld:true });
   try {
     assert.deepEqual(f.fire('touchstart', [f.touch(1)], [], 0), { prevented: 0, stopped: 0 }, 'gesture listener observes rather than consumes touch input');
     f.fire('touchcancel', [], [], 5);
@@ -149,6 +156,23 @@ test('disabled setting, selection, controls, wrong view, or non-root leaf cannot
       assert.equal(f.toggles, 0, JSON.stringify(options));
     } finally { f.restore(); }
   }
+});
+
+test('Reader text-selection hook blocks fullscreen gestures with collapsed DOM selection and cancels a pending toggle', () => {
+  const atStart = fixture({ collapsedSelection:true, contentPointerHeld:true, textSelectionActive:true });
+  try {
+    atStart.tapPair(0); atStart.tapPair(300); atStart.flush();
+    assert.equal(atStart.toggles, 0, 'an active Reader selection blocks gesture starts even when the DOM selection is collapsed');
+  } finally { atStart.restore(); }
+
+  const pending = fixture({ collapsedSelection:true, contentPointerHeld:true });
+  try {
+    pending.tapPair(0); pending.tapPair(300);
+    assert.equal(pending.toggles, 0, 'fullscreen toggle remains deferred');
+    pending.setTextSelectionActive(true);
+    pending.flush();
+    assert.equal(pending.toggles, 0, 'selection activation invalidates the deferred toggle');
+  } finally { pending.restore(); }
 });
 
 test('Reader selection controls and marked gesture-ignore elements block fullscreen taps through nested SVG targets', () => {

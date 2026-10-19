@@ -61,7 +61,8 @@ module.exports = function installFullscreenDoubleTap(plugin) {
     x:(points[0].x + points[1].x) / 2,
     y:(points[0].y + points[1].y) / 2
   });
-  const selectedFor = candidate => hasSelection(candidate?.area);
+  const selectedFor = candidate => hasSelection(candidate?.area) ||
+    candidate?.view?.isTextSelectionActive?.() === true;
   const invalidate = (clearFirst=true) => {
     current = null;
     if (clearFirst) firstTap = null;

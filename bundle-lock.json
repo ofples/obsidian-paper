@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "version": "0.5.13",
+  "version": "0.5.14",
   "components": {
     "paper": {
       "kind": "theme",
       "name": "Supernote Paper",
-      "version": "0.5.10",
+      "version": "0.5.11",
       "license": "MIT",
       "optional": true,
       "directory": "themes/Supernote Paper"
@@ -13,7 +13,7 @@
     "sidebar": {
       "kind": "plugin",
       "id": "supernote-sidebar",
-      "version": "0.4.3",
+      "version": "0.4.4",
       "license": "MIT",
       "optional": true,
       "directory": "plugins/supernote-sidebar"
