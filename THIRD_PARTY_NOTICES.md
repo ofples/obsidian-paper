@@ -17,7 +17,7 @@ commit `a7003150eda4cddc7603da7bb3576e25eebbd88c`, based on
 upstream commit `b23d62ce4d341ed230ff403b0f292385b41d0364`.
 
 The current local unreleased artifact is also manifest-version 2.2.0, but is a
-distinct snapshot from canonical commit `25fd0d2b96eb7987b9f8db5a447ce9bf61f1c481`.
+distinct snapshot from canonical commit `d45fd445444ccfcbb0815a9b6440065d508d574b`.
 It has no public release URL. Its MIT license and attribution are unchanged;
 the exact four-file provenance is recorded in `vendor/md-reader/UPSTREAM.md`.
 

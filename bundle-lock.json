@@ -26,7 +26,7 @@
       "directory": "plugins/md-reader",
       "source": {
         "repository": "https://github.com/ofples/obsidian-md-reader",
-        "commit": "25fd0d2b96eb7987b9f8db5a447ce9bf61f1c481"
+        "commit": "d45fd445444ccfcbb0815a9b6440065d508d574b"
       },
       "files": {
         "main.js": "4ff774189ec9fa5dc0fef83dd92b6d70eec40e9ac7bcbe435748a3eeed7a04b9",

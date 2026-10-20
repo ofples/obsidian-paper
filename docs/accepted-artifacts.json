@@ -1,7 +1,7 @@
 {
   "version": "0.5.14",
   "validated": "2026-10-20",
-  "description": "Local-only Reader 2.2.0 snapshot 25fd0d2 with frozen Paper0.5.11/Sidebar0.4.4. Coordinated UI installation confirmed active with reading state preserved; current native Digest save acceptance pending.",
+  "description": "Local Reader 2.2.0 snapshot d45fd44 (runtime unchanged from device-tested 25fd0d2) with installed Paper0.5.11/Sidebar0.4.4. Coordinated Nomad Quick/Create Digest, duplicate guard and missing-category retry passed; original reading state restored. Other category/device gestures and notebook backlinks remain outside acceptance.",
   "files": {
     "themes/Supernote Paper/theme.css": "26991c146cda00e6e20960c3d9044b2932720d44c6a8c1c3e9fea663aa11b535",
     "themes/Supernote Paper/manifest.json": "0cfed11753cb78121cf9b7a92c20fb96e3d176b3f2ea996fca8c9bb49b9a1774",

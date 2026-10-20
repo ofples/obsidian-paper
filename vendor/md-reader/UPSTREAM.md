@@ -2,7 +2,7 @@
 
 - Canonical fork: https://github.com/ofples/obsidian-md-reader
 - Version: 2.2.0 (local unreleased artifact; distinct from the published 2.2.0)
-- Commit: `25fd0d2b96eb7987b9f8db5a447ce9bf61f1c481` (clean canonical checkout, 2026-10-20)
+- Commit: `d45fd445444ccfcbb0815a9b6440065d508d574b` (clean canonical checkout, 2026-10-20)
 - Upstream: https://github.com/mrrepac/obsidian-md-reader
 - Upstream base: `b23d62ce4d341ed230ff403b0f292385b41d0364` (2.1.0)
 - License: MIT, copyright 2026 mrrepac; see `LICENSE`.
@@ -24,6 +24,9 @@ documents the inline Highlight/Copy/Quick Digest/Create Digest menu, the
 different Quick Digest and Create Digest handoffs, and signed exact-category
 delivery with optional Transcripts source defaults. This snapshot's local
 validation and device-test boundary are recorded in ../../docs/validation.md.
+The pinned source is a documentation-only child of device-tested runtime
+`25fd0d2b96eb7987b9f8db5a447ce9bf61f1c481`; all four runtime files are unchanged.
+Its exact canonical `INTEGRATION.md` includes the final bounded device findings.
 
 This repository pins all four artifact files by these exact SHA-256 values in
 `bundle-lock.json`; the offline build validates and copies them byte-for-byte
