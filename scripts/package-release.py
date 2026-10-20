@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the four deterministic, allowlisted Obsidian Paper release archives."""
+"""Build deterministic, allowlisted Obsidian Paper release archives."""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT = ROOT / "artifacts" / "v0.5.14"
+DEFAULT_UI_OUTPUT = ROOT / "artifacts" / "v0.5.14-ui"
 ZIP_TIME = (1980, 1, 1, 0, 0, 0)
 
 THEME_FILES = (
@@ -48,6 +49,15 @@ ACCEPTED_RUNTIME_FILES = (
     "plugins/md-reader/styles.css",
     "plugins/md-reader/manifest.json",
     "plugins/md-reader/LICENSE",
+    "themes/Supernote Paper/LICENSE",
+    "plugins/supernote-sidebar/LICENSE",
+)
+UI_RUNTIME_FILES = (
+    "themes/Supernote Paper/theme.css",
+    "themes/Supernote Paper/manifest.json",
+    "plugins/supernote-sidebar/main.js",
+    "plugins/supernote-sidebar/styles.css",
+    "plugins/supernote-sidebar/manifest.json",
     "themes/Supernote Paper/LICENSE",
     "plugins/supernote-sidebar/LICENSE",
 )
@@ -162,13 +172,13 @@ def require_version(manifest: dict, expected: str, label: str) -> None:
         fail(f"{label} version does not match bundle-lock.json (expected {expected})")
 
 
-def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
+def check_component_inputs(ui_only: bool = False) -> tuple[dict, dict, dict, dict | None, dict[str, bytes]]:
     lock, _ = read_json("bundle-lock.json")
     project, _ = read_json("package.json")
     accepted, _ = read_json("docs/accepted-artifacts.json")
     theme, _ = read_json("dist/themes/Supernote Paper/manifest.json")
     sidebar, _ = read_json("dist/plugins/supernote-sidebar/manifest.json")
-    reader, _ = read_json("dist/plugins/md-reader/manifest.json")
+    reader = None if ui_only else read_json("dist/plugins/md-reader/manifest.json")[0]
 
     if lock.get("schemaVersion") != 1:
         fail("Unsupported bundle-lock schema version")
@@ -182,30 +192,38 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         fail("bundle-lock.json must describe exactly Paper, Sidebar, and Reader")
     paper_pin = components["paper"]
     sidebar_pin = components["sidebar"]
-    reader_pin = components["reader"]
-    expected_component_versions = {"paper": "0.5.11", "sidebar": "0.4.4", "reader": "2.2.0"}
+    reader_pin = None if ui_only else components["reader"]
+    expected_component_versions = {"paper": "0.5.11", "sidebar": "0.4.4"}
+    if not ui_only:
+        expected_component_versions["reader"] = "2.2.0"
     for key, expected in expected_component_versions.items():
         if not isinstance(components[key], dict) or components[key].get("version") != expected:
             fail(f"This release packager expects {key} version {expected}")
     require_version(theme, paper_pin.get("version"), "Paper manifest")
     require_version(sidebar, sidebar_pin.get("version"), "Sidebar manifest")
-    require_version(reader, reader_pin.get("version"), "Reader manifest")
+    if not ui_only:
+        require_version(reader, reader_pin.get("version"), "Reader manifest")
     if theme.get("name") != paper_pin.get("name") or theme.get("license") != paper_pin.get("license"):
         fail("Paper manifest identity or license does not match bundle-lock.json")
     if sidebar.get("id") != sidebar_pin.get("id") or sidebar.get("license") != sidebar_pin.get("license"):
         fail("Sidebar manifest identity or license does not match bundle-lock.json")
-    if reader.get("id") != reader_pin.get("id"):
-        fail("Reader manifest identity does not match bundle-lock.json")
-    reader_source = reader_pin.get("source")
-    if not isinstance(reader_source, dict) or not re.fullmatch(r"[0-9a-f]{40}", str(reader_source.get("commit", ""))):
-        fail("Reader lock must include a full canonical source commit")
+    if not ui_only:
+        if reader.get("id") != reader_pin.get("id"):
+            fail("Reader manifest identity does not match bundle-lock.json")
+        reader_source = reader_pin.get("source")
+        if not isinstance(reader_source, dict) or not re.fullmatch(r"[0-9a-f]{40}", str(reader_source.get("commit", ""))):
+            fail("Reader lock must include a full canonical source commit")
 
     theme_dir = "dist/themes/Supernote Paper"
     sidebar_dir = "dist/plugins/supernote-sidebar"
     reader_dir = "dist/plugins/md-reader"
     inventory_directory(theme_dir, THEME_FILES)
     inventory_directory(sidebar_dir, SIDEBAR_FILES)
-    reader_files = inventory_directory(reader_dir, READER_REQUIRED_FILES, READER_OPTIONAL_FILES)
+    reader_files = (
+        inventory_directory(reader_dir, READER_REQUIRED_FILES, READER_OPTIONAL_FILES)
+        if not ui_only
+        else set()
+    )
 
     install_path = "docs/release-install.md"
     _, install_bytes = source_file(install_path)
@@ -221,10 +239,11 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
         _, component_bytes = source_file(component_license)
         if component_bytes != root_license:
             fail(f"Component license differs from repository LICENSE: {component_license}")
-    _, reader_license = source_file(f"{reader_dir}/LICENSE")
-    _, vendor_reader_license = source_file("vendor/md-reader/LICENSE")
-    if reader_license != vendor_reader_license:
-        fail("Bundled Reader license differs from the pinned vendor license")
+    if not ui_only:
+        _, reader_license = source_file(f"{reader_dir}/LICENSE")
+        _, vendor_reader_license = source_file("vendor/md-reader/LICENSE")
+        if reader_license != vendor_reader_license:
+            fail("Bundled Reader license differs from the pinned vendor license")
     normalized_notices = " ".join(notices_bytes.decode("utf-8").split()).casefold()
     for notice in ("MIT License", "SIL Open Font License", "GPL-3.0"):
         if notice.casefold() not in normalized_notices:
@@ -240,37 +259,38 @@ def check_component_inputs() -> tuple[dict, dict, dict, dict, dict[str, bytes]]:
     # These folders are the complete package inputs, not candidate roots for
     # recursive copying. The inventories above reject every unlisted member.
     reader_files_set = set(READER_REQUIRED_FILES) | (set(READER_OPTIONAL_FILES) & reader_files)
-    if set(reader_pin.get("files", {})) != set(READER_PINNED_FILES):
+    if not ui_only and set(reader_pin.get("files", {})) != set(READER_PINNED_FILES):
         fail("Reader lock must pin exactly its four canonical artifact files")
 
     accepted_files = accepted.get("files")
     if not isinstance(accepted_files, dict) or set(accepted_files) != set(ACCEPTED_RUNTIME_FILES):
         fail("accepted-artifacts.json must cover exactly the 11 release runtime files")
     collected: dict[str, bytes] = {}
-    for relative_path in ACCEPTED_RUNTIME_FILES:
+    runtime_files = UI_RUNTIME_FILES if ui_only else ACCEPTED_RUNTIME_FILES
+    for relative_path in runtime_files:
         _, data = source_file(f"dist/{relative_path}")
         if digest(data) != accepted_files[relative_path]:
             fail(f"Release input does not match accepted artifact hash: dist/{relative_path}")
         collected[relative_path] = data
 
-    for filename, expected_hash in reader_pin["files"].items():
-        path = f"dist/plugins/md-reader/{filename}"
-        if path not in {f"dist/{item}" for item in ACCEPTED_RUNTIME_FILES}:
-            fail(f"Reader lock refers to a non-runtime file: {filename}")
-        if digest(collected[path.removeprefix("dist/")]) != expected_hash:
-            fail(f"Reader input does not match bundle-lock.json: {filename}")
+    if not ui_only:
+        for filename, expected_hash in reader_pin["files"].items():
+            path = f"dist/plugins/md-reader/{filename}"
+            if path not in {f"dist/{item}" for item in ACCEPTED_RUNTIME_FILES}:
+                fail(f"Reader lock refers to a non-runtime file: {filename}")
+            if digest(collected[path.removeprefix("dist/")]) != expected_hash:
+                fail(f"Reader input does not match bundle-lock.json: {filename}")
 
     # Read all allowlisted release members now, before any output is written.
-    for relative_path in (
+    release_inputs = [
         *(f"{theme_dir}/{name}" for name in THEME_FILES),
         *(f"{sidebar_dir}/{name}" for name in SIDEBAR_FILES),
-        *(f"{reader_dir}/{name}" for name in READER_REQUIRED_FILES),
-        *(f"{reader_dir}/{name}" for name in READER_OPTIONAL_FILES if name in reader_files_set),
-        install_path,
-        "THIRD_PARTY_NOTICES.md",
-        root_license_path,
-        "bundle-lock.json",
-    ):
+    ]
+    if not ui_only:
+        release_inputs.extend(f"{reader_dir}/{name}" for name in READER_REQUIRED_FILES)
+        release_inputs.extend(f"{reader_dir}/{name}" for name in READER_OPTIONAL_FILES if name in reader_files_set)
+    release_inputs.extend((install_path, "THIRD_PARTY_NOTICES.md", root_license_path, "bundle-lock.json"))
+    for relative_path in release_inputs:
         _, data = source_file(relative_path)
         if relative_path.endswith((".md", ".css", ".js", ".json", ".txt", ".example", "/LICENSE", "LICENSE")):
             if MACHINE_PATH.search(data):
@@ -311,7 +331,7 @@ def make_member(archive_path: str, source_path: str) -> Member:
     return Member(archive_rel, source_path, data)
 
 
-def package_members() -> list[dict]:
+def package_members(ui_only: bool = False) -> list[dict]:
     install_source = "docs/release-install.md"
     notices_source = "THIRD_PARTY_NOTICES.md"
     members: list[dict] = []
@@ -321,13 +341,6 @@ def package_members() -> list[dict]:
 
     theme_assets = component("Supernote Paper", "dist/themes/Supernote Paper", THEME_FILES)
     sidebar_assets = component("supernote-sidebar", "dist/plugins/supernote-sidebar", SIDEBAR_FILES)
-    reader_inventory = inventory_directory(
-        "dist/plugins/md-reader", READER_REQUIRED_FILES, READER_OPTIONAL_FILES
-    )
-    reader_assets = component("md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES)
-    if "Supernote defaults.json" in reader_inventory:
-        reader_assets += component("md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES)
-
     def docs(top: str) -> list[Member]:
         return [
             make_member(f"{top}/THIRD_PARTY_NOTICES.md", notices_source),
@@ -344,6 +357,15 @@ def package_members() -> list[dict]:
         "version": "0.4.4",
         "members": sidebar_assets + docs("supernote-sidebar"),
     })
+    if ui_only:
+        return members
+
+    reader_inventory = inventory_directory(
+        "dist/plugins/md-reader", READER_REQUIRED_FILES, READER_OPTIONAL_FILES
+    )
+    reader_assets = component("md-reader", "dist/plugins/md-reader", READER_REQUIRED_FILES)
+    if "Supernote defaults.json" in reader_inventory:
+        reader_assets += component("md-reader", "dist/plugins/md-reader", READER_OPTIONAL_FILES)
     members.append({
         "name": "md-reader-2.2.0.zip",
         "version": "2.2.0",
@@ -395,8 +417,8 @@ def create_zip(members: list[Member]) -> bytes:
     return result
 
 
-def output_directory(path: str | None) -> Path:
-    requested = Path(path) if path else DEFAULT_OUTPUT
+def output_directory(path: str | None, ui_only: bool = False) -> Path:
+    requested = Path(path) if path else (DEFAULT_UI_OUTPUT if ui_only else DEFAULT_OUTPUT)
     if not requested.is_absolute():
         requested = ROOT / requested
     if requested.exists() and requested.is_symlink():
@@ -418,12 +440,27 @@ def write_release(
     source_dirty: bool,
     lock: dict,
     project: dict,
+    included_component_keys: set[str] | None = None,
 ) -> None:
     if output.exists() and not output.is_dir():
         fail("Output path exists and is not a directory")
     output.mkdir(parents=True, exist_ok=True)
     if output.is_symlink():
         fail("Output directory cannot be a symlink")
+
+    selected_archives = {package["name"] for package in package_data}
+    all_archives = {
+        "supernote-paper-0.5.11.zip",
+        "supernote-sidebar-0.4.4.zip",
+        "md-reader-2.2.0.zip",
+        "obsidian-paper-0.5.14.zip",
+    }
+    stale_archives = sorted(name for name in all_archives - selected_archives if (output / name).exists())
+    if stale_archives:
+        fail(
+            "Output directory contains archives outside this package selection; "
+            f"use a clean output folder: {', '.join(stale_archives)}"
+        )
 
     archive_bytes: dict[str, bytes] = {}
     archive_records = []
@@ -442,6 +479,7 @@ def write_release(
             ],
         })
 
+    included_component_keys = included_component_keys or set(lock["components"])
     manifest = {
         "schemaVersion": 1,
         "sourceCommit": source_commit,
@@ -456,6 +494,7 @@ def write_release(
                 **({"sourceCommit": value["source"]["commit"]} if isinstance(value.get("source"), dict) else {}),
             }
             for key, value in lock["components"].items()
+            if key in included_component_keys
         },
         "archives": archive_records,
     }
@@ -477,25 +516,43 @@ def write_release(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", help="output directory (default: artifacts/v0.5.14)")
+    parser.add_argument(
+        "--output",
+        help="output directory (default: artifacts/v0.5.14, or artifacts/v0.5.14-ui with --ui-only)",
+    )
     parser.add_argument(
         "--allow-dirty",
         action="store_true",
         help="allow packaging from a modified checkout and record sourceDirty=true",
     )
+    parser.add_argument(
+        "--ui-only",
+        action="store_true",
+        help="package only Paper and Sidebar; omit Reader and the combined archive",
+    )
     args = parser.parse_args(argv)
     try:
-        lock, project, _accepted, _reader_pin, _runtime = check_component_inputs()
-        packages = package_members()
+        lock, project, _accepted, _reader_pin, _runtime = check_component_inputs(ui_only=args.ui_only)
+        packages = package_members(ui_only=args.ui_only)
         source_commit, source_dirty = git_source_state(args.allow_dirty)
-        write_release(output_directory(args.output), packages, source_commit, source_dirty, lock, project)
+        component_keys = {"paper", "sidebar"} if args.ui_only else None
+        write_release(
+            output_directory(args.output, ui_only=args.ui_only),
+            packages,
+            source_commit,
+            source_dirty,
+            lock,
+            project,
+            included_component_keys=component_keys,
+        )
     except ReleaseError as error:
         print(f"Release packaging failed: {error}", file=sys.stderr)
         return 1
     except OSError as error:
         print(f"Release packaging failed: {error}", file=sys.stderr)
         return 1
-    print(f"Created four release archives and manifests under {output_directory(args.output)}")
+    count = "two component" if args.ui_only else "four"
+    print(f"Created {count} release archives and manifests under {output_directory(args.output, ui_only=args.ui_only)}")
     return 0
 
 

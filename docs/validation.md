@@ -1,6 +1,8 @@
 # Validation
 
-## Local 0.5.14 candidate / Paper 0.5.11 and Sidebar 0.4.4
+## 0.5.14 UI prerelease / Paper 0.5.11 and Sidebar 0.4.4
+
+The user subsequently authorized GitHub publication on 2026-10-20. The release assets contain only Paper and Sidebar, plus installation/license notices, checksums and a source manifest. Reader is maintained and released independently; the development Reader snapshot below is not packaged in this UI release. The twelve Paper/Sidebar runtime and font files retain the exact installed candidate bytes. The build, 40 Node tests and all 11 repository runtime integrity checks passed before release preparation; physical acceptance limits below still apply.
 
 The Paper and Sidebar update changes tab trailing borders and the native pull-down hint, plus Sidebar's top two-finger drag to Quick Switcher; those changes do not themselves alter Reader. The separately imported local unreleased Reader 2.2.0 artifact is documented below. An earlier coordinated attempt stopped when ADB disconnected and Recovery was reported before any theme or Sidebar UI candidate writes; no reboot, reset or recovery attempt was made. After a normal Android boot, the sole coordinating operator installed and confirmed the exact frozen Paper 0.5.11 and Sidebar 0.4.4 candidates active. Existing Reader leaves and positions were preserved. The new two-finger Quick Switcher drag and automatic menu opening after long-drag selection have not been physically accepted.
 
@@ -18,7 +20,7 @@ The local Node suite has 38 passing tests. An independent Chromium fixture using
 
 Six CSS fixtures with native Obsidian CSS cover normal tabs, narrow overflow at both scroll positions, hidden trailing tabs, reordering and a wide viewport. All pass with a one-pixel trailing rule per tab, no doubled neighboring rules and the active tab's bottom open. Before/after screenshots were reviewed. The native `.pull-down-action` hint has a solid white surface, black text, a thin border and compact padding while retaining Obsidian's position/transform lifecycle.
 
-The four Paper/Sidebar UI runtime changes remain frozen at local commit `b18bc14560d3e31cee547b6e47cd045739a8c062`. This subsequent offline import changes only Reader's script and stylesheet; all twelve files in the separate UI candidate still match their original frozen hashes. Fonts, licenses and Sidebar styles remain unchanged. Device installation and acceptance are coordinated separately. No GitHub push, tag or release is authorized for this candidate, and none was made.
+The four Paper/Sidebar UI runtime changes remain frozen at local commit `b18bc14560d3e31cee547b6e47cd045739a8c062`. This subsequent offline import changes only Reader's script and stylesheet; all twelve files in the separate UI candidate still match their original frozen hashes. Fonts, licenses and Sidebar styles remain unchanged. Device installation and acceptance are coordinated separately. At the time of that offline import, no GitHub push, tag or release was authorized or made; the later UI-only publication authorization is recorded above.
 
 ## 0.5.13 / Reader 2.2.0 and Sidebar 0.4.3
 
