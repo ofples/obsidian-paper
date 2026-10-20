@@ -10,11 +10,16 @@ external Transcripts companion.
 
 ## MD Reader
 
-The pinned MD Reader 2.2.0 artifact comes from
+The historical published MD Reader 2.2.0 artifact came from
 [ofples/obsidian-md-reader](https://github.com/ofples/obsidian-md-reader),
 commit `a7003150eda4cddc7603da7bb3576e25eebbd88c`, based on
 [mrrepac/obsidian-md-reader](https://github.com/mrrepac/obsidian-md-reader)
 upstream commit `b23d62ce4d341ed230ff403b0f292385b41d0364`.
+
+The current local unreleased artifact is also manifest-version 2.2.0, but is a
+distinct snapshot from canonical commit `7dea84a7aa924f498122e2ad7b229cdfc9c68055`.
+It has no public release URL. Its MIT license and attribution are unchanged;
+the exact four-file provenance is recorded in `vendor/md-reader/UPSTREAM.md`.
 
 Copyright (c) 2026 mrrepac. Licensed under the MIT License. Full notices are
 retained in `vendor/md-reader/LICENSE` and `dist/plugins/md-reader/LICENSE`.
