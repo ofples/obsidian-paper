@@ -5,9 +5,9 @@
 - Keep tab right borders visible without relying on the `:has()` selector, while preserving single rules between tabs and the active tab's open bottom edge.
 - Open the native file Quick Switcher with a deliberate two-finger downward drag from the reading area's top edge. Keep one-finger command-palette and sidebar gestures, text selection and controls separate.
 - Give the command-palette pull-down hint an opaque background and thin border.
-- Record the separate local unreleased Reader 2.2.0 artifact from canonical commit `7dea84a7aa924f498122e2ad7b229cdfc9c68055`; it is distinct from the published 2.2.0 and has no public release URL.
-- Use an inline selection context menu without a duplicate bottom dock; retain native pen/word selection, tap-selected-text fallback, and range anchoring/padding. Long-drag menu opening remains Android-dependent.
-- Protect Create Digest with an action-owned selection snapshot. The mock regression passes; native Digest capture on this exact revision remains unverified. See `docs/validation.md` for the test boundary.
+- Record the separate local unreleased Reader 2.2.0 artifact from canonical commit `25fd0d2b96eb7987b9f8db5a447ce9bf61f1c481`; it is distinct from the published 2.2.0 and has no public release URL.
+- Offer inline Highlight, Copy, Quick Digest and Create Digest actions without a duplicate bottom dock; retain native pen/word selection, tap-selected-text fallback, and range anchoring/padding. Long-drag menu opening remains Android-dependent.
+- Let Quick Digest request first-use permission once, then save in the background and return to Reader; Create Digest saves and opens native Digest details. Sign delivery options separately and require one exact category match. Native capture on this exact revision remains pending; see `docs/validation.md`.
 
 ## 0.5.13 (Reader 2.2.0 / Sidebar 0.4.3)
 
